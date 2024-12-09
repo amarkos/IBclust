@@ -64,4 +64,5 @@ print(result_cat$MutualInfo)
 Contributions are welcome! If you encounter issues, have suggestions, or would like to enhance the package, please feel free to submit an issue or a pull request on the GitHub repository.
 
 ## License
-This package is distributed under the MIT License. 
+This package is distributed under the GPL-3 License. See the [GNU General Public License version 3](https://www.gnu.org/licenses/gpl-3.0.html) for details.
+
