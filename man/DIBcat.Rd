@@ -51,6 +51,7 @@ A list containing the following elements:
     \item{\code{Entropy}: A numeric value representing the entropy of the cluster assignments at the end of the iterative procedure.}
     \item{\code{MutualInfo}: A numeric value representing the mutual information (\code{I(Y;T)}) between the data distribution and the cluster assignments.}
     \item{\code{lambda}: A numeric vector of bandwidth parameters for categorical variables, controlling how categories are weighted in the clustering.}
+        \item{\code{beta}: A numeric vector of the final beta values used during the iterative optimization.}
     \item{\code{ents}: A numeric vector tracking the entropy values across iterations, providing insights into the convergence pattern.}
     \item{\code{mis}: A numeric vector tracking the mutual information values across iterations.}
   }
