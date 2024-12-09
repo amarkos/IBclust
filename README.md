@@ -1,6 +1,6 @@
 # DIBmix Package
 
-**DIBmix** is an R package for clustering datasets using the Deterministic Information Bottleneck (DIB) method, as introduced in [Costa, Papatsouma, and Markos (2024)](https://arxiv.org/abs/2407.03389). This package supports datasets with mixed-type variables (categorical, ordinal, and continuous), as well as datasets that are purely continuous or categorical. The DIB approach preserves the most relevant information while forming concise and interpretable clusters, guided by principles from information theory.
+**DIBmix** is an R package for clustering datasets using the Deterministic Information Bottleneck (DIB) method, as introduced in [Costa, Papatsouma, and Markos (2024)](https://arxiv.org/abs/2407.03389). This package supports datasets with mixed-type variables (nominal, ordinal, and continuous), as well as datasets that are purely continuous or categorical. The DIB approach preserves the most relevant information while forming concise and interpretable clusters, guided by principles from information theory.
 
 ## Installation
 
