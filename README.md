@@ -1,21 +1,21 @@
-# DIBmix Package
+# DIBclust Package
 
-**DIBmix** is an R package for clustering datasets using the Deterministic Information Bottleneck (DIB) method, as introduced in [Costa, Papatsouma, and Markos (2024)](https://arxiv.org/abs/2407.03389). This package supports datasets with mixed-type variables (nominal, ordinal, and continuous), as well as datasets that are purely continuous or categorical. The DIB approach preserves the most relevant information while forming concise and interpretable clusters, guided by principles from information theory.
-
+**DIBclust** is an R package for clustering datasets using the Deterministic Information Bottleneck (DIB) method. This package supports datasets with mixed-type variables (nominal, ordinal, and continuous), as well as datasets that are purely continuous or categorical. The DIB approach preserves the most relevant information while forming concise and interpretable clusters, guided by principles from information theory.
+<!-- , as introduced in [Costa, Papatsouma, and Markos (2024)](https://arxiv.org/abs/2407.03389) -->
 ## Installation
 
 You can install the latest version of the package directly from GitHub using `devtools`:
 
 ```r
 install.packages("devtools")  # Install devtools if not already installed
-devtools::install_github("amarkos/DIBmix")  # Install DIBmix from GitHub
+devtools::install_github("amarkos/DIBclust")  # Install DIBclust from GitHub
 ```
 
 ## Getting Started
 Below is a comprehensive example demonstrating how to use the package for clustering mixed-type, continuous, and categorical datasets, and displaying the results.
 
 ```r
-library(DIBmix)
+library(DIBclust)
 
 # Example Mixed-Type Data
 data <- data.frame(
