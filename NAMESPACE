@@ -2,7 +2,7 @@
 export(DIBmix, DIBcont, DIBcat)
 
 # Use dynamic libraries for C++ integration
-useDynLib(DIBmix, .registration = TRUE)
+useDynLib(DIBclust, .registration = TRUE)
 
 # Import functions from required packages
 import(stats)

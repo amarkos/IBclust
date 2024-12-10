@@ -16,7 +16,7 @@ DIBmix(X, ncl, catcols, contcols, randinit = NULL,
 }
 \arguments{
 \item{X}{A data frame containing the input data to be clustered. It should include categorical variables
-(\code{factor} for nominal and \code{ordered} for ordinal) and continuous variables (\code{numeric}).}
+(\code{factor} for nominal and \code{Ord.factor} for ordinal) and continuous variables (\code{numeric}).}
 
 \item{ncl}{An integer specifying the number of clusters.}
 
@@ -26,15 +26,19 @@ DIBmix(X, ncl, catcols, contcols, randinit = NULL,
 
 \item{randinit}{An optional vector specifying the initial cluster assignments. If \code{NULL}, cluster assignments are initialized randomly.}
 
-\item{lambda}{A numeric value or vector specifying the bandwidth parameter for categorical variables. Defaults to \code{-1}, where the optimal bandwidth is automatically determined.}
+\item{lambda}{
+A numeric value or vector specifying the bandwidth parameter for categorical variables. The default value is \eqn{-1}, which enables automatic determination of the optimal bandwidth. For nominal variables, the maximum allowable value of \code{lambda} is \eqn{(l - 1)/l}, where \eqn{l} represents the number of categories. For ordinal variables, the maximum allowable value of \code{lambda} is 1.
+}
 
-\item{s}{A numeric value or vector specifying the bandwidth parameter(s) for continuous variables. Defaults to \code{-1}, where the optimal bandwidth(s) are selected automatically.}
+\item{s}{
+A numeric value or vector specifying the bandwidth parameter(s) for continuous variables. The values must be greater than \eqn{0}. The default value is \eqn{-1}, which enables the automatic selection of optimal bandwidth(s).
+}
 
 \item{scale}{A logical value indicating whether the continuous variables should be scaled to have unit variance before clustering. Defaults to \code{TRUE}.}
 
-\item{maxiter}{The maximum number of iterations allowed for the clustering algorithm. Defaults to \code{100}.}
+\item{maxiter}{The maximum number of iterations allowed for the clustering algorithm. Defaults to \eqn{100}.}
 
-\item{nstart}{The number of random initializations to run. The best clustering solution is returned. Defaults to \code{100}.}
+\item{nstart}{The number of random initializations to run. The best clustering solution is returned. Defaults to \eqn{100}.}
 
 \item{select_features}{A logical value indicating whether to perform feature selection based on the eigengap heuristic. Defaults to \code{FALSE}.}
 }
@@ -42,7 +46,7 @@ DIBmix(X, ncl, catcols, contcols, randinit = NULL,
 A list with the following elements:
 \item{Cluster}{An integer vector giving the cluster assignments for each data point.}
 \item{Entropy}{A numeric value representing the entropy of the cluster assignments at convergence.}
-\item{MutualInfo}{A numeric value representing the mutual information (\code{I(Y;T)}) between the original labels (\code{Y}) and the cluster assignments (\code{T}).}
+\item{MutualInfo}{A numeric value representing the mutual information, \eqn{I(Y;T)}, between the original labels (\eqn{Y}) and the cluster assignments (\eqn{T}).}
 \item{beta}{A numeric vector of the final beta values used in the iterative procedure.}
 \item{s}{A numeric vector of bandwidth parameters used for the continuous variables.}
 \item{lambda}{A numeric vector of bandwidth parameters used for the categorical variables.}

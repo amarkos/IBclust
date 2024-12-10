@@ -1,5 +1,39 @@
 DIBcont <- function(X, ncl, randinit = NULL, s = -1, scale = TRUE,
                     maxiter = 100, nstart = 100, select_features = FALSE) {
+
+  # Validate inputs
+  if (!is.numeric(ncl) || ncl <= 1 || ncl != round(ncl)) {
+    stop("Input 'ncl' must be a positive integer greater than 1.")
+  }
+
+  if (!is.logical(scale)) {
+    stop("'scale' must be a logical value (TRUE or FALSE).")
+  }
+
+  if (!is.numeric(maxiter) || maxiter <= 0 || maxiter != round(maxiter)) {
+    stop("'maxiter' must be a positive integer.")
+  }
+
+  if (!is.numeric(nstart) || nstart <= 0 || nstart != round(nstart)) {
+    stop("'nstart' must be a positive integer.")
+  }
+
+  if (!is.logical(select_features)) {
+    stop("'select_features' must be a logical value (TRUE or FALSE).")
+  }
+
+  if (!is.null(randinit) && (!is.numeric(randinit) || length(randinit) != nrow(X))) {
+    stop("'randinit' must be a numeric vector with length equal to the number of rows in 'X', or NULL.")
+  }
+
+  # Validate s
+  if (!is.numeric(s) ||
+      !(length(s) == 1 || length(s) == ncol(X)) ||
+      any(s <= 0 & s != -1)) {
+    stop("'s' must be either a single numeric value (-1 for automatic selection or a positive value) or a numeric vector with positive values matching the number of 'contcols'.")
+  }
+
+
   # Helper function to preprocess data
   preprocess_cont_data <- function(X) {
     X <- data.frame(X)
@@ -30,7 +64,9 @@ DIBcont <- function(X, ncl, randinit = NULL, s = -1, scale = TRUE,
     X <- preprocess_cont_data(X)
 
   # Bandwidth computation
-  s <- compute_bandwidth_cont(X, s)
+  if (length(s) == 1)
+    if (s == -1)
+      s <- compute_bandwidth_cont(X, s)
 
   # Compute joint probability density for continuous variables
   pxy_list <- coord_to_pxy_R(as.data.frame(X), s = s, cat_cols = c(),

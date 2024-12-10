@@ -14,7 +14,7 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 
 // entropySingle
 double entropySingle(const Eigen::VectorXd& p);
-RcppExport SEXP _DIBmix_entropySingle(SEXP pSEXP) {
+RcppExport SEXP _DIBclust_entropySingle(SEXP pSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -25,7 +25,7 @@ END_RCPP
 }
 // klSingle
 double klSingle(const arma::vec& p, const arma::vec& q);
-RcppExport SEXP _DIBmix_klSingle(SEXP pSEXP, SEXP qSEXP) {
+RcppExport SEXP _DIBclust_klSingle(SEXP pSEXP, SEXP qSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -37,7 +37,7 @@ END_RCPP
 }
 // vlog
 arma::vec vlog(const arma::vec& x);
-RcppExport SEXP _DIBmix_vlog(SEXP xSEXP) {
+RcppExport SEXP _DIBclust_vlog(SEXP xSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -48,7 +48,7 @@ END_RCPP
 }
 // qt_x_step_cpp
 arma::mat qt_x_step_cpp(int n_rows, int T, double beta, const arma::mat& py_x, const arma::mat& qy_t, const arma::vec& qt);
-RcppExport SEXP _DIBmix_qt_x_step_cpp(SEXP n_rowsSEXP, SEXP TSEXP, SEXP betaSEXP, SEXP py_xSEXP, SEXP qy_tSEXP, SEXP qtSEXP) {
+RcppExport SEXP _DIBclust_qt_x_step_cpp(SEXP n_rowsSEXP, SEXP TSEXP, SEXP betaSEXP, SEXP py_xSEXP, SEXP qy_tSEXP, SEXP qtSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -64,7 +64,7 @@ END_RCPP
 }
 // qt_x_step_beta_cpp
 List qt_x_step_beta_cpp(int n_rows, int T, const arma::mat& py_x, const arma::mat& qy_t, const arma::vec& qt, arma::mat qt_x);
-RcppExport SEXP _DIBmix_qt_x_step_beta_cpp(SEXP n_rowsSEXP, SEXP TSEXP, SEXP py_xSEXP, SEXP qy_tSEXP, SEXP qtSEXP, SEXP qt_xSEXP) {
+RcppExport SEXP _DIBclust_qt_x_step_beta_cpp(SEXP n_rowsSEXP, SEXP TSEXP, SEXP py_xSEXP, SEXP qy_tSEXP, SEXP qtSEXP, SEXP qt_xSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -80,7 +80,7 @@ END_RCPP
 }
 // qy_t_step_cpp
 arma::mat qy_t_step_cpp(const arma::mat& py_x, const arma::mat& qt_x, const arma::vec& qt, const arma::vec& px);
-RcppExport SEXP _DIBmix_qy_t_step_cpp(SEXP py_xSEXP, SEXP qt_xSEXP, SEXP qtSEXP, SEXP pxSEXP) {
+RcppExport SEXP _DIBclust_qy_t_step_cpp(SEXP py_xSEXP, SEXP qt_xSEXP, SEXP qtSEXP, SEXP pxSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -94,16 +94,16 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_DIBmix_entropySingle", (DL_FUNC) &_DIBmix_entropySingle, 1},
-    {"_DIBmix_klSingle", (DL_FUNC) &_DIBmix_klSingle, 2},
-    {"_DIBmix_vlog", (DL_FUNC) &_DIBmix_vlog, 1},
-    {"_DIBmix_qt_x_step_cpp", (DL_FUNC) &_DIBmix_qt_x_step_cpp, 6},
-    {"_DIBmix_qt_x_step_beta_cpp", (DL_FUNC) &_DIBmix_qt_x_step_beta_cpp, 6},
-    {"_DIBmix_qy_t_step_cpp", (DL_FUNC) &_DIBmix_qy_t_step_cpp, 4},
+    {"_DIBclust_entropySingle", (DL_FUNC) &_DIBclust_entropySingle, 1},
+    {"_DIBclust_klSingle", (DL_FUNC) &_DIBclust_klSingle, 2},
+    {"_DIBclust_vlog", (DL_FUNC) &_DIBclust_vlog, 1},
+    {"_DIBclust_qt_x_step_cpp", (DL_FUNC) &_DIBclust_qt_x_step_cpp, 6},
+    {"_DIBclust_qt_x_step_beta_cpp", (DL_FUNC) &_DIBclust_qt_x_step_beta_cpp, 6},
+    {"_DIBclust_qy_t_step_cpp", (DL_FUNC) &_DIBclust_qy_t_step_cpp, 4},
     {NULL, NULL, 0}
 };
 
-RcppExport void R_init_DIBmix(DllInfo *dll) {
+RcppExport void R_init_DIBclust(DllInfo *dll) {
     R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
     R_useDynamicSymbols(dll, FALSE);
 }

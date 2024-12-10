@@ -22,15 +22,15 @@ DIBcat(X, ncl, randinit = NULL, lambda = -1,
   \item{randinit}{
     Optional. A vector specifying initial cluster assignments. If \code{NULL}, cluster assignments are initialized randomly.
   }
-  \item{lambda}{
-    A numeric value, vector, or \code{-1} specifying the bandwidth parameters for categorical variables.
-    If \code{-1}, the function automatically determines suitable values based on the number of levels in each variable.
-  }
+\item{lambda}{
+A numeric value or vector specifying the bandwidth parameter for categorical variables. The default value is \eqn{-1}, which enables automatic determination of the optimal bandwidth. For nominal variables, the maximum allowable value of \code{lambda} is \eqn{(l - 1)/l}, where \eqn{l} represents the number of categories. For ordinal variables, the maximum allowable value of \code{lambda} is \eqn{1}.
+}
+
   \item{maxiter}{
-    The maximum number of iterations for the clustering algorithm. Defaults to \code{100}.
+    The maximum number of iterations for the clustering algorithm. Defaults to \eqn{100}.
   }
   \item{nstart}{
-    The number of random initializations to run. The best clustering result (based on the information-theoretic criterion) is returned. Defaults to \code{100}.
+    The number of random initializations to run. The best clustering result (based on the information-theoretic criterion) is returned. Defaults to \eqn{100}.
   }
   \item{select_features}{
     Logical. If \code{TRUE}, uses an eigengap heuristic for feature selection, potentially improving clustering quality by reducing dimensionality. Defaults to \code{FALSE}.
@@ -49,8 +49,9 @@ A list containing the following elements:
   \itemize{
     \item{\code{Cluster}: An integer vector indicating the cluster assignment for each data point at convergence.}
     \item{\code{Entropy}: A numeric value representing the entropy of the cluster assignments at the end of the iterative procedure.}
-    \item{\code{MutualInfo}: A numeric value representing the mutual information (\code{I(Y;T)}) between the data distribution and the cluster assignments.}
+    \item{\code{MutualInfo}: A numeric value representing the mutual information, \eqn{I(Y;T)}, between the data distribution and the cluster assignments.}
     \item{\code{lambda}: A numeric vector of bandwidth parameters for categorical variables, controlling how categories are weighted in the clustering.}
+        \item{\code{beta}: A numeric vector of the final beta values used during the iterative optimization.}
     \item{\code{ents}: A numeric vector tracking the entropy values across iterations, providing insights into the convergence pattern.}
     \item{\code{mis}: A numeric vector tracking the mutual information values across iterations.}
   }

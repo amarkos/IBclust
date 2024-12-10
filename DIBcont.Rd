@@ -21,15 +21,14 @@ DIBcont(X, ncl, randinit = NULL, s = -1, scale = TRUE,
   \item{randinit}{
     Optional. A vector specifying initial cluster assignments. If \code{NULL}, cluster assignments are initialized randomly.
   }
-  \item{s}{
-    A numeric value or \code{-1} specifying the bandwidth parameter for continuous variables.
-    If \code{-1}, the function estimates an appropriate bandwidth automatically.
-  }
+\item{s}{
+A numeric value or vector specifying the bandwidth parameter(s) for continuous variables. The values must be greater than \eqn{0}. The default value is \eqn{-1}, which enables the automatic selection of optimal bandwidth(s).
+}
   \item{scale}{
     A logical value indicating whether the continuous variables should be scaled to have unit variance before clustering. Defaults to \code{TRUE}.
   }
   \item{maxiter}{
-    The maximum number of iterations allowed for the clustering algorithm. Defaults to \code{100}.
+    The maximum number of iterations allowed for the clustering algorithm. Defaults to \eqn{100}.
   }
   \item{nstart}{
     The number of random initializations to run. The best clustering result (based on the information-theoretic criterion) is returned. Defaults to \code{100}.
@@ -52,7 +51,7 @@ A list containing the following elements:
   \itemize{
     \item{\code{Cluster}: An integer vector indicating the cluster assignment for each observation.}
     \item{\code{Entropy}: A numeric value representing the entropy of the cluster assignments at convergence.}
-    \item{\code{MutualInfo}: A numeric value representing the mutual information (\code{I(Y;T)}) between the underlying data distribution and the cluster assignments.}
+    \item{\code{MutualInfo}: A numeric value representing the mutual information, \eqn{I(Y;T)}, between the underlying data distribution and the cluster assignments.}
     \item{\code{beta}: A numeric vector of the final beta values used during the iterative optimization.}
     \item{\code{s}: A numeric value or vector of bandwidth parameters used for the continuous variables. Typically, this will be a single value if all continuous variables share the same bandwidth.}
     \item{\code{ents}: A numeric vector tracking the entropy values over the iterations, providing insight into the convergence process.}
