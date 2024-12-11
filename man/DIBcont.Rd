@@ -37,15 +37,7 @@ A numeric value or vector specifying the bandwidth parameter(s) for continuous v
     Logical. If \code{TRUE}, uses an eigengap heuristic for feature selection, potentially improving clustering quality by reducing dimensionality. Defaults to \code{FALSE}.
   }
 }
-\details{
-The \code{DIBcont} function applies the Deterministic Information Bottleneck algorithm to
-cluster datasets with purely continuous variables. The method seeks to retain maximal
-information about the original data distribution while forming a simplified cluster representation.
 
-The function supports automatic selection of the bandwidth parameter (\code{s}) for continuous variables
-and iterative optimization of cluster assignments. It is particularly suitable for high-dimensional
-continuous data and allows for feature selection to focus on the most informative dimensions.
-}
 \value{
 A list containing the following elements:
   \itemize{
@@ -58,6 +50,18 @@ A list containing the following elements:
     \item{\code{mis}: A numeric vector tracking the mutual information values over the iterations.}
   }
 }
+
+\details{
+The \code{DIBcont} function applies the Deterministic Information Bottleneck algorithm to cluster datasets comprising only continuous variables. This method leverages an information-theoretic objective to optimize the trade-off between data compression and the preservation of relevant information about the underlying data distribution.
+
+The function utilizes the Gaussian kernel (Silverman, 1998) for estimating probability densities of continuous features. The kernel is defined as:
+
+\deqn{K_c\left(\frac{x - x'}{s}\right) = \frac{1}{\sqrt{2\pi}} \exp\left\{-\frac{\left(x - x'\right)^2}{2s^2}\right\}, \quad s > 0.}
+
+The bandwidth parameter \eqn{s}, which controls the smoothness of the density estimate, is automatically determined by the algorithm if not provided by the user.
+}
+
+
 \examples{
 # Generate simulated continuous data
 set.seed(123)
@@ -79,5 +83,7 @@ Efthymios Costa, Ioanna Papatsouma, Angelos Markos
 }
 \references{
 Costa, E., Papatsouma, I., & Markos, A. (2024). A Deterministic Information Bottleneck Method for Clustering Mixed-Type Data. \emph{arXiv:2407.03389 [stat.ME]}. Retrieved from https://arxiv.org/abs/2407.03389
+
+Silverman, B. W. (1998). Density estimation for statistics and data analysis (1st ed.). Routledge.
 }
 \keyword{clustering}

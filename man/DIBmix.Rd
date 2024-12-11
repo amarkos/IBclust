@@ -53,6 +53,8 @@ A list with the following elements:
 \item{ents}{A numeric vector tracking the entropy values across iterations.}
 \item{mis}{A numeric vector tracking the mutual information values across iterations.}
 }
+
+
 \details{
 The \code{DIBmix} function clusters data while retaining maximal information about the original variable
 distributions. The Deterministic Information Bottleneck algorithm optimizes an information-theoretic
@@ -61,7 +63,27 @@ objective that balances information preservation and compression. Bandwidth para
 process identifies stable and interpretable cluster assignments by maximizing mutual information while
 controlling complexity. The method is well-suited for datasets with mixed-type variables and integrates
 information from all variable types effectively.
+
+The following kernel functions are used to estimate densities for the clustering procedure:
+\itemize{
+    \item \emph{Continuous variables: Gaussian kernel}
+    \deqn{K_c\left(\frac{x-x'}{s}\right) = \frac{1}{\sqrt{2\pi}} \exp\left\{ - \frac{\left(x-x'\right)^2}{2s^2} \right\}, \quad s > 0.}
+    \item \emph{Nominal categorical variables: Aitchison & Aitken kernel}
+    \deqn{K_u\left(x = x' ; \lambda\right) = \begin{cases}
+          1-\lambda & \text{if } x = x' \\
+          \frac{\lambda}{\ell-1} & \text{otherwise}
+        \end{cases}, \quad 0 \leq \lambda \leq \frac{\ell-1}{\ell}.}
+    \item \emph{Ordinal categorical variables: Li & Racine kernel}
+    \deqn{K_o\left(x = x' ; \nu\right) = \begin{cases}
+          1 & \text{if } x = x' \\
+          \nu^{|x - x'|} & \text{otherwise}
+        \end{cases}, \quad 0 \leq \nu \leq 1.}
 }
+
+Here, \eqn{s}, \eqn{\lambda}, and \eqn{\nu} are bandwidth or smoothing parameters, while \eqn{\ell} is the number of levels of the categorical variable. \eqn{s} and \eqn{\lambda} are automatically determined by the algorithm if not provided by the user. For ordinal variables, the lambda parameter of the function is used to define \eqn{\nu}.
+}
+
+
 \examples{
 # Example dataset with categorical, ordinal, and continuous variables
 data <- data.frame(
@@ -88,6 +110,12 @@ print(result$MutualInfo)    # Mutual information
 Efthymios Costa, Ioanna Papatsouma, Angelos Markos
 }
 \references{
+Aitchison, J., & Aitken, C. G. G. (1976). Multivariate binary discrimination by the kernel method. \emph{Biometrika}, \emph{63}(3), 413-420.
+
 Costa, E., Papatsouma, I., & Markos, A. (2024). A Deterministic Information Bottleneck Method for Clustering Mixed-Type Data. \emph{arXiv:2407.03389 [stat.ME]}. Retrieved from https://arxiv.org/abs/2407.03389
+
+Silverman, B. W. (1998). Density estimation for statistics and data analysis (1st ed.). Routledge.
+
+Li, Q., & Racine, J. (2003). Nonparametric estimation of distributions with categorical and continuous data. \emph{Journal of Multivariate Analysis}, \emph{86}(2), 266-292.
 }
 \keyword{clustering}

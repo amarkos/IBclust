@@ -36,14 +36,7 @@ A numeric value or vector specifying the bandwidth parameter for categorical var
     Logical. If \code{TRUE}, uses an eigengap heuristic for feature selection, potentially improving clustering quality by reducing dimensionality. Defaults to \code{FALSE}.
   }
 }
-\details{
-The \code{DIBcat} function applies the Deterministic Information Bottleneck algorithm to cluster datasets
-containing categorical variables, including both nominal and ordinal data. The algorithm iteratively refines
-cluster assignments to maximize mutual information between the original data distribution and the cluster
-structure, while adaptively selecting or using provided bandwidth parameters (\code{lambda}) for categorical
-variables. This method is particularly useful for handling complex categorical datasets and supports automatic
-parameter selection to simplify its application.
-}
+
 \value{
 A list containing the following elements:
   \itemize{
@@ -56,6 +49,28 @@ A list containing the following elements:
     \item{\code{mis}: A numeric vector tracking the mutual information values across iterations.}
   }
 }
+
+\details{
+The \code{DIBcat} function applies the Deterministic Information Bottleneck algorithm to cluster datasets containing only categorical variables, both nominal and ordinal. The algorithm optimizes an information-theoretic objective to balance the trade-off between data compression and the retention of information about the original distribution.
+
+To estimate the distributions of categorical features, the function utilizes specialized kernel functions, as follows:
+
+\deqn{K_u(x = x'; \lambda) = \begin{cases}
+    1 - \lambda, & \text{if } x = x' \\
+    \frac{\lambda}{\ell - 1}, & \text{otherwise}
+\end{cases}, \quad 0 \leq \lambda \leq \frac{\ell - 1}{\ell},}
+where \eqn{\ell} is the number of categories, and \eqn{\lambda} controls the smoothness of the Aitchison & Aitken kernel for nominal variables.
+
+\deqn{K_o(x = x'; \nu) = \begin{cases}
+    1, & \text{if } x = x' \\
+    \nu^{|x - x'|}, & \text{otherwise}
+\end{cases}, \quad 0 \leq \nu \leq 1,}
+where \eqn{\nu} is the bandwidth parameter for ordinal variables, accounting for the ordinal relationship between categories (Li & Racine kernel).
+
+Here, \eqn{\lambda}, and \eqn{\nu} are bandwidth or smoothing parameters, while \eqn{\ell} is the number of levels of the categorical variable. The lambda parameter is automatically determined by the algorithm if not provided by the user. For ordinal variables, the lambda parameter of the function is used to define \eqn{\nu}.
+}
+
+
 \examples{
 # Simulated categorical data
 set.seed(123)
@@ -82,5 +97,9 @@ Efthymios Costa, Ioanna Papatsouma, Angelos Markos
 }
 \references{
 Costa, E., Papatsouma, I., & Markos, A. (2024). A Deterministic Information Bottleneck Method for Clustering Mixed-Type Data. \emph{arXiv:2407.03389 [stat.ME]}. Retrieved from https://arxiv.org/abs/2407.03389
+
+Aitchison, J., & Aitken, C. G. G. (1976). Multivariate binary discrimination by the kernel method. \emph{Biometrika}, \emph{63}(3), 413-420.
+
+Li, Q., & Racine, J. (2003). Nonparametric estimation of distributions with categorical and continuous data. \emph{Journal of Multivariate Analysis}, \emph{86}(2), 266-292.
 }
 \keyword{clustering}
