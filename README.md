@@ -60,7 +60,7 @@ print(result_cat$Entropy)
 print(result_cat$MutualInfo)
 ```
 
-You may as well find ten classification data sets taken from the UCI Machine Learning repositoty in the `data` directory, together with the relevant scripts to run these. The true labels (class labels) are provided in the last column of each data set.
+You may as well find ten classification data sets taken from the [UCI Machine Learning repository](https://archive.ics.uci.edu/) in the `data` directory, together with the relevant scripts to run these. The true labels (class labels) are provided in the last column of each data set. These can be used for reproducing the results presented in the paper.
 
 ## Contributing
 Contributions are welcome! If you encounter issues, have suggestions, or would like to enhance the package, please feel free to submit an issue or a pull request on the GitHub repository.
