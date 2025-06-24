@@ -4,10 +4,7 @@ Title: Deterministic Information Bottleneck Method for Clustering Mixed-Type Dat
 Version: 0.1.2
 Author: Efthymios Costa, Ioanna Papatsouma, Angelos Markos
 Maintainer: Angelos Markos <amarkos@eled.duth.gr>
-Description: Implements the Deterministic Information Bottleneck method
-    for clustering datasets with both categorical and continuous variables.
-    The package handles data preprocessing, feature selection, and clustering
-    optimization using information-theoretic approaches <doi:10.48550/arXiv.2407.03389>. 
+Description: Implements the Deterministic Information Bottleneck method for clustering datasets with both categorical and continuous variables. The package handles data preprocessing, feature selection, and clustering optimization using information-theoretic approaches <doi:10.48550/arXiv.2407.03389>. 
 License: MIT + file LICENSE
 Encoding: UTF-8
 Imports: Rcpp, RcppEigen, stats, utils, np, rje

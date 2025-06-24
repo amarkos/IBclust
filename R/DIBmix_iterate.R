@@ -16,13 +16,14 @@
 #' @param contcols Indices of continuous columns.
 #' @param catcols Indices of categorical columns.
 #' @param runs Number of random starts.
+#' @param verbose Defaults to FALSE to suppress progress messages. Change to TRUE to print.
 #'
 #' @return A list containing clustering results.
 #'
 #' @keywords internal
 DIBmix_iterate <- function(X, ncl, randinit,
                            tol, py_x, hy, px, maxiter, bws_vec,
-                           contcols, catcols, runs){
+                           contcols, catcols, runs, verbose = FALSE){
   # Source the C++ code
 #  sourceCpp("src/qt_x_step.cpp")
 
@@ -152,7 +153,9 @@ DIBmix_iterate <- function(X, ncl, randinit,
       }
       best_clust$ents <- c(best_clust$ents, calc_metrics(beta = beta, qt, qy_t, hy, quiet = TRUE)[[2]])
       best_clust$mis <- c(best_clust$mis, calc_metrics(beta = beta, qt, qy_t, hy, quiet = TRUE)[[3]])
-      cat('Run', i, 'complete.\n')
+      if (verbose){
+        message('Run ', i, ' complete.\n')
+      }
     }
   }
 

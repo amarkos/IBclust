@@ -88,7 +88,7 @@ DIBcont <- function(X, ncl, randinit = NULL, s = -1, scale = TRUE,
   best_clust <- DIBmix_iterate(X, ncl = ncl, randinit = randinit, tol = 0,
                                py_x = py_x, hy = hy, px = px, maxiter = maxiter,
                                bws_vec = bws_vec, contcols = seq_len(ncol(X)),
-                               catcols = c(), runs = nstart)
+                               catcols = c(), runs = nstart, verbose = verbose)
 
   # Warning if clustering failed
   if (best_clust[[3]] == Inf) {

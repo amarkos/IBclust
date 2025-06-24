@@ -175,7 +175,7 @@ DIBmix <- function(X, ncl, catcols, contcols, randinit = NULL,
   best_clust <- DIBmix_iterate(X, ncl = ncl, randinit = randinit,
                                tol = 0, py_x, hy, px, maxiter,
                                bws_vec, contcols, catcols,
-                               runs = nstart)
+                               runs = nstart, verbose = verbose)
   ######################################################
 
   if (best_clust$MutualInfo == Inf){

@@ -96,7 +96,8 @@ DIBcat <- function(X, ncl, randinit = NULL, lambda = -1,
   best_clust <- DIBmix_iterate(X, ncl = ncl, randinit = randinit, tol = 0,
                                py_x = py_x, hy = hy, px = px, maxiter = maxiter,
                                bws_vec = bws_vec, contcols = c(),
-                               catcols = seq_len(ncol(X)), runs = nstart)
+                               catcols = seq_len(ncol(X)), runs = nstart,
+                               verbose = verbose)
 
   # Remove 's' element from the returned list
   best_clust$s <- NULL
