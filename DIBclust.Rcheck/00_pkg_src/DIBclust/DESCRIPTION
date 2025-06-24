@@ -8,11 +8,11 @@ Maintainer: Angelos Markos <amarkos@eled.duth.gr>
 Description: Implements the Deterministic Information Bottleneck method
     for clustering datasets with both categorical and continuous variables.
     The package handles data preprocessing, feature selection, and clustering
-    optimization using information-theoretic approaches.
+    optimization using information-theoretic approaches <doi:10.48550/arXiv.2407.03389>. 
 License: MIT + file LICENSE
 Encoding: UTF-8
 Imports: Rcpp, RcppEigen, stats, utils, np, rje
 LinkingTo: Rcpp, RcppArmadillo, RcppEigen
 RoxygenNote: 7.3.2
 NeedsCompilation: yes
-Packaged: 2025-06-23 08:52:31 UTC; ec1917
+Packaged: 2025-06-24 10:17:24 UTC; ec1917

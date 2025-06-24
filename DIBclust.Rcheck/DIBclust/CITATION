@@ -1,0 +1,12 @@
+bibentry(
+  bibtype  = "Manual",
+  title    = "DIBclust",
+  author   = "Markos, Angelos and Costa, Efthymios",
+  year     = "2025",
+  note     = "version 1.2",
+  url      = "https://github.com/amarkos/DIBclust",
+  textVersion = paste("Markos, A., & Costa, E. (2025).",
+                      "DIBclust.",
+                      "Version 1.2.",
+                      "URL: https://github.com/amarkos/DIBclust")
+)

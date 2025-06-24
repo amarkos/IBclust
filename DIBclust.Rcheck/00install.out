@@ -356,6 +356,7 @@ g++  -std=gnu++17 -I"C:/PROGRA~1/R/R-44~1.2/include" -DNDEBUG  -I'C:/Users/ec191
 g++ -shared -s -static-libgcc -o DIBclust.dll tmp.def RcppExports.o entropy_functions.o qt_x_step.o -LC:/PROGRA~1/R/R-44~1.2/bin/x64 -lRblas -LC:/PROGRA~1/R/R-44~1.2/bin/x64 -lRlapack -lgfortran -lm -lquadmath -LC:/RBuildTools/4.4/x86_64-w64-mingw32.static.posix/lib/x64 -LC:/RBuildTools/4.4/x86_64-w64-mingw32.static.posix/lib -LC:/PROGRA~1/R/R-44~1.2/bin/x64 -lR
 installing to C:/Users/ec1917/Desktop/DIBclust/DIBclust.Rcheck/00LOCK-DIBclust/00new/DIBclust/libs/x64
 ** R
+** inst
 ** byte-compile and prepare package for lazy loading
 ** help
 *** installing help indices
