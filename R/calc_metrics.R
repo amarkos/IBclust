@@ -5,7 +5,7 @@ calc_metrics <- function(beta, qt, qy_t, hy, quiet = TRUE){
   iyt <- hy - hy_t
   L <- ht - beta * iyt
   if (!quiet){
-    cat('H(T) =', ht, '\t H(Y|T) =', hy_t, '\t I(Y,T) =', iyt, '\t L =', L, '\n')
+    message('H(T) = ', ht, ', H(Y|T) = ', hy_t, ', I(Y,T) = ', iyt, ', L = ', L, '\n')
   }
   return(list(L, ht, iyt))
 }

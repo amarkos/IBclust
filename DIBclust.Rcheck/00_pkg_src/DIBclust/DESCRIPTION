@@ -1,6 +1,7 @@
 Package: DIBclust
 Type: Package
-Title: Deterministic Information Bottleneck Method for Clustering Mixed-Type Data
+Title: Deterministic Information Bottleneck Method for Clustering
+        Mixed-Type Data
 Version: 0.1.2
 Author: Efthymios Costa, Ioanna Papatsouma, Angelos Markos
 Maintainer: Angelos Markos <amarkos@eled.duth.gr>
@@ -13,3 +14,5 @@ Encoding: UTF-8
 Imports: Rcpp, RcppEigen, stats, utils, np, rje
 LinkingTo: Rcpp, RcppArmadillo, RcppEigen
 RoxygenNote: 7.3.2
+NeedsCompilation: yes
+Packaged: 2025-06-23 08:52:31 UTC; ec1917

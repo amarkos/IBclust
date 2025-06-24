@@ -1,0 +1,15 @@
+# Export main user-facing functions
+export(DIBmix, DIBcont, DIBcat)
+
+# Use dynamic libraries for C++ integration
+useDynLib(DIBclust, .registration = TRUE)
+
+# Import functions from required packages
+import(stats)
+import(RcppEigen)
+importFrom(utils, head)
+importFrom(Rcpp, evalCpp)
+import(np)
+
+# Import additional required libraries
+importFrom(rje, powerSet)

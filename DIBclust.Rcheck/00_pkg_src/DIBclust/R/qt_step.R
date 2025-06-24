@@ -16,7 +16,7 @@ qt_step <- function(X, qt_x, ptol, quiet){
     qt <- as.matrix(qt_x %*% px)
 
     if (!quiet) {
-      cat(sprintf('%i cluster(s) dropped. Down to %i cluster(s).\n', sum(dropped), T))
+      message(sprintf('%i cluster(s) dropped. Down to %i cluster(s).\n', sum(dropped), T))
     }
   }
 

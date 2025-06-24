@@ -1,0 +1,363 @@
+
+R version 4.4.2 (2024-10-31 ucrt) -- "Pile of Leaves"
+Copyright (C) 2024 The R Foundation for Statistical Computing
+Platform: x86_64-w64-mingw32/x64
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "DIBclust"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> options(pager = "console")
+> library('DIBclust')
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> base::assign(".old_wd", base::getwd(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("DIBcat")
+> ### * DIBcat
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: DIBcat
+> ### Title: Cluster Categorical Data Using the Deterministic Information
+> ###   Bottleneck Algorithm
+> ### Aliases: DIBcat
+> ### Keywords: clustering
+> 
+> ### ** Examples
+> 
+> # Simulated categorical data
+> set.seed(123)
+> X <- data.frame(
++   Var1 = as.factor(sample(letters[1:3], 200, replace = TRUE)),  # Nominal variable
++   Var2 = as.factor(sample(letters[4:6], 200, replace = TRUE)),  # Nominal variable
++   Var3 = factor(sample(c("low", "medium", "high"), 200, replace = TRUE),
++                 levels = c("low", "medium", "high"), ordered = TRUE)  # Ordinal variable
++ )
+> 
+> # Run DIBcat with automatic lambda selection and multiple initializations
+> result <- DIBcat(X = X, ncl = 3, lambda = -1, nstart = 50)
+Run 1 complete.
+Run 2 complete.
+Run 3 complete.
+Run 4 complete.
+Run 5 complete.
+Run 6 complete.
+Run 7 complete.
+Run 8 complete.
+Run 9 complete.
+Run 10 complete.
+1 cluster(s) dropped. Down to 2 cluster(s).
+
+Run 11 complete.
+Run 12 complete.
+Run 13 complete.
+Run 14 complete.
+Run 15 complete.
+Run 16 complete.
+Run 17 complete.
+Run 18 complete.
+Run 19 complete.
+Run 20 complete.
+Run 21 complete.
+Run 22 complete.
+Run 23 complete.
+Run 24 complete.
+Run 25 complete.
+Run 26 complete.
+Run 27 complete.
+Run 28 complete.
+Run 29 complete.
+Run 30 complete.
+Run 31 complete.
+Run 32 complete.
+Run 33 complete.
+Run 34 complete.
+Run 35 complete.
+Run 36 complete.
+Run 37 complete.
+Run 38 complete.
+Run 39 complete.
+Run 40 complete.
+Run 41 complete.
+Run 42 complete.
+Run 43 complete.
+Run 44 complete.
+Run 45 complete.
+Run 46 complete.
+Run 47 complete.
+Run 48 complete.
+Run 49 complete.
+Run 50 complete.
+> 
+> # Print clustering results
+> print(result$Cluster)       # Cluster assignments
+  [1] 3 2 3 2 3 3 3 3 3 3 2 3 1 3 3 3 3 2 3 1 3 1 3 3 3 3 3 3 2 2 1 3 3 1 2 3 1
+ [38] 3 1 1 3 3 3 1 2 3 2 2 1 3 1 1 3 3 3 3 1 3 1 2 3 3 3 3 3 3 3 3 2 2 3 2 3 3
+ [75] 3 3 1 3 3 3 3 3 3 1 3 3 3 1 3 2 3 3 3 3 2 2 3 3 3 3 2 3 2 2 1 1 3 3 3 3 3
+[112] 3 3 3 2 3 3 3 3 3 3 2 3 2 3 2 2 2 3 3 3 3 3 3 3 3 3 3 1 3 3 3 2 3 1 3 1 3
+[149] 2 3 3 3 2 3 2 2 2 1 3 2 3 2 3 3 1 3 3 2 3 2 3 3 3 1 3 3 3 3 2 3 1 2 1 1 2
+[186] 1 3 3 1 2 3 3 3 1 1 3 3 3 3 2
+> print(result$Entropy)       # Final entropy
+[1] 1.307743
+> print(result$MutualInfo)    # Mutual information
+          [,1]
+[1,] 0.0598887
+> 
+> 
+> 
+> cleanEx()
+> nameEx("DIBcont")
+> ### * DIBcont
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: DIBcont
+> ### Title: Cluster Continuous Data Using the Deterministic Information
+> ###   Bottleneck Algorithm
+> ### Aliases: DIBcont
+> ### Keywords: clustering
+> 
+> ### ** Examples
+> 
+> # Generate simulated continuous data
+> set.seed(123)
+> X <- matrix(rnorm(1000), ncol = 5)  # 200 observations, 5 features
+> 
+> # Run DIBcont with automatic bandwidth selection and multiple initializations
+> result <- DIBcont(X = X, ncl = 3, s = -1, nstart = 50)
+Run 1 complete.
+Run 2 complete.
+Run 3 complete.
+Run 4 complete.
+Run 5 complete.
+Run 6 complete.
+Run 7 complete.
+Run 8 complete.
+Run 9 complete.
+Run 10 complete.
+Run 11 complete.
+Run 12 complete.
+Run 13 complete.
+Run 14 complete.
+Run 15 complete.
+Run 16 complete.
+Run 17 complete.
+Run 18 complete.
+Run 19 complete.
+Run 20 complete.
+Run 21 complete.
+Run 22 complete.
+Run 23 complete.
+Run 24 complete.
+Run 25 complete.
+Run 26 complete.
+Run 27 complete.
+Run 28 complete.
+Run 29 complete.
+Run 30 complete.
+Run 31 complete.
+Run 32 complete.
+Run 33 complete.
+Run 34 complete.
+Run 35 complete.
+Run 36 complete.
+Run 37 complete.
+Run 38 complete.
+Run 39 complete.
+Run 40 complete.
+Run 41 complete.
+Run 42 complete.
+Run 43 complete.
+Run 44 complete.
+Run 45 complete.
+Run 46 complete.
+Run 47 complete.
+Run 48 complete.
+Run 49 complete.
+Run 50 complete.
+> 
+> # Print clustering results
+> print(result$Cluster)       # Cluster assignments
+  [1] 2 2 2 3 2 2 1 3 3 1 1 1 2 1 2 3 1 3 1 2 1 3 2 3 1 2 1 1 1 2 3 1 2 3 1 1 1
+ [38] 2 2 1 1 3 2 1 3 2 1 1 3 2 1 1 3 1 3 2 2 2 2 3 2 2 2 2 3 3 1 1 2 2 1 3 2 1
+ [75] 3 3 3 3 3 1 1 2 1 3 3 1 1 2 1 1 2 2 2 3 3 2 2 1 2 3 1 1 1 3 3 2 1 3 2 2 3
+[112] 2 1 1 2 2 3 1 2 3 1 3 1 3 1 3 2 2 3 2 2 1 1 2 1 1 1 1 2 3 2 2 2 2 1 1 2 3
+[149] 2 2 2 1 1 2 1 2 2 3 1 3 2 3 2 1 2 2 2 1 2 2 3 1 2 1 3 2 1 1 2 1 3 2 2 1 3
+[186] 2 2 1 1 3 2 1 2 1 1 2 3 2 1 1
+> print(result$Entropy)       # Final entropy
+[1] 1.557659
+> print(result$MutualInfo)    # Mutual information
+           [,1]
+[1,] 0.03239933
+> 
+> 
+> 
+> cleanEx()
+> nameEx("DIBmix")
+> ### * DIBmix
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: DIBmix
+> ### Title: Deterministic Information Bottleneck Clustering for Mixed-Type
+> ###   Data
+> ### Aliases: DIBmix
+> ### Keywords: clustering
+> 
+> ### ** Examples
+> 
+> # Example dataset with categorical, ordinal, and continuous variables
+> data <- data.frame(
++   cat_var = factor(sample(letters[1:3], 100, replace = TRUE)),      # Nominal categorical variable
++   ord_var = factor(sample(c("low", "medium", "high"), 100, replace = TRUE),
++                    levels = c("low", "medium", "high"),
++                    ordered = TRUE),                                # Ordinal variable
++   cont_var1 = rnorm(100),                                          # Continuous variable 1
++   cont_var2 = runif(100)                                           # Continuous variable 2
++ )
+> 
+> # Perform Mixed-Type Clustering
+> result <- DIBmix(X = data, ncl = 3, catcols = 1:2, contcols = 3:4)
+Run 1 complete.
+Run 2 complete.
+Run 3 complete.
+Run 4 complete.
+Run 5 complete.
+Run 6 complete.
+Run 7 complete.
+Run 8 complete.
+Run 9 complete.
+Run 10 complete.
+Run 11 complete.
+Run 12 complete.
+Run 13 complete.
+Run 14 complete.
+Run 15 complete.
+Run 16 complete.
+Run 17 complete.
+Run 18 complete.
+Run 19 complete.
+Run 20 complete.
+Run 21 complete.
+Run 22 complete.
+Run 23 complete.
+Run 24 complete.
+Run 25 complete.
+Run 26 complete.
+Run 27 complete.
+Run 28 complete.
+Run 29 complete.
+Run 30 complete.
+Run 31 complete.
+Run 32 complete.
+Run 33 complete.
+Run 34 complete.
+Run 35 complete.
+Run 36 complete.
+Run 37 complete.
+Run 38 complete.
+Run 39 complete.
+Run 40 complete.
+Run 41 complete.
+Run 42 complete.
+Run 43 complete.
+Run 44 complete.
+Run 45 complete.
+Run 46 complete.
+Run 47 complete.
+Run 48 complete.
+Run 49 complete.
+Run 50 complete.
+Run 51 complete.
+Run 52 complete.
+Run 53 complete.
+Run 54 complete.
+Run 55 complete.
+Run 56 complete.
+Run 57 complete.
+Run 58 complete.
+Run 59 complete.
+Run 60 complete.
+Run 61 complete.
+Run 62 complete.
+Run 63 complete.
+Run 64 complete.
+Run 65 complete.
+Run 66 complete.
+Run 67 complete.
+Run 68 complete.
+Run 69 complete.
+Run 70 complete.
+Run 71 complete.
+Run 72 complete.
+Run 73 complete.
+Run 74 complete.
+Run 75 complete.
+Run 76 complete.
+Run 77 complete.
+Run 78 complete.
+Run 79 complete.
+Run 80 complete.
+Run 81 complete.
+Run 82 complete.
+Run 83 complete.
+Run 84 complete.
+Run 85 complete.
+Run 86 complete.
+Run 87 complete.
+Run 88 complete.
+Run 89 complete.
+Run 90 complete.
+Run 91 complete.
+Run 92 complete.
+Run 93 complete.
+Run 94 complete.
+Run 95 complete.
+Run 96 complete.
+Run 97 complete.
+Run 98 complete.
+Run 99 complete.
+Run 100 complete.
+> 
+> # Print clustering results
+> print(result$Cluster)       # Cluster assignments
+  [1] 1 2 3 2 3 2 2 2 2 2 3 3 2 2 2 2 2 2 3 2 1 2 2 1 2 2 2 3 2 2 3 2 1 3 3 3 2
+ [38] 3 2 2 1 2 2 2 2 3 2 2 2 2 2 2 2 1 3 2 3 2 2 3 2 2 1 2 3 3 2 2 2 2 2 2 1 3
+ [75] 3 1 2 3 3 2 3 3 2 2 3 3 2 2 3 2 1 2 3 2 1 2 2 2 3 1
+> print(result$Entropy)       # Final entropy
+[1] 1.323467
+> print(result$MutualInfo)    # Mutual information
+          [,1]
+[1,] 0.8108685
+> 
+> 
+> 
+> ### * <FOOTER>
+> ###
+> cleanEx()
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  6.24 0.25 11.92 NA NA 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')
