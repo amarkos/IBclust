@@ -78,7 +78,7 @@ DIBmix_iterate <- function(X, ncl, randinit,
       beta <- qt_x_obj[[2]]
       beta_vec <- c(beta_vec, beta)
       #qt_x <- qt_x_step(X, T = ncl, beta = beta0, py_x, qy_t, qt)
-      Lval <- calc_metrics(beta = beta, qt, qy_t, hy, quiet = TRUE)[[3]]
+      Lval <- calc_metrics(beta = beta, qt, qy_t, hy, px, qt_x, quiet = TRUE)[[3]]
       #cat('I(Y;T) =', Lval, '\n')
       # Initialize variables for convergence checking
       convergence_threshold <- 1e-5  # Set a small threshold for convergence
@@ -124,7 +124,7 @@ DIBmix_iterate <- function(X, ncl, randinit,
           change_in_qt_x <- sum(abs(qt_x - old_qt_x))
         }
         #Lval <- calc_metrics(beta = beta, qt, qy_t, hy, quiet = TRUE)[[1]]
-        Lval <- calc_metrics(beta = beta, qt, qy_t, hy, quiet = TRUE)[[3]]
+        Lval <- calc_metrics(beta = beta, qt, qy_t, hy, px, qt_x, quiet = TRUE)[[3]]
         ### STOP BASED ON LVAL
         #if (Lval < Lval_old){
         #  qt_x <- old_qt_x
@@ -147,12 +147,14 @@ DIBmix_iterate <- function(X, ncl, randinit,
       if (Lval > Loss){
      #   best_clust[[1]] <- Lval
         best_clust[[1]] <- apply(qt_x, 2, function(col) which(col == 1))
-        best_clust[[2]] <- calc_metrics(beta = beta, qt, qy_t, hy, quiet = TRUE)[[2]]
-        best_clust[[3]] <- calc_metrics(beta = beta, qt, qy_t, hy, quiet = TRUE)[[3]]
+        metrics <- calc_metrics(beta = beta, qt, qy_t, hy, px, qt_x, quiet = TRUE)
+        best_clust[[2]] <- metrics[[2]]
+        best_clust[[3]] <- as.numeric(metrics[[3]])
         best_clust[[4]] <- beta_vec
       }
-      best_clust$ents <- c(best_clust$ents, calc_metrics(beta = beta, qt, qy_t, hy, quiet = TRUE)[[2]])
-      best_clust$mis <- c(best_clust$mis, calc_metrics(beta = beta, qt, qy_t, hy, quiet = TRUE)[[3]])
+      metrics <- calc_metrics(beta = beta, qt, qy_t, hy, px, qt_x, quiet = TRUE)
+      best_clust$ents <- c(best_clust$ents, metrics[[2]])
+      best_clust$mis <- c(best_clust$mis, metrics[[3]])
       if (verbose){
         message('Run ', i, ' complete.\n')
       }

@@ -92,6 +92,22 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// qt_x_step_ib_cpp
+arma::mat qt_x_step_ib_cpp(int n_rows, int T, double beta, const arma::mat& py_x, const arma::mat& qy_t, const arma::vec& qt);
+RcppExport SEXP _DIBclust_qt_x_step_ib_cpp(SEXP n_rowsSEXP, SEXP TSEXP, SEXP betaSEXP, SEXP py_xSEXP, SEXP qy_tSEXP, SEXP qtSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< int >::type n_rows(n_rowsSEXP);
+    Rcpp::traits::input_parameter< int >::type T(TSEXP);
+    Rcpp::traits::input_parameter< double >::type beta(betaSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type py_x(py_xSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type qy_t(qy_tSEXP);
+    Rcpp::traits::input_parameter< const arma::vec& >::type qt(qtSEXP);
+    rcpp_result_gen = Rcpp::wrap(qt_x_step_ib_cpp(n_rows, T, beta, py_x, qy_t, qt));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_DIBclust_entropySingle", (DL_FUNC) &_DIBclust_entropySingle, 1},
@@ -100,6 +116,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_DIBclust_qt_x_step_cpp", (DL_FUNC) &_DIBclust_qt_x_step_cpp, 6},
     {"_DIBclust_qt_x_step_beta_cpp", (DL_FUNC) &_DIBclust_qt_x_step_beta_cpp, 6},
     {"_DIBclust_qy_t_step_cpp", (DL_FUNC) &_DIBclust_qy_t_step_cpp, 4},
+    {"_DIBclust_qt_x_step_ib_cpp", (DL_FUNC) &_DIBclust_qt_x_step_ib_cpp, 6},
     {NULL, NULL, 0}
 };
 

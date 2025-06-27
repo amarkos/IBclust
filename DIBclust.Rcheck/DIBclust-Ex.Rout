@@ -64,8 +64,7 @@ Type 'q()' to quit R.
 > print(result$Entropy)       # Final entropy
 [1] 1.307743
 > print(result$MutualInfo)    # Mutual information
-          [,1]
-[1,] 0.0598887
+[1] 0.0598887
 > 
 > 
 > 
@@ -101,8 +100,7 @@ Type 'q()' to quit R.
 > print(result$Entropy)       # Final entropy
 [1] 1.557659
 > print(result$MutualInfo)    # Mutual information
-           [,1]
-[1,] 0.03239933
+[1] 0.03239933
 > 
 > 
 > 
@@ -141,8 +139,7 @@ Type 'q()' to quit R.
 > print(result$Entropy)       # Final entropy
 [1] 1.323467
 > print(result$MutualInfo)    # Mutual information
-          [,1]
-[1,] 0.8108685
+[1] 0.8108685
 > 
 > 
 > 
@@ -151,7 +148,7 @@ Type 'q()' to quit R.
 > cleanEx()
 > options(digits = 7L)
 > base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
-Time elapsed:  7.23 0.14 8.7 NA NA 
+Time elapsed:  6.48 0.36 12.66 NA NA 
 > grDevices::dev.off()
 null device 
           1 

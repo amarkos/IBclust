@@ -12,4 +12,4 @@ Imports: Rcpp, RcppEigen, stats, utils, np, rje
 LinkingTo: Rcpp, RcppArmadillo, RcppEigen
 RoxygenNote: 7.3.2
 NeedsCompilation: yes
-Packaged: 2025-06-27 09:40:46 UTC; ec1917
+Packaged: 2025-06-27 13:18:47 UTC; ec1917

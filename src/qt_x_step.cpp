@@ -177,3 +177,42 @@ arma::mat qy_t_step_cpp(const arma::mat& py_x, const arma::mat& qt_x,
 
   return qy_t;
 }
+
+// -----------------------------------------------------------------------------
+// Function to perform the qt_x_step for the IB in C++
+// -----------------------------------------------------------------------------
+
+// [[Rcpp::export]]
+arma::mat qt_x_step_ib_cpp(int n_rows, int T, double beta,
+                           const arma::mat& py_x, const arma::mat& qy_t, const arma::vec& qt) {
+
+  // Initialize qt_x matrix with zeros (Clusters x Data Points)
+  arma::mat qt_x(T, n_rows, arma::fill::zeros);
+
+  // Precompute log(qt) for efficiency
+  arma::vec log_qt = vlog(qt);
+
+  // Iterate over each data point
+  for (int x = 0; x < n_rows; ++x) {
+    arma::vec kl_divs(T);
+
+    // Compute KL divergence between data point x and each cluster
+    for (int t = 0; t < T; ++t) {
+      kl_divs(t) = klSingle(py_x.col(x), qy_t.col(t));
+    }
+
+    // Compute the adjusted divergence
+    arma::vec l = arma::exp(-beta * kl_divs);
+
+    // Normalise each column to sum to 1
+    double S = arma::accu(l);
+    if (S > 0.0) {
+      qt_x.col(x) = l / S;
+    } else {
+      // fallback to uniform if underflow/zero
+      qt_x.col(x).fill(1.0 / T);
+    }
+  }
+
+  return qt_x;
+}
