@@ -1,7 +1,8 @@
 DIBmix <- function(X, ncl, catcols, contcols, randinit = NULL,
                    lambda = -1, s = -1, scale = TRUE,
                    maxiter = 100, nstart = 100,
-                   select_features = FALSE) {
+                   select_features = FALSE,
+                   verbose = FALSE) {
 
   # Validate inputs
   if (!is.data.frame(X)) {
@@ -175,7 +176,7 @@ DIBmix <- function(X, ncl, catcols, contcols, randinit = NULL,
   best_clust <- DIBmix_iterate(X, ncl = ncl, randinit = randinit,
                                tol = 0, py_x, hy, px, maxiter,
                                bws_vec, contcols, catcols,
-                               runs = nstart)
+                               runs = nstart, verbose = verbose)
   ######################################################
 
   if (best_clust$MutualInfo == Inf){

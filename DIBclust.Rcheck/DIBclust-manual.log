@@ -1,9 +1,9 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.11.25) (preloaded format=pdflatex 2022.12.4)  24 JUN 2025 11:19
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.11.25) (preloaded format=pdflatex 2022.12.4)  27 JUN 2025 10:42
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**C:/Users/ec1917/AppData/Local/Temp/Rtmpqobq4x/Rd2pdfc9820262279/Rd2.tex
-(C:/Users/ec1917/AppData/Local/Temp/Rtmpqobq4x/Rd2pdfc9820262279/Rd2.tex
+**C:/Users/ec1917/AppData/Local/Temp/RtmpoRZdGd/Rd2pdf304c186b6dc/Rd2.tex
+(C:/Users/ec1917/AppData/Local/Temp/RtmpoRZdGd/Rd2pdf304c186b6dc/Rd2.tex
 LaTeX2e <2022-11-01> patch level 1
 L3 programming layer <2022-11-02>
 (C:\Users\ec1917\AppData\Local\Programs\MiKTeX\tex/latex/base\book.cls
@@ -435,45 +435,45 @@ File: ursfs.fd 1998/03/24 rsfs font definition file (jk)
 
 
 {C:/Users/ec1917/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}]
-Overfull \hbox (19.91667pt too wide) in paragraph at lines 82--83
+Overfull \hbox (19.91667pt too wide) in paragraph at lines 83--84
 \T1/ptm/m/n/10 con-tain-ing only cat-e-gor-i-cal vari-ables, both nom-i-nal and
  or-di-nal. The al-go-rithm op-ti-mizes an information-
  []
 
 [2]
 LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 1
-05.
+06.
  (C:\Users\ec1917\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\ts1ptm.fd
 File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
 )
-Overfull \hbox (46.8472pt too wide) in paragraph at lines 122--123
+Overfull \hbox (46.8472pt too wide) in paragraph at lines 123--124
 \T1/ptm/m/n/10 for Clus-ter-ing Mixed-Type Data. \T1/ptm/m/it/10 arXiv:2407.033
 89 [stat.ME]\T1/ptm/m/n/10 . Re-trieved from https://arxiv.org/abs/2407.03389 
  []
 
 LaTeX Font Info:    Font shape `T1/zi4/m/n' will be
-(Font)              scaled to size 9.0pt on input line 134.
+(Font)              scaled to size 9.0pt on input line 135.
 [3]
-Overfull \hbox (0.63632pt too wide) in paragraph at lines 200--201
+Overfull \hbox (0.63632pt too wide) in paragraph at lines 205--206
 []\T1/ptm/m/n/10 The []\T1/zi4/m/n/10 DIBcont []\T1/ptm/m/n/10 func-tion ap-pli
 es the De-ter-min-is-tic In-for-ma-tion Bot-tle-neck al-go-rithm to clus-ter da
 tasets
  []
 
 [4]
-Overfull \hbox (46.8472pt too wide) in paragraph at lines 230--231
+Overfull \hbox (46.8472pt too wide) in paragraph at lines 235--236
 \T1/ptm/m/n/10 for Clus-ter-ing Mixed-Type Data. \T1/ptm/m/it/10 arXiv:2407.033
 89 [stat.ME]\T1/ptm/m/n/10 . Re-trieved from https://arxiv.org/abs/2407.03389 
  []
 
 [5] [6]
-Overfull \hbox (46.8472pt too wide) in paragraph at lines 357--358
+Overfull \hbox (46.8472pt too wide) in paragraph at lines 365--366
 \T1/ptm/m/n/10 for Clus-ter-ing Mixed-Type Data. \T1/ptm/m/it/10 arXiv:2407.033
 89 [stat.ME]\T1/ptm/m/n/10 . Re-trieved from https://arxiv.org/abs/2407.03389 
  []
 
 [7]
-Overfull \hbox (20.22874pt too wide) in paragraph at lines 372--372
+Overfull \hbox (20.22874pt too wide) in paragraph at lines 380--380
  []  \T1/zi4/m/n/9 cat_var = factor(sample(letters[1:3], 100, replace = TRUE)),
       # Nominal categorical variable[] 
  []
@@ -492,7 +492,7 @@ Here is how much of TeX's memory you used:
  31617 multiletter control sequences out of 15000+600000
  506414 words of font info for 73 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 89i,9n,93p,511b,694s stack positions out of 10000i,1000n,20000p,200000b,80000s
+ 89i,9n,93p,511b,728s stack positions out of 10000i,1000n,20000p,200000b,80000s
 {C:/Users/ec1917/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/base/8r.enc}{C
 :/Users/ec1917/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/inconsolata/i4-t1-
 0.enc}<C:/Users/ec1917/AppData/Local/Programs/MiKTeX/fonts/type1/public/inconso
@@ -510,7 +510,7 @@ msfonts/cm/cmsy7.pfb><C:/Users/ec1917/AppData/Local/Programs/MiKTeX/fonts/type1
 1/urw/times/utmr8a.pfb><C:/Users/ec1917/AppData/Local/Programs/MiKTeX/fonts/typ
 e1/urw/times/utmr8a.pfb><C:/Users/ec1917/AppData/Local/Programs/MiKTeX/fonts/ty
 pe1/urw/times/utmri8a.pfb>
-Output written on Rd2.pdf (9 pages, 193783 bytes).
+Output written on Rd2.pdf (9 pages, 194198 bytes).
 PDF statistics:
  194 PDF objects out of 1000 (max. 8388607)
  46 named destinations out of 1000 (max. 500000)

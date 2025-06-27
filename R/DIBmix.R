@@ -1,7 +1,8 @@
 DIBmix <- function(X, ncl, catcols, contcols, randinit = NULL,
                    lambda = -1, s = -1, scale = TRUE,
                    maxiter = 100, nstart = 100,
-                   select_features = FALSE) {
+                   select_features = FALSE,
+                   verbose = FALSE) {
 
   # Validate inputs
   if (!is.data.frame(X)) {

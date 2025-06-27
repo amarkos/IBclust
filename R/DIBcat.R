@@ -1,5 +1,6 @@
 DIBcat <- function(X, ncl, randinit = NULL, lambda = -1,
-                   maxiter = 100, nstart = 100, select_features = FALSE) {
+                   maxiter = 100, nstart = 100, select_features = FALSE,
+                   verbose = FALSE) {
 
   # Validate inputs
   if (!is.data.frame(X)) {

@@ -50,58 +50,8 @@ Type 'q()' to quit R.
 > 
 > # Run DIBcat with automatic lambda selection and multiple initializations
 > result <- DIBcat(X = X, ncl = 3, lambda = -1, nstart = 50)
-Run 1 complete.
-Run 2 complete.
-Run 3 complete.
-Run 4 complete.
-Run 5 complete.
-Run 6 complete.
-Run 7 complete.
-Run 8 complete.
-Run 9 complete.
-Run 10 complete.
 1 cluster(s) dropped. Down to 2 cluster(s).
 
-Run 11 complete.
-Run 12 complete.
-Run 13 complete.
-Run 14 complete.
-Run 15 complete.
-Run 16 complete.
-Run 17 complete.
-Run 18 complete.
-Run 19 complete.
-Run 20 complete.
-Run 21 complete.
-Run 22 complete.
-Run 23 complete.
-Run 24 complete.
-Run 25 complete.
-Run 26 complete.
-Run 27 complete.
-Run 28 complete.
-Run 29 complete.
-Run 30 complete.
-Run 31 complete.
-Run 32 complete.
-Run 33 complete.
-Run 34 complete.
-Run 35 complete.
-Run 36 complete.
-Run 37 complete.
-Run 38 complete.
-Run 39 complete.
-Run 40 complete.
-Run 41 complete.
-Run 42 complete.
-Run 43 complete.
-Run 44 complete.
-Run 45 complete.
-Run 46 complete.
-Run 47 complete.
-Run 48 complete.
-Run 49 complete.
-Run 50 complete.
 > 
 > # Print clustering results
 > print(result$Cluster)       # Cluster assignments
@@ -139,56 +89,6 @@ Run 50 complete.
 > 
 > # Run DIBcont with automatic bandwidth selection and multiple initializations
 > result <- DIBcont(X = X, ncl = 3, s = -1, nstart = 50)
-Run 1 complete.
-Run 2 complete.
-Run 3 complete.
-Run 4 complete.
-Run 5 complete.
-Run 6 complete.
-Run 7 complete.
-Run 8 complete.
-Run 9 complete.
-Run 10 complete.
-Run 11 complete.
-Run 12 complete.
-Run 13 complete.
-Run 14 complete.
-Run 15 complete.
-Run 16 complete.
-Run 17 complete.
-Run 18 complete.
-Run 19 complete.
-Run 20 complete.
-Run 21 complete.
-Run 22 complete.
-Run 23 complete.
-Run 24 complete.
-Run 25 complete.
-Run 26 complete.
-Run 27 complete.
-Run 28 complete.
-Run 29 complete.
-Run 30 complete.
-Run 31 complete.
-Run 32 complete.
-Run 33 complete.
-Run 34 complete.
-Run 35 complete.
-Run 36 complete.
-Run 37 complete.
-Run 38 complete.
-Run 39 complete.
-Run 40 complete.
-Run 41 complete.
-Run 42 complete.
-Run 43 complete.
-Run 44 complete.
-Run 45 complete.
-Run 46 complete.
-Run 47 complete.
-Run 48 complete.
-Run 49 complete.
-Run 50 complete.
 > 
 > # Print clustering results
 > print(result$Cluster)       # Cluster assignments
@@ -232,106 +132,6 @@ Run 50 complete.
 > 
 > # Perform Mixed-Type Clustering
 > result <- DIBmix(X = data, ncl = 3, catcols = 1:2, contcols = 3:4)
-Run 1 complete.
-Run 2 complete.
-Run 3 complete.
-Run 4 complete.
-Run 5 complete.
-Run 6 complete.
-Run 7 complete.
-Run 8 complete.
-Run 9 complete.
-Run 10 complete.
-Run 11 complete.
-Run 12 complete.
-Run 13 complete.
-Run 14 complete.
-Run 15 complete.
-Run 16 complete.
-Run 17 complete.
-Run 18 complete.
-Run 19 complete.
-Run 20 complete.
-Run 21 complete.
-Run 22 complete.
-Run 23 complete.
-Run 24 complete.
-Run 25 complete.
-Run 26 complete.
-Run 27 complete.
-Run 28 complete.
-Run 29 complete.
-Run 30 complete.
-Run 31 complete.
-Run 32 complete.
-Run 33 complete.
-Run 34 complete.
-Run 35 complete.
-Run 36 complete.
-Run 37 complete.
-Run 38 complete.
-Run 39 complete.
-Run 40 complete.
-Run 41 complete.
-Run 42 complete.
-Run 43 complete.
-Run 44 complete.
-Run 45 complete.
-Run 46 complete.
-Run 47 complete.
-Run 48 complete.
-Run 49 complete.
-Run 50 complete.
-Run 51 complete.
-Run 52 complete.
-Run 53 complete.
-Run 54 complete.
-Run 55 complete.
-Run 56 complete.
-Run 57 complete.
-Run 58 complete.
-Run 59 complete.
-Run 60 complete.
-Run 61 complete.
-Run 62 complete.
-Run 63 complete.
-Run 64 complete.
-Run 65 complete.
-Run 66 complete.
-Run 67 complete.
-Run 68 complete.
-Run 69 complete.
-Run 70 complete.
-Run 71 complete.
-Run 72 complete.
-Run 73 complete.
-Run 74 complete.
-Run 75 complete.
-Run 76 complete.
-Run 77 complete.
-Run 78 complete.
-Run 79 complete.
-Run 80 complete.
-Run 81 complete.
-Run 82 complete.
-Run 83 complete.
-Run 84 complete.
-Run 85 complete.
-Run 86 complete.
-Run 87 complete.
-Run 88 complete.
-Run 89 complete.
-Run 90 complete.
-Run 91 complete.
-Run 92 complete.
-Run 93 complete.
-Run 94 complete.
-Run 95 complete.
-Run 96 complete.
-Run 97 complete.
-Run 98 complete.
-Run 99 complete.
-Run 100 complete.
 > 
 > # Print clustering results
 > print(result$Cluster)       # Cluster assignments
@@ -351,7 +151,7 @@ Run 100 complete.
 > cleanEx()
 > options(digits = 7L)
 > base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
-Time elapsed:  7.28 0.22 8.11 NA NA 
+Time elapsed:  7.23 0.14 8.7 NA NA 
 > grDevices::dev.off()
 null device 
           1 

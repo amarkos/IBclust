@@ -9,7 +9,8 @@ different categorical data types (nominal and ordinal) effectively (Costa, Papat
 }
 \usage{
 DIBcat(X, ncl, randinit = NULL, lambda = -1,
-       maxiter = 100, nstart = 100, select_features = FALSE)
+       maxiter = 100, nstart = 100, select_features = FALSE,
+       verbose = FALSE)
 }
 \arguments{
   \item{X}{
@@ -34,6 +35,9 @@ A numeric value or vector specifying the bandwidth parameter for categorical var
   }
   \item{select_features}{
     Logical. If \code{TRUE}, uses an eigengap heuristic for feature selection, potentially improving clustering quality by reducing dimensionality. Defaults to \code{FALSE}.
+  }
+  \item{verbose}{
+    Logical. Default to \code{FALSE} to suppress progress messages. Change to \code{TRUE} to print.
   }
 }
 

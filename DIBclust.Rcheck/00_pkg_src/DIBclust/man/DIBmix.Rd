@@ -12,7 +12,8 @@ relevant information in the cluster assignments while achieving effective data c
 DIBmix(X, ncl, catcols, contcols, randinit = NULL,
        lambda = -1, s = -1, scale = TRUE,
        maxiter = 100, nstart = 100,
-       select_features = FALSE)
+       select_features = FALSE,
+       verbose = FALSE)
 }
 \arguments{
 \item{X}{A data frame containing the input data to be clustered. It should include categorical variables
@@ -41,6 +42,8 @@ A numeric value or vector specifying the bandwidth parameter(s) for continuous v
 \item{nstart}{The number of random initializations to run. The best clustering solution is returned. Defaults to \eqn{100}.}
 
 \item{select_features}{A logical value indicating whether to perform feature selection based on the eigengap heuristic. Defaults to \code{FALSE}.}
+
+\item{verbose}{Logical. Default to \code{FALSE} to suppress progress messages. Change to \code{TRUE} to print.}
 }
 \value{
 A list with the following elements:

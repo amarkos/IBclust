@@ -1,5 +1,6 @@
 DIBcont <- function(X, ncl, randinit = NULL, s = -1, scale = TRUE,
-                    maxiter = 100, nstart = 100, select_features = FALSE) {
+                    maxiter = 100, nstart = 100, select_features = FALSE,
+                    verbose = FALSE) {
 
   # Validate inputs
   if (!is.numeric(ncl) || ncl <= 1 || ncl != round(ncl)) {
