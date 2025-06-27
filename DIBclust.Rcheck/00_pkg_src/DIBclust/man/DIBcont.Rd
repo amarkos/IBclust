@@ -44,15 +44,13 @@ A numeric value or vector specifying the bandwidth parameter(s) for continuous v
 
 \value{
 A list containing the following elements:
-  \itemize{
-    \item{\code{Cluster}: An integer vector indicating the cluster assignment for each observation.}
-    \item{\code{Entropy}: A numeric value representing the entropy of the cluster assignments at convergence.}
-    \item{\code{MutualInfo}: A numeric value representing the mutual information, \eqn{I(Y;T)}, between the underlying data distribution and the cluster assignments.}
-    \item{\code{beta}: A numeric vector of the final beta values used during the iterative optimization.}
-    \item{\code{s}: A numeric value or vector of bandwidth parameters used for the continuous variables. Typically, this will be a single value if all continuous variables share the same bandwidth.}
-    \item{\code{ents}: A numeric vector tracking the entropy values over the iterations, providing insight into the convergence process.}
-    \item{\code{mis}: A numeric vector tracking the mutual information values over the iterations.}
-  }
+  \item{Cluster}{An integer vector indicating the cluster assignment for each observation.}
+  \item{Entropy}{A numeric value representing the entropy of the cluster assignments at convergence.}
+  \item{MutualInfo}{A numeric value representing the mutual information, \eqn{I(Y;T)}, between the underlying data distribution and the cluster assignments.}
+  \item{beta}{A numeric vector of the final beta values used during the iterative optimization.}
+  \item{s}{A numeric value or vector of bandwidth parameters used for the continuous variables. Typically, this will be a single value if all continuous variables share the same bandwidth.}
+  \item{ents}{A numeric vector tracking the entropy values over the iterations, providing insight into the convergence process.}
+  \item{mis}{A numeric vector tracking the mutual information values over the iterations.}
 }
 
 \details{

@@ -1,21 +1,24 @@
-\name{DIBcat}
-\alias{DIBcat}
-\title{Cluster Categorical Data Using the Deterministic Information Bottleneck Algorithm}
+\name{IBcat}
+\alias{IBcat}
+\title{Cluster Categorical Data Using the Information Bottleneck Algorithm}
 \description{
-The \code{DIBcat} function implements the Deterministic Information Bottleneck (DIB) algorithm
-for clustering datasets containing categorical variables. This method balances information retention
+The \code{IBcat} function implements the Information Bottleneck (IB) algorithm
+for fuzzy clustering of datasets containing categorical variables. This method balances information retention
 and data compression to create meaningful clusters, leveraging bandwidth parameters to handle
 different categorical data types (nominal and ordinal) effectively (Costa, Papatsouma & Markos, 2024).
 }
 \usage{
-DIBcat(X, ncl, randinit = NULL, lambda = -1,
-       maxiter = 100, nstart = 100, select_features = FALSE,
-       verbose = FALSE)
+IBcat(X, ncl, beta, randinit = NULL, lambda = -1,
+      maxiter = 100, nstart = 100, select_features = FALSE,
+      verbose = FALSE)
 }
 \arguments{
   \item{X}{
     A data frame containing the categorical data to be clustered. All variables should be categorical,
     either \code{factor} (for nominal variables) or \code{ordered} (for ordinal variables).
+  }
+  \item{beta}{
+    Regularisation strength.
   }
   \item{ncl}{
     An integer specifying the number of clusters to form.
@@ -43,17 +46,18 @@ A numeric value or vector specifying the bandwidth parameter for categorical var
 
 \value{
 A list containing the following elements:
-  \item{Cluster}{An integer vector indicating the cluster assignment for each data point at convergence.}
-  \item{Entropy}{A numeric value representing the entropy of the cluster assignments at the end of the iterative procedure.}
-  \item{MutualInfo}{A numeric value representing the mutual information, \eqn{I(Y;T)}, between the data distribution and the cluster assignments.}
+  \item{Cluster}{A cluster membership matrix.}
+  \item{InfoXT}{A numeric value representing the mutual information, \eqn{I(X;T)}, between the original observations weights (\eqn{X}) and the cluster assignments (\eqn{T}).}
+  \item{InfoYT}{A numeric value representing the mutual information, \eqn{I(Y;T)}, between the original labels (\eqn{Y}) and the cluster assignments (\eqn{T}).}
+  \item{beta}{A numeric value of the regularisation strength beta used.}
   \item{lambda}{A numeric vector of bandwidth parameters for categorical variables, controlling how categories are weighted in the clustering.}
-  \item{beta}{A numeric vector of the final beta values used during the iterative optimization.}
-  \item{ents}{A numeric vector tracking the entropy values across iterations, providing insights into the convergence pattern.}
-  \item{mis}{A numeric vector tracking the mutual information values across iterations.}
+  \item{ixt}{A numeric vector tracking the mutual information values between original observation weights and cluster assignments across iterations.}
+  \item{iyt}{A numeric vector tracking the mutual information values between original labels and cluster assignments across iterations.}
+  \item{losses}{A numeric vector tracking the final loss values across iterations.}
 }
 
 \details{
-The \code{DIBcat} function applies the Deterministic Information Bottleneck algorithm to cluster datasets containing only categorical variables, both nominal and ordinal. The algorithm optimizes an information-theoretic objective to balance the trade-off between data compression and the retention of information about the original distribution.
+The \code{IBcat} function applies the Information Bottleneck algorithm to do fuzzy clustering of datasets containing only categorical variables, both nominal and ordinal. The algorithm optimizes an information-theoretic objective to balance the trade-off between data compression and the retention of information about the original distribution.
 
 To estimate the distributions of categorical features, the function utilizes specialized kernel functions, as follows:
 
@@ -84,15 +88,15 @@ X <- data.frame(
 )
 
 # Run DIBcat with automatic lambda selection and multiple initializations
-result <- DIBcat(X = X, ncl = 3, lambda = -1, nstart = 50)
+result <- IBcat(X = X, ncl = 3, beta = 1, lambda = -1, nstart = 50)
 
 # Print clustering results
-print(result$Cluster)       # Cluster assignments
-print(result$Entropy)       # Final entropy
-print(result$MutualInfo)    # Mutual information
+print(result$Cluster)       # Cluster membership matrix
+print(result$InfoXT)       # Mutual information between X and T
+print(result$InfoYT)    # Mutual information between Y and T
 }
 \seealso{
-\code{\link{DIBmix}}, \code{\link{DIBcont}}
+\code{\link{IBmix}}, \code{\link{IBcont}}
 }
 \author{
 Efthymios Costa, Ioanna Papatsouma, Angelos Markos

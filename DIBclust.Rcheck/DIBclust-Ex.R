@@ -102,6 +102,67 @@ print(result$MutualInfo)    # Mutual information
 
 
 cleanEx()
+nameEx("IBcat")
+### * IBcat
+
+flush(stderr()); flush(stdout())
+
+### Name: IBcat
+### Title: Cluster Categorical Data Using the Information Bottleneck
+###   Algorithm
+### Aliases: IBcat
+### Keywords: clustering
+
+### ** Examples
+
+# Simulated categorical data
+set.seed(123)
+X <- data.frame(
+  Var1 = as.factor(sample(letters[1:3], 200, replace = TRUE)),  # Nominal variable
+  Var2 = as.factor(sample(letters[4:6], 200, replace = TRUE)),  # Nominal variable
+  Var3 = factor(sample(c("low", "medium", "high"), 200, replace = TRUE),
+                levels = c("low", "medium", "high"), ordered = TRUE)  # Ordinal variable
+)
+
+# Run DIBcat with automatic lambda selection and multiple initializations
+result <- IBcat(X = X, ncl = 3, beta = 1, lambda = -1, nstart = 50)
+
+# Print clustering results
+print(result$Cluster)       # Cluster membership matrix
+print(result$InfoXT)       # Mutual information between X and T
+print(result$InfoYT)    # Mutual information between Y and T
+
+
+
+cleanEx()
+nameEx("IBcont")
+### * IBcont
+
+flush(stderr()); flush(stdout())
+
+### Name: IBcont
+### Title: Cluster Continuous Data Using the Information Bottleneck
+###   Algorithm
+### Aliases: IBcont
+### Keywords: clustering
+
+### ** Examples
+
+# Generate simulated continuous data
+set.seed(123)
+X <- matrix(rnorm(1000), ncol = 5)  # 200 observations, 5 features
+
+# Run DIBcont with automatic bandwidth selection and multiple initializations
+result <- IBcont(X = X, ncl = 3, beta = 1, s = -1, nstart = 50)
+
+# Print clustering results
+print(result$Cluster)       # Cluster membership matrix
+print(result$InfoXT)       # Mutual information between X and T
+print(result$InfoYT)    # Mutual information between Y and T
+
+
+
+cleanEx()
 nameEx("IBmix")
 ### * IBmix
 

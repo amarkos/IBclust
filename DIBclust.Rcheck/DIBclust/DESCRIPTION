@@ -12,6 +12,6 @@ Imports: Rcpp, RcppEigen, stats, utils, np, rje
 LinkingTo: Rcpp, RcppArmadillo, RcppEigen
 RoxygenNote: 7.3.2
 NeedsCompilation: yes
-Packaged: 2025-06-27 13:44:58 UTC; ec1917
-Built: R 4.4.2; x86_64-w64-mingw32; 2025-06-27 13:45:07 UTC; windows
+Packaged: 2025-06-27 20:03:26 UTC; ec1917
+Built: R 4.4.2; x86_64-w64-mingw32; 2025-06-27 20:03:39 UTC; windows
 Archs: x64

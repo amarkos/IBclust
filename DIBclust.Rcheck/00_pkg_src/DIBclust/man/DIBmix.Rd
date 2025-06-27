@@ -46,15 +46,15 @@ A numeric value or vector specifying the bandwidth parameter(s) for continuous v
 \item{verbose}{Logical. Default to \code{FALSE} to suppress progress messages. Change to \code{TRUE} to print.}
 }
 \value{
-A list with the following elements:
-\item{Cluster}{An integer vector giving the cluster assignments for each data point.}
-\item{Entropy}{A numeric value representing the entropy of the cluster assignments at convergence.}
-\item{MutualInfo}{A numeric value representing the mutual information, \eqn{I(Y;T)}, between the original labels (\eqn{Y}) and the cluster assignments (\eqn{T}).}
-\item{beta}{A numeric vector of the final beta values used in the iterative procedure.}
-\item{s}{A numeric vector of bandwidth parameters used for the continuous variables.}
-\item{lambda}{A numeric vector of bandwidth parameters used for the categorical variables.}
-\item{ents}{A numeric vector tracking the entropy values across iterations.}
-\item{mis}{A numeric vector tracking the mutual information values across iterations.}
+A list containing the following elements:
+  \item{Cluster}{An integer vector giving the cluster assignments for each data point.}
+  \item{Entropy}{A numeric value representing the entropy of the cluster assignments at convergence.}
+  \item{MutualInfo}{A numeric value representing the mutual information, \eqn{I(Y;T)}, between the original labels (\eqn{Y}) and the cluster assignments (\eqn{T}).}
+  \item{beta}{A numeric vector of the final beta values used in the iterative procedure.}
+  \item{s}{A numeric vector of bandwidth parameters used for the continuous variables.}
+  \item{lambda}{A numeric vector of bandwidth parameters used for the categorical variables.}
+  \item{ents}{A numeric vector tracking the entropy values across iterations.}
+  \item{mis}{A numeric vector tracking the mutual information values across iterations.}
 }
 
 

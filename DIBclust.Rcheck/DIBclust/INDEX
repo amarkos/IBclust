@@ -4,5 +4,9 @@ DIBcont                 Cluster Continuous Data Using the Deterministic
                         Information Bottleneck Algorithm
 DIBmix                  Deterministic Information Bottleneck Clustering
                         for Mixed-Type Data
+IBcat                   Cluster Categorical Data Using the Information
+                        Bottleneck Algorithm
+IBcont                  Cluster Continuous Data Using the Information
+                        Bottleneck Algorithm
 IBmix                   Information Bottleneck Clustering for
                         Mixed-Type Data

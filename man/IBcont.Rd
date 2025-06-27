@@ -1,16 +1,16 @@
-\name{DIBcont}
-\alias{DIBcont}
-\title{Cluster Continuous Data Using the Deterministic Information Bottleneck Algorithm}
+\name{IBcont}
+\alias{IBcont}
+\title{Cluster Continuous Data Using the Information Bottleneck Algorithm}
 \description{
-The \code{DIBcont} function implements the Deterministic Information Bottleneck (DIB) algorithm
-for clustering continuous data. This method optimizes an information-theoretic objective to
+The \code{IBcont} function implements the Information Bottleneck (IB) algorithm
+for fuzzy clustering of continuous data. This method optimizes an information-theoretic objective to
 preserve relevant information while forming concise and interpretable cluster representations
 (Costa, Papatsouma & Markos, 2024).
 }
 \usage{
-DIBcont(X, ncl, randinit = NULL, s = -1, scale = TRUE,
-        maxiter = 100, nstart = 100, select_features = FALSE,
-        verbose = FALSE)
+IBcont(X, ncl, beta, randinit = NULL, s = -1, scale = TRUE,
+       maxiter = 100, nstart = 100, select_features = FALSE,
+       verbose = FALSE)
 }
 \arguments{
   \item{X}{
@@ -18,6 +18,9 @@ DIBcont(X, ncl, randinit = NULL, s = -1, scale = TRUE,
   }
   \item{ncl}{
     An integer specifying the number of clusters to form.
+  }
+  \item{beta}{
+    Regularisation strength.
   }
   \item{randinit}{
     Optional. A vector specifying initial cluster assignments. If \code{NULL}, cluster assignments are initialized randomly.
@@ -44,17 +47,18 @@ A numeric value or vector specifying the bandwidth parameter(s) for continuous v
 
 \value{
 A list containing the following elements:
-  \item{Cluster}{An integer vector indicating the cluster assignment for each observation.}
-  \item{Entropy}{A numeric value representing the entropy of the cluster assignments at convergence.}
-  \item{MutualInfo}{A numeric value representing the mutual information, \eqn{I(Y;T)}, between the underlying data distribution and the cluster assignments.}
-  \item{beta}{A numeric vector of the final beta values used during the iterative optimization.}
-  \item{s}{A numeric value or vector of bandwidth parameters used for the continuous variables. Typically, this will be a single value if all continuous variables share the same bandwidth.}
-  \item{ents}{A numeric vector tracking the entropy values over the iterations, providing insight into the convergence process.}
-  \item{mis}{A numeric vector tracking the mutual information values over the iterations.}
+  \item{Cluster}{A cluster membership matrix.}
+  \item{InfoXT}{A numeric value representing the mutual information, \eqn{I(X;T)}, between the original observations weights (\eqn{X}) and the cluster assignments (\eqn{T}).}
+  \item{InfoYT}{A numeric value representing the mutual information, \eqn{I(Y;T)}, between the original labels (\eqn{Y}) and the cluster assignments (\eqn{T}).}
+  \item{beta}{A numeric value of the regularisation strength beta used.}
+  \item{s}{A numeric vector of bandwidth parameters used for the continuous variables.}
+  \item{ixt}{A numeric vector tracking the mutual information values between original observation weights and cluster assignments across iterations.}
+  \item{iyt}{A numeric vector tracking the mutual information values between original labels and cluster assignments across iterations.}
+  \item{losses}{A numeric vector tracking the final loss values across iterations.}
 }
 
 \details{
-The \code{DIBcont} function applies the Deterministic Information Bottleneck algorithm to cluster datasets comprising only continuous variables. This method leverages an information-theoretic objective to optimize the trade-off between data compression and the preservation of relevant information about the underlying data distribution.
+The \code{IBcont} function applies the Information Bottleneck algorithm to do fuzzy clustering of datasets comprising only continuous variables. This method leverages an information-theoretic objective to optimize the trade-off between data compression and the preservation of relevant information about the underlying data distribution.
 
 The function utilizes the Gaussian kernel (Silverman, 1998) for estimating probability densities of continuous features. The kernel is defined as:
 
@@ -70,15 +74,15 @@ set.seed(123)
 X <- matrix(rnorm(1000), ncol = 5)  # 200 observations, 5 features
 
 # Run DIBcont with automatic bandwidth selection and multiple initializations
-result <- DIBcont(X = X, ncl = 3, s = -1, nstart = 50)
+result <- IBcont(X = X, ncl = 3, beta = 1, s = -1, nstart = 50)
 
 # Print clustering results
-print(result$Cluster)       # Cluster assignments
-print(result$Entropy)       # Final entropy
-print(result$MutualInfo)    # Mutual information
+print(result$Cluster)       # Cluster membership matrix
+print(result$InfoXT)       # Mutual information between X and T
+print(result$InfoYT)    # Mutual information between Y and T
 }
 \seealso{
-\code{\link{DIBmix}}, \code{\link{DIBcat}}
+\code{\link{IBmix}}, \code{\link{IBcat}}
 }
 \author{
 Efthymios Costa, Ioanna Papatsouma, Angelos Markos

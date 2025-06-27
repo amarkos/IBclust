@@ -47,17 +47,18 @@ A numeric value or vector specifying the bandwidth parameter(s) for continuous v
 
 \item{verbose}{Logical. Default to \code{FALSE} to suppress progress messages. Change to \code{TRUE} to print.}
 }
+
 \value{
-A list with the following elements:
-\item{Cluster}{A cluster membership matrix.}
-\item{InfoXT}{A numeric value representing the mutual information, \eqn{I(X;T)}, between the original observations weights (\eqn{X}) and the cluster assignments (\eqn{T}).}
-\item{InfoYT}{A numeric value representing the mutual information, \eqn{I(Y;T)}, between the original labels (\eqn{Y}) and the cluster assignments (\eqn{T}).}
-\item{beta}{A numeric vector of the final beta values used in the iterative procedure.}
-\item{s}{A numeric vector of bandwidth parameters used for the continuous variables.}
-\item{lambda}{A numeric vector of bandwidth parameters used for the categorical variables.}
-\item{ixt}{A numeric vector tracking the mutual information values between original observation weights and cluster assignments across iterations.}
-\item{iyt}{A numeric vector tracking the mutual information values between original labels and cluster assignments across iterations.}
-\item{losses}{A numeric vector tracking the final loss values across iterations.}
+A list containing the following elements:
+  \item{Cluster}{A cluster membership matrix.}
+  \item{InfoXT}{A numeric value representing the mutual information, \eqn{I(X;T)}, between the original observations weights (\eqn{X}) and the cluster assignments (\eqn{T}).}
+  \item{InfoYT}{A numeric value representing the mutual information, \eqn{I(Y;T)}, between the original labels (\eqn{Y}) and the cluster assignments (\eqn{T}).}
+  \item{beta}{A numeric value of the regularisation strength beta used.}
+  \item{s}{A numeric vector of bandwidth parameters used for the continuous variables.}
+  \item{lambda}{A numeric vector of bandwidth parameters used for the categorical variables.}
+  \item{ixt}{A numeric vector tracking the mutual information values between original observation weights and cluster assignments across iterations.}
+  \item{iyt}{A numeric vector tracking the mutual information values between original labels and cluster assignments across iterations.}
+  \item{losses}{A numeric vector tracking the final loss values across iterations.}
 }
 
 
@@ -109,9 +110,9 @@ print(result$Cluster)       # Cluster membership matrix
 print(result$InfoXT)       # Mutual information between X and T
 print(result$InfoYT)    # Mutual information between Y and T
 }
-%\seealso{
-%\code{\link{DIBcont}}, \code{\link{DIBcat}}
-%}
+\seealso{
+\code{\link{DIBcont}}, \code{\link{DIBcat}}
+}
 \author{
 Efthymios Costa, Ioanna Papatsouma, Angelos Markos
 }
