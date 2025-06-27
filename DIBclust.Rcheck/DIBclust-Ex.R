@@ -101,6 +101,39 @@ print(result$MutualInfo)    # Mutual information
 
 
 
+cleanEx()
+nameEx("IBmix")
+### * IBmix
+
+flush(stderr()); flush(stdout())
+
+### Name: IBmix
+### Title: Information Bottleneck Clustering for Mixed-Type Data
+### Aliases: IBmix
+### Keywords: clustering
+
+### ** Examples
+
+# Example dataset with categorical, ordinal, and continuous variables
+data <- data.frame(
+  cat_var = factor(sample(letters[1:3], 100, replace = TRUE)),      # Nominal categorical variable
+  ord_var = factor(sample(c("low", "medium", "high"), 100, replace = TRUE),
+                   levels = c("low", "medium", "high"),
+                   ordered = TRUE),                                # Ordinal variable
+  cont_var1 = rnorm(100),                                          # Continuous variable 1
+  cont_var2 = runif(100)                                           # Continuous variable 2
+)
+
+# Perform Mixed-Type Fuzzy Clustering
+result <- IBmix(X = data, ncl = 3, beta = 2, catcols = 1:2, contcols = 3:4)
+
+# Print clustering results
+print(result$Cluster)       # Cluster membership matrix
+print(result$InfoXT)       # Mutual information between X and T
+print(result$InfoYT)    # Mutual information between Y and T
+
+
+
 ### * <FOOTER>
 ###
 cleanEx()

@@ -184,8 +184,5 @@ IBmix <- function(X, ncl, beta, catcols, contcols, randinit = NULL,
                               runs = nstart, verbose = verbose)
   ######################################################
   
-  if (best_clust$MutualInfo == Inf){
-    warning("Initial cluster assignment remained unchanged; use other hyperparameter values for DIBmix to converge.")
-  }
   return(best_clust)
 }

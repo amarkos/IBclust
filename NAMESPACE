@@ -1,5 +1,5 @@
 # Export main user-facing functions
-export(DIBmix, DIBcont, DIBcat)
+export(DIBmix, DIBcont, DIBcat, IBmix)
 
 # Use dynamic libraries for C++ integration
 useDynLib(DIBclust, .registration = TRUE)

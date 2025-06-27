@@ -1,9 +1,9 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.11.25) (preloaded format=pdflatex 2022.12.4)  27 JUN 2025 14:20
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.11.25) (preloaded format=pdflatex 2022.12.4)  27 JUN 2025 14:46
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**C:/Users/ec1917/AppData/Local/Temp/RtmpuoCPyr/Rd2pdf4f80672f312b/Rd2.tex
-(C:/Users/ec1917/AppData/Local/Temp/RtmpuoCPyr/Rd2pdf4f80672f312b/Rd2.tex
+**C:/Users/ec1917/AppData/Local/Temp/RtmpCU8HW0/Rd2pdfe6824bb0c/Rd2.tex
+(C:/Users/ec1917/AppData/Local/Temp/RtmpCU8HW0/Rd2pdfe6824bb0c/Rd2.tex
 LaTeX2e <2022-11-01> patch level 1
 L3 programming layer <2022-11-02>
 (C:\Users\ec1917\AppData\Local\Programs\MiKTeX\tex/latex/base\book.cls
@@ -466,33 +466,45 @@ Overfull \hbox (46.8472pt too wide) in paragraph at lines 235--236
 89 [stat.ME]\T1/ptm/m/n/10 . Re-trieved from https://arxiv.org/abs/2407.03389 
  []
 
-[5] [6]
+[5] [6] [7]
 Overfull \hbox (46.8472pt too wide) in paragraph at lines 365--366
 \T1/ptm/m/n/10 for Clus-ter-ing Mixed-Type Data. \T1/ptm/m/it/10 arXiv:2407.033
 89 [stat.ME]\T1/ptm/m/n/10 . Re-trieved from https://arxiv.org/abs/2407.03389 
  []
 
-[7]
+
 Overfull \hbox (20.22874pt too wide) in paragraph at lines 380--380
  []  \T1/zi4/m/n/9 cat_var = factor(sample(letters[1:3], 100, replace = TRUE)),
       # Nominal categorical variable[] 
  []
 
-(Rd2.ind [8] [9
+[8] [9]
+Overfull \hbox (46.8472pt too wide) in paragraph at lines 506--507
+\T1/ptm/m/n/10 for Clus-ter-ing Mixed-Type Data. \T1/ptm/m/it/10 arXiv:2407.033
+89 [stat.ME]\T1/ptm/m/n/10 . Re-trieved from https://arxiv.org/abs/2407.03389 
+ []
+
+[10]
+Overfull \hbox (20.22874pt too wide) in paragraph at lines 517--517
+ []  \T1/zi4/m/n/9 cat_var = factor(sample(letters[1:3], 100, replace = TRUE)),
+      # Nominal categorical variable[] 
+ []
+
+(Rd2.ind [11] [12
 
 
 ]) (Rd2.aux)
 Package rerunfilecheck Info: File `Rd2.out' has not changed.
-(rerunfilecheck)             Checksum: A2E0FFA9726B02246CBE8ED215B1B8DD;300.
+(rerunfilecheck)             Checksum: 734E5531A2F7EE6A8227EA212820BC7D;370.
  ) 
 Here is how much of TeX's memory you used:
- 10362 strings out of 475281
- 161916 string characters out of 2773593
- 502885 words of memory out of 3000000
- 31617 multiletter control sequences out of 15000+600000
+ 10376 strings out of 475281
+ 162025 string characters out of 2773593
+ 503887 words of memory out of 3000000
+ 31618 multiletter control sequences out of 15000+600000
  506414 words of font info for 73 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 89i,9n,93p,512b,728s stack positions out of 10000i,1000n,20000p,200000b,80000s
+ 89i,9n,93p,509b,728s stack positions out of 10000i,1000n,20000p,200000b,80000s
 {C:/Users/ec1917/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/base/8r.enc}{C
 :/Users/ec1917/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/inconsolata/i4-t1-
 0.enc}<C:/Users/ec1917/AppData/Local/Programs/MiKTeX/fonts/type1/public/inconso
@@ -510,9 +522,9 @@ msfonts/cm/cmsy7.pfb><C:/Users/ec1917/AppData/Local/Programs/MiKTeX/fonts/type1
 1/urw/times/utmr8a.pfb><C:/Users/ec1917/AppData/Local/Programs/MiKTeX/fonts/typ
 e1/urw/times/utmr8a.pfb><C:/Users/ec1917/AppData/Local/Programs/MiKTeX/fonts/ty
 pe1/urw/times/utmri8a.pfb>
-Output written on Rd2.pdf (9 pages, 194198 bytes).
+Output written on Rd2.pdf (12 pages, 204902 bytes).
 PDF statistics:
- 194 PDF objects out of 1000 (max. 8388607)
- 46 named destinations out of 1000 (max. 500000)
- 33 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 224 PDF objects out of 1000 (max. 8388607)
+ 59 named destinations out of 1000 (max. 500000)
+ 41 words of extra memory for PDF output out of 10000 (max. 10000000)
 
