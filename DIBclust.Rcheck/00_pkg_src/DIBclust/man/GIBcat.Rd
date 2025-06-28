@@ -1,16 +1,16 @@
-\name{IBcat}
-\alias{IBcat}
-\title{Cluster Categorical Data Using the Information Bottleneck Algorithm}
+\name{GIBcat}
+\alias{GIBcat}
+\title{Cluster Categorical Data Using the Generalised Information Bottleneck Algorithm}
 \description{
-The \code{IBcat} function implements the Information Bottleneck (IB) algorithm
+The \code{GIBcat} function implements the Generalised Information Bottleneck (IB) algorithm
 for fuzzy clustering of datasets containing categorical variables. This method balances information retention
 and data compression to create meaningful clusters, leveraging bandwidth parameters to handle
 different categorical data types (nominal and ordinal) effectively (Costa, Papatsouma & Markos, 2024).
 }
 \usage{
-IBcat(X, ncl, beta, randinit = NULL, lambda = -1,
-      maxiter = 100, nstart = 100, select_features = FALSE,
-      verbose = FALSE)
+GIBcat(X, ncl, beta, alpha, randinit = NULL, lambda = -1,
+       maxiter = 100, nstart = 100, select_features = FALSE,
+       verbose = FALSE)
 }
 \arguments{
   \item{X}{
@@ -19,6 +19,9 @@ IBcat(X, ncl, beta, randinit = NULL, lambda = -1,
   }
   \item{beta}{
     Regularisation strength.
+  }
+  \item{alpha}{
+    Strength of relative entropy term.
   }
   \item{ncl}{
     An integer specifying the number of clusters to form.
@@ -47,17 +50,22 @@ A numeric value or vector specifying the bandwidth parameter for categorical var
 \value{
 A list containing the following elements:
   \item{Cluster}{A cluster membership matrix.}
-  \item{InfoXT}{A numeric value representing the mutual information, \eqn{I(X;T)}, between the original observations weights (\eqn{X}) and the cluster assignments (\eqn{T}).}
-  \item{InfoYT}{A numeric value representing the mutual information, \eqn{I(Y;T)}, between the original labels (\eqn{Y}) and the cluster assignments (\eqn{T}).}
+  \item{Entropy}{A numeric value representing the entropy of the cluster assignment, \eqn{H(T)}.}
+  \item{RelEntropy}{A numeric value representing the relative entropy of cluster assignment, given the observation weights \eqn{H(X \mid T)}.}
+  \item{MutualInfo}{A numeric value representing the mutual information, \eqn{I(Y;T)}, between the original labels (\eqn{Y}) and the cluster assignments (\eqn{T}).}
   \item{beta}{A numeric value of the regularisation strength beta used.}
+  \item{alpha}{A numeric value of the strength of relative entropy used.}
   \item{lambda}{A numeric vector of bandwidth parameters for categorical variables, controlling how categories are weighted in the clustering.}
-  \item{ixt}{A numeric vector tracking the mutual information values between original observation weights and cluster assignments across iterations.}
+  \item{ht}{A numeric vector tracking the entropy value of the cluster assignments across iterations.}
+  \item{hy_t}{A numeric vector tracking the relative entropy values between the cluster assignments and observations weights across iterations.}
   \item{iyt}{A numeric vector tracking the mutual information values between original labels and cluster assignments across iterations.}
   \item{losses}{A numeric vector tracking the final loss values across iterations.}
 }
 
 \details{
-The \code{IBcat} function applies the Information Bottleneck algorithm to do fuzzy clustering of datasets containing only categorical variables, both nominal and ordinal. The algorithm optimizes an information-theoretic objective to balance the trade-off between data compression and the retention of information about the original distribution.
+The \code{GIBcat} function applies the Generalised Information Bottleneck algorithm to do fuzzy clustering of datasets containing only categorical variables, both nominal and ordinal. The algorithm optimizes an information-theoretic objective to balance the trade-off between data compression and the retention of information about the original distribution.
+Set \eqn{\alpha = 1} and \eqn{\alpha = 0} to recover the Information Bottleneck and its Deterministic variant, respectively. If \eqn{\alpha = 0}, the algorithm ignores
+the value of the regularisation parameter \eqn{\beta}.
 
 To estimate the distributions of categorical features, the function utilizes specialized kernel functions, as follows:
 
@@ -87,16 +95,17 @@ X <- data.frame(
                 levels = c("low", "medium", "high"), ordered = TRUE)  # Ordinal variable
 )
 
-# Run IBcat with automatic lambda selection and multiple initializations
-result <- IBcat(X = X, ncl = 3, beta = 15, lambda = -1, nstart = 20)
+# Run GIBcat with automatic lambda selection and multiple initializations
+result <- GIBcat(X = X, ncl = 3, beta = 1, alpha = 0.95, lambda = -1, nstart = 20)
 
 # Print clustering results
 print(result$Cluster)       # Cluster membership matrix
-print(result$InfoXT)       # Mutual information between X and T
-print(result$InfoYT)    # Mutual information between Y and T
+print(result$Entropy)       # Entropy of final clustering
+print(result$RelEntropy)    # Relative entropy of final clustering
+print(result$MutualInfo)    # Mutual information between Y and T
 }
 \seealso{
-\code{\link{IBmix}}, \code{\link{IBcont}}
+\code{\link{GIBmix}}, \code{\link{GIBcont}}
 }
 \author{
 Efthymios Costa, Ioanna Papatsouma, Angelos Markos

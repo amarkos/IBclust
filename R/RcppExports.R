@@ -25,7 +25,7 @@ qy_t_step_cpp <- function(py_x, qt_x, qt, px) {
     .Call(`_DIBclust_qy_t_step_cpp`, py_x, qt_x, qt, px)
 }
 
-qt_x_step_ib_cpp <- function(n_rows, T, beta, py_x, qy_t, qt) {
-    .Call(`_DIBclust_qt_x_step_ib_cpp`, n_rows, T, beta, py_x, qy_t, qt)
+qt_x_step_gib_cpp <- function(n_rows, T, beta, alpha, py_x, qy_t, qt) {
+    .Call(`_DIBclust_qt_x_step_gib_cpp`, n_rows, T, beta, alpha, py_x, qy_t, qt)
 }
 

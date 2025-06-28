@@ -89,7 +89,7 @@ IBcont <- function(X, ncl, beta, randinit = NULL, s = -1, scale = TRUE,
     bws_vec <- rep(s, ncol(X))
   }
   
-  # Run DIB iteration for clustering
+  # Run IB iteration for clustering
   best_clust <- IBmix_iterate(X, ncl = ncl, beta = beta, randinit = randinit, tol = 0,
                               py_x = py_x, hy = hy, px = px, maxiter = maxiter,
                               bws_vec = bws_vec, contcols = seq_len(ncol(X)),

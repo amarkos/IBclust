@@ -29,7 +29,7 @@ IBmix_iterate <- function(X, ncl, beta, randinit,
   #  sourceCpp("src/qt_x_step.cpp")
   
   best_clust <- list()
-  Loss <- -Inf
+  Loss <- Inf
   best_clust$Cluster <- rep(NA, nrow(X))
   best_clust$InfoXT <- Inf
   best_clust$InfoYT <- Inf
@@ -70,7 +70,7 @@ IBmix_iterate <- function(X, ncl, beta, randinit,
       qt <- qt_list$qt
       qt_x <- qt_list$qt_x
       qy_t <- qy_t_step_cpp(py_x, qt_x, qt, px)
-      qt_x <- qt_x_step_ib_cpp(n_rows = nrow(X), T = qt_list$T, beta = beta, py_x, qy_t, as.numeric(qt))
+      qt_x <- qt_x_step_gib_cpp(n_rows = nrow(X), T = qt_list$T, beta = beta, alpha = 1, py_x, qy_t, as.numeric(qt))
       metrics <- calc_metrics(beta = beta, qt, qy_t, hy, px, qt_x, quiet = TRUE)
       Lval <- metrics[[4]] - beta * metrics[[3]]
       #cat('I(Y;T) =', Lval, '\n')
@@ -95,7 +95,7 @@ IBmix_iterate <- function(X, ncl, beta, randinit,
         qt <- qt_list$qt
         qt_x <- qt_list$qt_x
         qy_t <- qy_t_step_cpp(py_x, qt_x, qt, px)
-        qt_x <- qt_x_step_ib_cpp(n_rows = nrow(X), T = qt_list$T, beta = beta, py_x, qy_t, as.numeric(qt))
+        qt_x <- qt_x_step_gib_cpp(n_rows = nrow(X), T = qt_list$T, beta = beta, alpha = 1, py_x, qy_t, as.numeric(qt))
         #if (sum(qt_x) == 0){
         #  Lval <- -Inf
         #  change_in_qt_x <- 0
@@ -136,7 +136,7 @@ IBmix_iterate <- function(X, ncl, beta, randinit,
       # cat("Iteration:", iterations, "- Change in qt_x:", change_in_qt_x, "\n")
       # Removed conditions: & nrow(qt_x)==ncl & !all(apply(qt_x, 2, function(col) which(col == 1)) == rand_init)
       #if (Lval < best_clust[[1]]){
-      if (Lval > Loss){
+      if (Lval < Loss){
         #   best_clust[[1]] <- Lval
         best_clust[[1]] <- qt_x
         metrics <- calc_metrics(beta = beta, qt, qy_t, hy, px, qt_x, quiet = TRUE)

@@ -73,8 +73,8 @@ The bandwidth parameter \eqn{s}, which controls the smoothness of the density es
 set.seed(123)
 X <- matrix(rnorm(1000), ncol = 5)  # 200 observations, 5 features
 
-# Run DIBcont with automatic bandwidth selection and multiple initializations
-result <- IBcont(X = X, ncl = 3, beta = 1, s = -1, nstart = 50)
+# Run IBcont with automatic bandwidth selection and multiple initializations
+result <- IBcont(X = X, ncl = 3, beta = 50, s = -1, nstart = 20)
 
 # Print clustering results
 print(result$Cluster)       # Cluster membership matrix

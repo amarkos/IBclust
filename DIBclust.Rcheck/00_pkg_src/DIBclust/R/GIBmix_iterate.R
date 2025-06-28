@@ -7,6 +7,7 @@
 #' @param X A data frame or matrix containing the dataset.
 #' @param ncl Number of clusters.
 #' @param beta Regularisation parameter beta.
+#' @param alpha Strength of relative entropy alpha.
 #' @param randinit Optional initial cluster assignments.
 #' @param tol Tolerance for convergence.
 #' @param py_x Conditional probability matrix \( p(y|x) \).
@@ -22,30 +23,37 @@
 #' @return A list containing clustering results.
 #'
 #' @keywords internal
-IBmix_iterate <- function(X, ncl, beta, randinit,
-                          tol, py_x, hy, px, maxiter, bws_vec,
-                          contcols, catcols, runs, verbose = FALSE){
+GIBmix_iterate <- function(X, ncl, beta, alpha, randinit,
+                           tol, py_x, hy, px, maxiter, bws_vec,
+                           contcols, catcols, runs, verbose = FALSE){
   # Source the C++ code
   #  sourceCpp("src/qt_x_step.cpp")
   
   best_clust <- list()
   Loss <- Inf
   best_clust$Cluster <- rep(NA, nrow(X))
-  best_clust$InfoXT <- Inf
-  best_clust$InfoYT <- Inf
+  best_clust$Entropy <- Inf
+  best_clust$RelEntropy <- Inf
+  best_clust$MutualInfo <- Inf
   best_clust$beta <- beta
+  best_clust$alpha <- alpha
   best_clust$s <- bws_vec[contcols]
   best_clust$lambda <- bws_vec[catcols]
-  best_clust$ixt <- c()
+  best_clust$ht <- c()
+  best_clust$hy_t <- c()
   best_clust$iyt <- c()
   best_clust$losses <- c()
   if (ncl == 1){
     Loss <- 0
     best_clust$Cluster <- rep(1, nrow(X))
-    best_clust$InfoXT <- 0
+    best_clust$Entropy <- 0
+    best_clust$RelEntropy <- 0
+    best_clust$MutualInfo <- 0
     best_clust$InfoYT <- 0
     best_clust$beta <- beta
-    best_clust$ixt <- 0
+    best_clust$alpha <- alpha
+    best_clust$ht <- 0
+    best_clust$hy_t <- 0
     best_clust$iyt <- 0
     best_clust$losses <- 0
   } else {
@@ -70,9 +78,9 @@ IBmix_iterate <- function(X, ncl, beta, randinit,
       qt <- qt_list$qt
       qt_x <- qt_list$qt_x
       qy_t <- qy_t_step_cpp(py_x, qt_x, qt, px)
-      qt_x <- qt_x_step_gib_cpp(n_rows = nrow(X), T = qt_list$T, beta = beta, alpha = 1, py_x, qy_t, as.numeric(qt))
+      qt_x <- qt_x_step_gib_cpp(n_rows = nrow(X), T = qt_list$T, beta = beta, alpha = alpha, py_x, qy_t, as.numeric(qt))
       metrics <- calc_metrics(beta = beta, qt, qy_t, hy, px, qt_x, quiet = TRUE)
-      Lval <- metrics[[4]] - beta * metrics[[3]]
+      Lval <- metrics[[1]] - alpha * metrics[[2]] - beta * metrics[[3]]
       #cat('I(Y;T) =', Lval, '\n')
       # Initialize variables for convergence checking
       convergence_threshold <- 1e-5  # Set a small threshold for convergence
@@ -95,7 +103,7 @@ IBmix_iterate <- function(X, ncl, beta, randinit,
         qt <- qt_list$qt
         qt_x <- qt_list$qt_x
         qy_t <- qy_t_step_cpp(py_x, qt_x, qt, px)
-        qt_x <- qt_x_step_gib_cpp(n_rows = nrow(X), T = qt_list$T, beta = beta, alpha = 1, py_x, qy_t, as.numeric(qt))
+        qt_x <- qt_x_step_gib_cpp(n_rows = nrow(X), T = qt_list$T, beta = beta, alpha = alpha, py_x, qy_t, as.numeric(qt))
         #if (sum(qt_x) == 0){
         #  Lval <- -Inf
         #  change_in_qt_x <- 0
@@ -116,7 +124,7 @@ IBmix_iterate <- function(X, ncl, beta, randinit,
         }
         #Lval <- calc_metrics(beta = beta, qt, qy_t, hy, quiet = TRUE)[[1]]
         metrics <- calc_metrics(beta = beta, qt, qy_t, hy, px, qt_x, quiet = TRUE)
-        Lval <- metrics[[4]] - beta * metrics[[3]]
+        Lval <- metrics[[1]] - alpha * metrics[[2]] - beta * metrics[[3]]
         ### STOP BASED ON LVAL
         #if (Lval < Lval_old){
         #  qt_x <- old_qt_x
@@ -140,14 +148,17 @@ IBmix_iterate <- function(X, ncl, beta, randinit,
         #   best_clust[[1]] <- Lval
         best_clust[[1]] <- qt_x
         metrics <- calc_metrics(beta = beta, qt, qy_t, hy, px, qt_x, quiet = TRUE)
-        best_clust[[2]] <- as.numeric(metrics[[4]])
-        best_clust[[3]] <- as.numeric(metrics[[3]])
-        best_clust[[4]] <- beta
+        best_clust[[2]] <- as.numeric(metrics[[1]])
+        best_clust[[3]] <- as.numeric(metrics[[2]])
+        best_clust[[4]] <- as.numeric(metrics[[3]])
+        best_clust[[5]] <- beta
+        best_clust[[6]] <- alpha
       }
       metrics <- calc_metrics(beta = beta, qt, qy_t, hy, px, qt_x, quiet = TRUE)
-      best_clust$ixt <- c(best_clust$ixt, metrics[[4]])
+      best_clust$ht <- c(best_clust$ht, metrics[[1]])
+      best_clust$hy_t <- c(best_clust$hy_t, metrics[[2]])
       best_clust$iyt <- c(best_clust$iyt, metrics[[3]])
-      best_clust$losses <- c(best_clust$losses, metrics[[4]] - beta * metrics[[3]])
+      best_clust$losses <- c(best_clust$losses, metrics[[1]] - alpha * metrics[[2]] - beta * metrics[[3]])
       if (verbose){
         message('Run ', i, ' complete.\n')
       }

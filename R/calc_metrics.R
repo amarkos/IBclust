@@ -9,5 +9,5 @@ calc_metrics <- function(beta, qt, qy_t, hy, px, qt_x, quiet = TRUE){
     message('H(T) = ', ht, ', H(Y|T) = ', hy_t, ', I(Y,T) = ', iyt,
             ', I(X,T) = ', ixt, '\n')
   }
-  return(list(ht, hy_t, iyt, ixt))
+  return(list(ht, ht_x, iyt, ixt))
 }

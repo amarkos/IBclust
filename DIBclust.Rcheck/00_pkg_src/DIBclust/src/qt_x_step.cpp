@@ -183,7 +183,7 @@ arma::mat qy_t_step_cpp(const arma::mat& py_x, const arma::mat& qt_x,
 // -----------------------------------------------------------------------------
 
 // [[Rcpp::export]]
-arma::mat qt_x_step_ib_cpp(int n_rows, int T, double beta,
+arma::mat qt_x_step_gib_cpp(int n_rows, int T, double beta, double alpha,
                            const arma::mat& py_x, const arma::mat& qy_t, const arma::vec& qt) {
 
   // Initialize qt_x matrix with zeros (Clusters x Data Points)
@@ -202,7 +202,7 @@ arma::mat qt_x_step_ib_cpp(int n_rows, int T, double beta,
     }
 
     // Compute the adjusted divergence
-    arma::vec l = arma::exp(-beta * kl_divs);
+    arma::vec l = arma::exp( (log_qt - beta * kl_divs) / alpha);
 
     // Normalise each column to sum to 1
     double S = arma::accu(l);

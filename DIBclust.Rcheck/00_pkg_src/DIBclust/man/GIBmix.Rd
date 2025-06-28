@@ -1,15 +1,15 @@
-\name{IBmix}
-\alias{IBmix}
-\title{Information Bottleneck Clustering for Mixed-Type Data}
+\name{GIBmix}
+\alias{GIBmix}
+\title{Generalised Information Bottleneck Clustering for Mixed-Type Data}
 \description{
-The \code{IBmix} function implements the Information Bottleneck (IB) algorithm
+The \code{GIBmix} function implements the Generalised Information Bottleneck (GIB) algorithm
 for clustering datasets containing mixed-type variables, including categorical (nominal and ordinal)
 and continuous variables. This method optimizes an information-theoretic objective to preserve
 relevant information in the cluster assignments while achieving effective data compression
 (Costa, Papatsouma & Markos, 2024).
 }
 \usage{
-IBmix(X, ncl, beta, catcols, contcols, randinit = NULL,
+GIBmix(X, ncl, beta, alpha, catcols, contcols, randinit = NULL,
        lambda = -1, s = -1, scale = TRUE,
        maxiter = 100, nstart = 100,
        select_features = FALSE,
@@ -22,6 +22,8 @@ IBmix(X, ncl, beta, catcols, contcols, randinit = NULL,
 \item{ncl}{An integer specifying the number of clusters.}
 
 \item{beta}{Regularisation strength.}
+
+\item{alpha}{Strength of relative entropy term.}
 
 \item{catcols}{A vector indicating the indices of the categorical variables in \code{X}.}
 
@@ -51,25 +53,30 @@ A numeric value or vector specifying the bandwidth parameter(s) for continuous v
 \value{
 A list containing the following elements:
   \item{Cluster}{A cluster membership matrix.}
-  \item{InfoXT}{A numeric value representing the mutual information, \eqn{I(X;T)}, between the original observations weights (\eqn{X}) and the cluster assignments (\eqn{T}).}
-  \item{InfoYT}{A numeric value representing the mutual information, \eqn{I(Y;T)}, between the original labels (\eqn{Y}) and the cluster assignments (\eqn{T}).}
+  \item{Entropy}{A numeric value representing the entropy of the cluster assignment, \eqn{H(T)}.}
+  \item{RelEntropy}{A numeric value representing the relative entropy of cluster assignment, given the observation weights \eqn{H(X \mid T)}.}
+  \item{MutualInfo}{A numeric value representing the mutual information, \eqn{I(Y;T)}, between the original labels (\eqn{Y}) and the cluster assignments (\eqn{T}).}
   \item{beta}{A numeric value of the regularisation strength beta used.}
+  \item{alpha}{A numeric value of the strength of relative entropy used.}
   \item{s}{A numeric vector of bandwidth parameters used for the continuous variables.}
   \item{lambda}{A numeric vector of bandwidth parameters used for the categorical variables.}
-  \item{ixt}{A numeric vector tracking the mutual information values between original observation weights and cluster assignments across iterations.}
+  \item{ht}{A numeric vector tracking the entropy value of the cluster assignments across iterations.}
+  \item{hy_t}{A numeric vector tracking the relative entropy values between the cluster assignments and observations weights across iterations.}
   \item{iyt}{A numeric vector tracking the mutual information values between original labels and cluster assignments across iterations.}
   \item{losses}{A numeric vector tracking the final loss values across iterations.}
 }
 
 
 \details{
-The \code{IBmix} function produces a fuzzy clustering of the data while retaining maximal information about the original variable
-distributions. The Information Bottleneck algorithm optimizes an information-theoretic
+The \code{GIBmix} function produces a fuzzy clustering of the data while retaining maximal information about the original variable
+distributions. The Generalised Information Bottleneck algorithm optimizes an information-theoretic
 objective that balances information preservation and compression. Bandwidth parameters for categorical
 (nominal, ordinal) and continuous variables are adaptively determined if not provided. This iterative
 process identifies stable and interpretable cluster assignments by maximizing mutual information while
 controlling complexity. The method is well-suited for datasets with mixed-type variables and integrates
-information from all variable types effectively.
+information from all variable types effectively. Set \eqn{\alpha = 1} and \eqn{\alpha = 0} to recover the
+Information Bottleneck and its Deterministic variant, respectively. If \eqn{\alpha = 0}, the algorithm ignores
+the value of the regularisation parameter \eqn{\beta}.
 
 The following kernel functions are used to estimate densities for the clustering procedure:
 \itemize{
@@ -102,16 +109,17 @@ data <- data.frame(
   cont_var2 = runif(100)                                           # Continuous variable 2
 )
 
-# Perform Mixed-Type Fuzzy Clustering
-result <- IBmix(X = data, ncl = 3, beta = 2, catcols = 1:2, contcols = 3:4, nstart = 20)
+# Perform Mixed-Type Fuzzy Clustering with Generalised IB
+result <- GIBmix(X = data, ncl = 3, beta = 2, alpha = 0.5, catcols = 1:2, contcols = 3:4, nstart = 20)
 
 # Print clustering results
 print(result$Cluster)       # Cluster membership matrix
-print(result$InfoXT)       # Mutual information between X and T
-print(result$InfoYT)    # Mutual information between Y and T
+print(result$Entropy)       # Entropy of final clustering
+print(result$RelEntropy)    # Relative entropy of final clustering
+print(result$MutualInfo)    # Mutual information between Y and T
 }
 \seealso{
-\code{\link{DIBcont}}, \code{\link{DIBcat}}
+\code{\link{GIBcat}}, \code{\link{GIBcont}}
 }
 \author{
 Efthymios Costa, Ioanna Papatsouma, Angelos Markos

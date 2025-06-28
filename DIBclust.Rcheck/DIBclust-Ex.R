@@ -102,6 +102,104 @@ print(result$MutualInfo)    # Mutual information
 
 
 cleanEx()
+nameEx("GIBcat")
+### * GIBcat
+
+flush(stderr()); flush(stdout())
+
+### Name: GIBcat
+### Title: Cluster Categorical Data Using the Generalised Information
+###   Bottleneck Algorithm
+### Aliases: GIBcat
+### Keywords: clustering
+
+### ** Examples
+
+# Simulated categorical data
+set.seed(123)
+X <- data.frame(
+  Var1 = as.factor(sample(letters[1:3], 200, replace = TRUE)),  # Nominal variable
+  Var2 = as.factor(sample(letters[4:6], 200, replace = TRUE)),  # Nominal variable
+  Var3 = factor(sample(c("low", "medium", "high"), 200, replace = TRUE),
+                levels = c("low", "medium", "high"), ordered = TRUE)  # Ordinal variable
+)
+
+# Run GIBcat with automatic lambda selection and multiple initializations
+result <- GIBcat(X = X, ncl = 3, beta = 1, alpha = 0.95, lambda = -1, nstart = 20)
+
+# Print clustering results
+print(result$Cluster)       # Cluster membership matrix
+print(result$Entropy)       # Entropy of final clustering
+print(result$RelEntropy)    # Relative entropy of final clustering
+print(result$MutualInfo)    # Mutual information between Y and T
+
+
+
+cleanEx()
+nameEx("GIBcont")
+### * GIBcont
+
+flush(stderr()); flush(stdout())
+
+### Name: GIBcont
+### Title: Cluster Continuous Data Using the Generalised Information
+###   Bottleneck Algorithm
+### Aliases: GIBcont
+### Keywords: clustering
+
+### ** Examples
+
+# Generate simulated continuous data
+set.seed(123)
+X <- matrix(rnorm(1000), ncol = 5)  # 200 observations, 5 features
+
+# Run GIBcont with automatic bandwidth selection and multiple initializations
+result <- GIBcont(X = X, ncl = 2, beta = 1, alpha = 0.95, s = -1, nstart = 20)
+
+# Print clustering results
+print(result$Cluster)       # Cluster membership matrix
+print(result$Entropy)       # Entropy of final clustering
+print(result$RelEntropy)    # Relative entropy of final clustering
+print(result$MutualInfo)    # Mutual information between Y and T
+
+
+
+cleanEx()
+nameEx("GIBmix")
+### * GIBmix
+
+flush(stderr()); flush(stdout())
+
+### Name: GIBmix
+### Title: Generalised Information Bottleneck Clustering for Mixed-Type
+###   Data
+### Aliases: GIBmix
+### Keywords: clustering
+
+### ** Examples
+
+# Example dataset with categorical, ordinal, and continuous variables
+data <- data.frame(
+  cat_var = factor(sample(letters[1:3], 100, replace = TRUE)),      # Nominal categorical variable
+  ord_var = factor(sample(c("low", "medium", "high"), 100, replace = TRUE),
+                   levels = c("low", "medium", "high"),
+                   ordered = TRUE),                                # Ordinal variable
+  cont_var1 = rnorm(100),                                          # Continuous variable 1
+  cont_var2 = runif(100)                                           # Continuous variable 2
+)
+
+# Perform Mixed-Type Fuzzy Clustering with Generalised IB
+result <- GIBmix(X = data, ncl = 3, beta = 2, alpha = 0.5, catcols = 1:2, contcols = 3:4, nstart = 20)
+
+# Print clustering results
+print(result$Cluster)       # Cluster membership matrix
+print(result$Entropy)       # Entropy of final clustering
+print(result$RelEntropy)    # Relative entropy of final clustering
+print(result$MutualInfo)    # Mutual information between Y and T
+
+
+
+cleanEx()
 nameEx("IBcat")
 ### * IBcat
 
@@ -124,8 +222,8 @@ X <- data.frame(
                 levels = c("low", "medium", "high"), ordered = TRUE)  # Ordinal variable
 )
 
-# Run DIBcat with automatic lambda selection and multiple initializations
-result <- IBcat(X = X, ncl = 3, beta = 1, lambda = -1, nstart = 50)
+# Run IBcat with automatic lambda selection and multiple initializations
+result <- IBcat(X = X, ncl = 3, beta = 15, lambda = -1, nstart = 20)
 
 # Print clustering results
 print(result$Cluster)       # Cluster membership matrix
@@ -152,8 +250,8 @@ flush(stderr()); flush(stdout())
 set.seed(123)
 X <- matrix(rnorm(1000), ncol = 5)  # 200 observations, 5 features
 
-# Run DIBcont with automatic bandwidth selection and multiple initializations
-result <- IBcont(X = X, ncl = 3, beta = 1, s = -1, nstart = 50)
+# Run IBcont with automatic bandwidth selection and multiple initializations
+result <- IBcont(X = X, ncl = 3, beta = 50, s = -1, nstart = 20)
 
 # Print clustering results
 print(result$Cluster)       # Cluster membership matrix
@@ -186,7 +284,7 @@ data <- data.frame(
 )
 
 # Perform Mixed-Type Fuzzy Clustering
-result <- IBmix(X = data, ncl = 3, beta = 2, catcols = 1:2, contcols = 3:4)
+result <- IBmix(X = data, ncl = 3, beta = 2, catcols = 1:2, contcols = 3:4, nstart = 20)
 
 # Print clustering results
 print(result$Cluster)       # Cluster membership matrix

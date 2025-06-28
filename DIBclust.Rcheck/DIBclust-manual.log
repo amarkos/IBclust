@@ -1,9 +1,9 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.11.25) (preloaded format=pdflatex 2022.12.4)  28 JUN 2025 13:17
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.11.25) (preloaded format=pdflatex 2022.12.4)  28 JUN 2025 15:33
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**C:/Users/ec1917/AppData/Local/Temp/Rtmpc79xm9/Rd2pdfca846e24814/Rd2.tex
-(C:/Users/ec1917/AppData/Local/Temp/Rtmpc79xm9/Rd2pdfca846e24814/Rd2.tex
+**C:/Users/ec1917/AppData/Local/Temp/RtmpMTzw2n/Rd2pdf628020da1390/Rd2.tex
+(C:/Users/ec1917/AppData/Local/Temp/RtmpMTzw2n/Rd2pdf628020da1390/Rd2.tex
 LaTeX2e <2022-11-01> patch level 1
 L3 programming layer <2022-11-02>
 (C:\Users\ec1917\AppData\Local\Programs\MiKTeX\tex/latex/base\book.cls
@@ -480,51 +480,81 @@ Overfull \hbox (20.22874pt too wide) in paragraph at lines 374--374
       # Nominal categorical variable[] 
  []
 
-[8]
-Overfull \hbox (19.91667pt too wide) in paragraph at lines 444--445
-\T1/ptm/m/n/10 con-tain-ing only cat-e-gor-i-cal vari-ables, both nom-i-nal and
- or-di-nal. The al-go-rithm op-ti-mizes an information-
- []
-
-[9]
-Overfull \hbox (46.8472pt too wide) in paragraph at lines 482--483
+[8] [9]
+Overfull \hbox (46.8472pt too wide) in paragraph at lines 490--491
 \T1/ptm/m/n/10 for Clus-ter-ing Mixed-Type Data. \T1/ptm/m/it/10 arXiv:2407.033
 89 [stat.ME]\T1/ptm/m/n/10 . Re-trieved from https://arxiv.org/abs/2407.03389 
  []
 
-[10] [11]
-Overfull \hbox (46.8472pt too wide) in paragraph at lines 595--596
+[10] [11] [12]
+Overfull \hbox (46.8472pt too wide) in paragraph at lines 612--613
 \T1/ptm/m/n/10 for Clus-ter-ing Mixed-Type Data. \T1/ptm/m/it/10 arXiv:2407.033
 89 [stat.ME]\T1/ptm/m/n/10 . Re-trieved from https://arxiv.org/abs/2407.03389 
  []
 
-[12] [13] [14]
-Overfull \hbox (46.8472pt too wide) in paragraph at lines 728--729
+[13] [14]
+Overfull \hbox (46.8472pt too wide) in paragraph at lines 753--754
 \T1/ptm/m/n/10 for Clus-ter-ing Mixed-Type Data. \T1/ptm/m/it/10 arXiv:2407.033
 89 [stat.ME]\T1/ptm/m/n/10 . Re-trieved from https://arxiv.org/abs/2407.03389 
  []
 
-
-Overfull \hbox (20.22874pt too wide) in paragraph at lines 743--743
+[15]
+Overfull \hbox (20.22874pt too wide) in paragraph at lines 768--768
  []  \T1/zi4/m/n/9 cat_var = factor(sample(letters[1:3], 100, replace = TRUE)),
       # Nominal categorical variable[] 
  []
 
-[15] (Rd2.ind [16] [17
+
+Overfull \hbox (30.71341pt too wide) in paragraph at lines 777--777
+ []\T1/zi4/m/n/9 result <- GIBmix(X = data, ncl = 3, beta = 2, alpha = 0.5, cat
+cols = 1:2, contcols = 3:4, nstart = 20)[] 
+ []
+
+[16]
+Overfull \hbox (19.91667pt too wide) in paragraph at lines 839--840
+\T1/ptm/m/n/10 con-tain-ing only cat-e-gor-i-cal vari-ables, both nom-i-nal and
+ or-di-nal. The al-go-rithm op-ti-mizes an information-
+ []
+
+[17]
+Overfull \hbox (46.8472pt too wide) in paragraph at lines 877--878
+\T1/ptm/m/n/10 for Clus-ter-ing Mixed-Type Data. \T1/ptm/m/it/10 arXiv:2407.033
+89 [stat.ME]\T1/ptm/m/n/10 . Re-trieved from https://arxiv.org/abs/2407.03389 
+ []
+
+[18] [19]
+Overfull \hbox (46.8472pt too wide) in paragraph at lines 990--991
+\T1/ptm/m/n/10 for Clus-ter-ing Mixed-Type Data. \T1/ptm/m/it/10 arXiv:2407.033
+89 [stat.ME]\T1/ptm/m/n/10 . Re-trieved from https://arxiv.org/abs/2407.03389 
+ []
+
+[20] [21] [22]
+Overfull \hbox (46.8472pt too wide) in paragraph at lines 1123--1124
+\T1/ptm/m/n/10 for Clus-ter-ing Mixed-Type Data. \T1/ptm/m/it/10 arXiv:2407.033
+89 [stat.ME]\T1/ptm/m/n/10 . Re-trieved from https://arxiv.org/abs/2407.03389 
+ []
+
+
+Overfull \hbox (20.22874pt too wide) in paragraph at lines 1138--1138
+ []  \T1/zi4/m/n/9 cat_var = factor(sample(letters[1:3], 100, replace = TRUE)),
+      # Nominal categorical variable[] 
+ []
+
+(Rd2.ind [23] [24
 
 
 ]) (Rd2.aux)
 Package rerunfilecheck Info: File `Rd2.out' has not changed.
-(rerunfilecheck)             Checksum: EA4AD7B6DE2EE68E6629D217CA212945;516.
+(rerunfilecheck)             Checksum: 13F29887C46D9BA2A7E554C04BEBCBC1;751.
  ) 
 Here is how much of TeX's memory you used:
- 10406 strings out of 475281
- 162360 string characters out of 2773593
- 503887 words of memory out of 3000000
- 31620 multiletter control sequences out of 15000+600000
+ 10449 strings out of 475281
+ 162828 string characters out of 2773593
+ 503888 words of memory out of 3000000
+ 31623 multiletter control sequences out of 15000+600000
  506414 words of font info for 73 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 89i,9n,93p,511b,730s stack positions out of 10000i,1000n,20000p,200000b,80000s
+ 89i,9n,93p,512b,730s stack positions out of 10000i,1000n,20000p,200000b,80000s
 {C:/Users/ec1917/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/base/8r.enc}{C
 :/Users/ec1917/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/inconsolata/i4-t1-
 0.enc}<C:/Users/ec1917/AppData/Local/Programs/MiKTeX/fonts/type1/public/inconso
@@ -542,9 +572,9 @@ msfonts/cm/cmsy7.pfb><C:/Users/ec1917/AppData/Local/Programs/MiKTeX/fonts/type1
 1/urw/times/utmr8a.pfb><C:/Users/ec1917/AppData/Local/Programs/MiKTeX/fonts/typ
 e1/urw/times/utmr8a.pfb><C:/Users/ec1917/AppData/Local/Programs/MiKTeX/fonts/ty
 pe1/urw/times/utmri8a.pfb>
-Output written on Rd2.pdf (17 pages, 224430 bytes).
+Output written on Rd2.pdf (24 pages, 256403 bytes).
 PDF statistics:
- 298 PDF objects out of 1000 (max. 8388607)
- 87 named destinations out of 1000 (max. 500000)
- 57 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 398 PDF objects out of 1000 (max. 8388607)
+ 127 named destinations out of 1000 (max. 500000)
+ 81 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -97,7 +97,7 @@ IBcat <- function(X, ncl, beta, randinit = NULL, lambda = -1,
   px <- pxy_list$px
   hy <- pxy_list$hy
   
-  # Run DIB iteration for clustering
+  # Run IB iteration for clustering
   best_clust <- IBmix_iterate(X, ncl = ncl, beta = beta, randinit = randinit, tol = 0,
                               py_x = py_x, hy = hy, px = px, maxiter = maxiter,
                               bws_vec = bws_vec, contcols = c(),

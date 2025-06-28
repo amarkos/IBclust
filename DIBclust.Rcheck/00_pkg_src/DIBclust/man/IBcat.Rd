@@ -87,8 +87,8 @@ X <- data.frame(
                 levels = c("low", "medium", "high"), ordered = TRUE)  # Ordinal variable
 )
 
-# Run DIBcat with automatic lambda selection and multiple initializations
-result <- IBcat(X = X, ncl = 3, beta = 1, lambda = -1, nstart = 50)
+# Run IBcat with automatic lambda selection and multiple initializations
+result <- IBcat(X = X, ncl = 3, beta = 15, lambda = -1, nstart = 20)
 
 # Print clustering results
 print(result$Cluster)       # Cluster membership matrix
