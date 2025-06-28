@@ -1,9 +1,9 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.11.25) (preloaded format=pdflatex 2022.12.4)  27 JUN 2025 21:05
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.11.25) (preloaded format=pdflatex 2022.12.4)  28 JUN 2025 13:17
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**C:/Users/ec1917/AppData/Local/Temp/Rtmp6tdERw/Rd2pdf1860694a1ee8/Rd2.tex
-(C:/Users/ec1917/AppData/Local/Temp/Rtmp6tdERw/Rd2pdf1860694a1ee8/Rd2.tex
+**C:/Users/ec1917/AppData/Local/Temp/Rtmpc79xm9/Rd2pdfca846e24814/Rd2.tex
+(C:/Users/ec1917/AppData/Local/Temp/Rtmpc79xm9/Rd2pdfca846e24814/Rd2.tex
 LaTeX2e <2022-11-01> patch level 1
 L3 programming layer <2022-11-02>
 (C:\Users\ec1917\AppData\Local\Programs\MiKTeX\tex/latex/base\book.cls
@@ -519,12 +519,12 @@ Package rerunfilecheck Info: File `Rd2.out' has not changed.
  ) 
 Here is how much of TeX's memory you used:
  10406 strings out of 475281
- 162371 string characters out of 2773593
+ 162360 string characters out of 2773593
  503887 words of memory out of 3000000
  31620 multiletter control sequences out of 15000+600000
  506414 words of font info for 73 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 89i,9n,93p,512b,730s stack positions out of 10000i,1000n,20000p,200000b,80000s
+ 89i,9n,93p,511b,730s stack positions out of 10000i,1000n,20000p,200000b,80000s
 {C:/Users/ec1917/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/base/8r.enc}{C
 :/Users/ec1917/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/inconsolata/i4-t1-
 0.enc}<C:/Users/ec1917/AppData/Local/Programs/MiKTeX/fonts/type1/public/inconso
