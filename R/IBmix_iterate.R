@@ -71,7 +71,8 @@ IBmix_iterate <- function(X, ncl, beta, randinit,
       qt_x <- qt_list$qt_x
       qy_t <- qy_t_step_cpp(py_x, qt_x, qt, px)
       qt_x <- qt_x_step_ib_cpp(n_rows = nrow(X), T = qt_list$T, beta = beta, py_x, qy_t, as.numeric(qt))
-      Lval <- calc_metrics(beta = beta, qt, qy_t, hy, px, qt_x, quiet = TRUE)[[1]]
+      metrics <- calc_metrics(beta = beta, qt, qy_t, hy, px, qt_x, quiet = TRUE)
+      Lval <- metrics[[4]] - beta * metrics[[3]]
       #cat('I(Y;T) =', Lval, '\n')
       # Initialize variables for convergence checking
       convergence_threshold <- 1e-5  # Set a small threshold for convergence
@@ -114,7 +115,8 @@ IBmix_iterate <- function(X, ncl, beta, randinit,
           change_in_qt_x <- sum(abs(qt_x - old_qt_x))
         }
         #Lval <- calc_metrics(beta = beta, qt, qy_t, hy, quiet = TRUE)[[1]]
-        Lval <- calc_metrics(beta = beta, qt, qy_t, hy, px, qt_x, quiet = TRUE)[[5]]
+        metrics <- calc_metrics(beta = beta, qt, qy_t, hy, px, qt_x, quiet = TRUE)
+        Lval <- metrics[[4]] - beta * metrics[[3]]
         ### STOP BASED ON LVAL
         #if (Lval < Lval_old){
         #  qt_x <- old_qt_x
@@ -145,7 +147,7 @@ IBmix_iterate <- function(X, ncl, beta, randinit,
       metrics <- calc_metrics(beta = beta, qt, qy_t, hy, px, qt_x, quiet = TRUE)
       best_clust$ixt <- c(best_clust$ixt, metrics[[4]])
       best_clust$iyt <- c(best_clust$iyt, metrics[[3]])
-      best_clust$losses <- c(best_clust$losses, metrics[[5]])
+      best_clust$losses <- c(best_clust$losses, metrics[[4]] - beta * metrics[[3]])
       if (verbose){
         message('Run ', i, ' complete.\n')
       }
