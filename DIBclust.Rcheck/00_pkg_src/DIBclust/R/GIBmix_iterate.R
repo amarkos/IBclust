@@ -146,6 +146,7 @@ GIBmix_iterate <- function(X, ncl, beta, alpha, randinit,
       #if (Lval < best_clust[[1]]){
       if (Lval < Loss){
         #   best_clust[[1]] <- Lval
+        Loss <- Lval
         best_clust[[1]] <- qt_x
         metrics <- calc_metrics(beta = beta, qt, qy_t, hy, px, qt_x, quiet = TRUE)
         best_clust[[2]] <- as.numeric(metrics[[1]])

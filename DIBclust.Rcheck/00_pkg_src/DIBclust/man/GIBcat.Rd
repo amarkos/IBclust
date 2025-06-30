@@ -96,7 +96,7 @@ X <- data.frame(
 )
 
 # Run GIBcat with automatic lambda selection and multiple initializations
-result <- GIBcat(X = X, ncl = 3, beta = 1, alpha = 0.95, lambda = -1, nstart = 20)
+result <- GIBcat(X = X, ncl = 2, beta = 25, alpha = 0.75, lambda = -1, nstart = 20)
 
 # Print clustering results
 print(result$Cluster)       # Cluster membership matrix

@@ -148,6 +148,7 @@ DIBmix_iterate <- function(X, ncl, randinit,
       #if (Lval < best_clust[[1]]){
       if (Lval > Loss){
      #   best_clust[[1]] <- Lval
+        Loss <- Lval
         best_clust[[1]] <- apply(qt_x, 2, function(col) which(col == 1))
         metrics <- calc_metrics(beta = beta, qt, qy_t, hy, px, qt_x, quiet = TRUE)
         best_clust[[2]] <- metrics[[1]]
