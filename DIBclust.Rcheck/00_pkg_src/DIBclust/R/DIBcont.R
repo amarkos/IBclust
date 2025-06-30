@@ -1,5 +1,5 @@
 DIBcont <- function(X, ncl, randinit = NULL, s = -1, scale = TRUE,
-                    maxiter = 100, nstart = 100, select_features = FALSE,
+                    maxiter = 100, nstart = 100,
                     verbose = FALSE) {
 
   # Validate inputs
@@ -19,10 +19,7 @@ DIBcont <- function(X, ncl, randinit = NULL, s = -1, scale = TRUE,
     stop("'nstart' must be a positive integer.")
   }
 
-  if (!is.logical(select_features)) {
-    stop("'select_features' must be a logical value (TRUE or FALSE).")
-  }
-
+  
   if (!is.null(randinit) && (!is.numeric(randinit) || length(randinit) != nrow(X))) {
     stop("'randinit' must be a numeric vector with length equal to the number of rows in 'X', or NULL.")
   }
@@ -76,15 +73,8 @@ DIBcont <- function(X, ncl, randinit = NULL, s = -1, scale = TRUE,
   px <- pxy_list$px
   hy <- pxy_list$hy
 
-  # Feature selection using eigengap heuristic (optional)
-  if (select_features) {
-    bw <- rep(s, ncol(X))
-    bws_vec <- eigengap(data = X, contcols = seq_len(ncol(X)), catcols = c(),
-                        bw = bw, ncl = ncl)
-  } else {
-    bws_vec <- rep(s, ncol(X))
-  }
-
+  bws_vec <- rep(s, ncol(X))
+  
   # Run DIB iteration for clustering
   best_clust <- DIBmix_iterate(X, ncl = ncl, randinit = randinit, tol = 0,
                                py_x = py_x, hy = hy, px = px, maxiter = maxiter,

@@ -12,7 +12,6 @@ relevant information in the cluster assignments while achieving effective data c
 GIBmix(X, ncl, beta, alpha, catcols, contcols, randinit = NULL,
        lambda = -1, s = -1, scale = TRUE,
        maxiter = 100, nstart = 100,
-       select_features = FALSE,
        verbose = FALSE)
 }
 \arguments{
@@ -44,8 +43,6 @@ A numeric value or vector specifying the bandwidth parameter(s) for continuous v
 \item{maxiter}{The maximum number of iterations allowed for the clustering algorithm. Defaults to \eqn{100}.}
 
 \item{nstart}{The number of random initializations to run. The best clustering solution is returned. Defaults to \eqn{100}.}
-
-\item{select_features}{A logical value indicating whether to perform feature selection based on the eigengap heuristic. Defaults to \code{FALSE}.}
 
 \item{verbose}{Logical. Default to \code{FALSE} to suppress progress messages. Change to \code{TRUE} to print.}
 }
@@ -100,6 +97,7 @@ Here, \eqn{s}, \eqn{\lambda}, and \eqn{\nu} are bandwidth or smoothing parameter
 
 \examples{
 # Example dataset with categorical, ordinal, and continuous variables
+set.seed(123)
 data <- data.frame(
   cat_var = factor(sample(letters[1:3], 100, replace = TRUE)),      # Nominal categorical variable
   ord_var = factor(sample(c("low", "medium", "high"), 100, replace = TRUE),

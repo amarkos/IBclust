@@ -1,5 +1,5 @@
 GIBcat <- function(X, ncl, beta, alpha, randinit = NULL, lambda = -1,
-                   maxiter = 100, nstart = 100, select_features = FALSE,
+                   maxiter = 100, nstart = 100,
                    verbose = FALSE) {
   
   # Validate inputs
@@ -27,9 +27,6 @@ GIBcat <- function(X, ncl, beta, alpha, randinit = NULL, lambda = -1,
     stop("'nstart' must be a positive integer.")
   }
   
-  if (!is.logical(select_features)) {
-    stop("'select_features' must be a logical value (TRUE or FALSE).")
-  }
   
   if (!is.null(randinit) && (!is.numeric(randinit) || length(randinit) != nrow(X))) {
     stop("'randinit' must be a numeric vector with length equal to the number of rows in 'X', or NULL.")
@@ -58,13 +55,11 @@ GIBcat <- function(X, ncl, beta, alpha, randinit = NULL, lambda = -1,
     message('alpha = 1; running IBcat.')
     best_clust <- IBcat(X, ncl, beta, randinit,
                         lambda, maxiter, nstart,
-                        select_features,
                         verbose)
   } else if (alpha == 0){
     message('alpha = 0; running DIBcat - value of beta is ignored.')
     best_clust <- DIBcat(X, ncl, randinit,
                          lambda, maxiter, nstart,
-                         select_features,
                          verbose)
   } else {
     # Helper function to preprocess categorical data
@@ -99,14 +94,7 @@ GIBcat <- function(X, ncl, beta, alpha, randinit = NULL, lambda = -1,
         # Compute lambda for categorical data
         lambda <- compute_lambda_cat(X, lambda)
     
-    # Feature selection (optional)
-    if (select_features) {
-      bw <- lambda  # Use lambda as bandwidth for categorical variables
-      bws_vec <- eigengap(data = X, contcols = c(), catcols = seq_len(ncol(X)),
-                          bw = bw, ncl = ncl)
-    } else {
-      bws_vec <- lambda
-    }
+    bws_vec <- lambda
     
     # Compute joint probability density for categorical variables
     pxy_list <- coord_to_pxy_R(as.data.frame(X), s = 0, cat_cols = seq_len(ncol(X)),

@@ -180,6 +180,7 @@ flush(stderr()); flush(stdout())
 ### ** Examples
 
 # Example dataset with categorical, ordinal, and continuous variables
+set.seed(123)
 data <- data.frame(
   cat_var = factor(sample(letters[1:3], 100, replace = TRUE)),      # Nominal categorical variable
   ord_var = factor(sample(c("low", "medium", "high"), 100, replace = TRUE),
@@ -275,6 +276,7 @@ flush(stderr()); flush(stdout())
 ### ** Examples
 
 # Example dataset with categorical, ordinal, and continuous variables
+set.seed(123)
 data <- data.frame(
   cat_var = factor(sample(letters[1:3], 100, replace = TRUE)),      # Nominal categorical variable
   ord_var = factor(sample(c("low", "medium", "high"), 100, replace = TRUE),

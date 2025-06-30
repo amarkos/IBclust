@@ -1,5 +1,5 @@
 IBcont <- function(X, ncl, beta, randinit = NULL, s = -1, scale = TRUE,
-                   maxiter = 100, nstart = 100, select_features = FALSE,
+                   maxiter = 100, nstart = 100,
                    verbose = FALSE) {
   
   # Validate inputs
@@ -21,10 +21,6 @@ IBcont <- function(X, ncl, beta, randinit = NULL, s = -1, scale = TRUE,
   
   if (!is.numeric(nstart) || nstart <= 0 || nstart != round(nstart)) {
     stop("'nstart' must be a positive integer.")
-  }
-  
-  if (!is.logical(select_features)) {
-    stop("'select_features' must be a logical value (TRUE or FALSE).")
   }
   
   if (!is.null(randinit) && (!is.numeric(randinit) || length(randinit) != nrow(X))) {
@@ -80,14 +76,7 @@ IBcont <- function(X, ncl, beta, randinit = NULL, s = -1, scale = TRUE,
   px <- pxy_list$px
   hy <- pxy_list$hy
   
-  # Feature selection using eigengap heuristic (optional)
-  if (select_features) {
-    bw <- rep(s, ncol(X))
-    bws_vec <- eigengap(data = X, contcols = seq_len(ncol(X)), catcols = c(),
-                        bw = bw, ncl = ncl)
-  } else {
-    bws_vec <- rep(s, ncol(X))
-  }
+  bws_vec <- rep(s, ncol(X))
   
   # Run IB iteration for clustering
   best_clust <- IBmix_iterate(X, ncl = ncl, beta = beta, randinit = randinit, tol = 0,

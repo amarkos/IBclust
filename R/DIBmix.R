@@ -1,7 +1,6 @@
 DIBmix <- function(X, ncl, catcols, contcols, randinit = NULL,
                    lambda = -1, s = -1, scale = TRUE,
                    maxiter = 100, nstart = 100,
-                   select_features = FALSE,
                    verbose = FALSE) {
 
   # Validate inputs
@@ -37,10 +36,7 @@ DIBmix <- function(X, ncl, catcols, contcols, randinit = NULL,
     stop("'nstart' must be a positive integer.")
   }
 
-  if (!is.logical(select_features)) {
-    stop("'select_features' must be a logical value (TRUE or FALSE).")
-  }
-
+  
   if (!is.null(randinit) && (!is.numeric(randinit) || length(randinit) != nrow(X))) {
     stop("'randinit' must be a numeric vector with length equal to the number of rows in 'X', or NULL.")
   }
@@ -154,14 +150,8 @@ DIBmix <- function(X, ncl, catcols, contcols, randinit = NULL,
   bw[contcols] <- s
   ##bw[catcols] <- lambda - eps_star
   bw[catcols] <- lambda
-  # Use eigengap heuristic for feature selection
-  if (select_features){
-    bws_vec <- eigengap(data = X, contcols = contcols,
-                        catcols = catcols,
-                        bw = bw, ncl = ncl)
-  } else {
-    bws_vec <- bw
-  }
+  
+  bws_vec <- bw
   # Construct joint density with final bandwidths
   pxy_list <- coord_to_pxy_R(X, s = bws_vec[contcols],
                              cat_cols = catcols, cont_cols = contcols,

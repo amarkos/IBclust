@@ -1,5 +1,5 @@
 GIBcont <- function(X, ncl, beta, alpha, randinit = NULL, s = -1, scale = TRUE,
-                    maxiter = 100, nstart = 100, select_features = FALSE,
+                    maxiter = 100, nstart = 100,
                     verbose = FALSE) {
   
   # Validate inputs
@@ -27,10 +27,6 @@ GIBcont <- function(X, ncl, beta, alpha, randinit = NULL, s = -1, scale = TRUE,
     stop("'nstart' must be a positive integer.")
   }
   
-  if (!is.logical(select_features)) {
-    stop("'select_features' must be a logical value (TRUE or FALSE).")
-  }
-  
   if (!is.null(randinit) && (!is.numeric(randinit) || length(randinit) != nrow(X))) {
     stop("'randinit' must be a numeric vector with length equal to the number of rows in 'X', or NULL.")
   }
@@ -47,13 +43,11 @@ GIBcont <- function(X, ncl, beta, alpha, randinit = NULL, s = -1, scale = TRUE,
     message('alpha = 1; running IBcont.')
     best_clust <- IBcont(X, ncl, beta, randinit,
                         s, scale, maxiter, nstart,
-                        select_features,
                         verbose)
   } else if (alpha == 0){
     message('alpha = 0; running DIBcont - value of beta is ignored.')
     best_clust <- DIBcont(X, ncl, randinit,
                          s, scale, maxiter, nstart,
-                         select_features,
                          verbose)
   } else {
     # Helper function to preprocess data
@@ -97,14 +91,7 @@ GIBcont <- function(X, ncl, beta, alpha, randinit = NULL, s = -1, scale = TRUE,
     px <- pxy_list$px
     hy <- pxy_list$hy
     
-    # Feature selection using eigengap heuristic (optional)
-    if (select_features) {
-      bw <- rep(s, ncol(X))
-      bws_vec <- eigengap(data = X, contcols = seq_len(ncol(X)), catcols = c(),
-                          bw = bw, ncl = ncl)
-    } else {
-      bws_vec <- rep(s, ncol(X))
-    }
+    bws_vec <- rep(s, ncol(X))
     
     # Run GIB iteration for clustering
     best_clust <- GIBmix_iterate(X, ncl = ncl, beta = beta, alpha = alpha, randinit = randinit, tol = 0,
