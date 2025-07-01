@@ -1,0 +1,24 @@
+AIBcat                  Cluster Categorical Data Using the
+                        Agglomerative Information Bottleneck Algorithm
+AIBcont                 Cluster Continuous Data Using the Agglomerative
+                        Information Bottleneck Algorithm
+AIBmix                  Agglomerative Information Bottleneck Clustering
+                        for Mixed-Type Data
+DIBcat                  Cluster Categorical Data Using the
+                        Deterministic Information Bottleneck Algorithm
+DIBcont                 Cluster Continuous Data Using the Deterministic
+                        Information Bottleneck Algorithm
+DIBmix                  Deterministic Information Bottleneck Clustering
+                        for Mixed-Type Data
+GIBcat                  Cluster Categorical Data Using the Generalised
+                        Information Bottleneck Algorithm
+GIBcont                 Cluster Continuous Data Using the Generalised
+                        Information Bottleneck Algorithm
+GIBmix                  Generalised Information Bottleneck Clustering
+                        for Mixed-Type Data
+IBcat                   Cluster Categorical Data Using the Information
+                        Bottleneck Algorithm
+IBcont                  Cluster Continuous Data Using the Information
+                        Bottleneck Algorithm
+IBmix                   Information Bottleneck Clustering for
+                        Mixed-Type Data
