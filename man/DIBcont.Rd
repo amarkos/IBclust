@@ -63,7 +63,7 @@ The bandwidth parameter \eqn{s}, which controls the smoothness of the density es
 \examples{
 # Generate simulated continuous data
 set.seed(123)
-X <- matrix(rnorm(1000), ncol = 5)  # 200 observations, 5 features
+X <- matrix(rnorm(200), ncol = 5)  # 200 observations, 5 features
 
 # Run DIBcont with automatic bandwidth selection and multiple initializations
 result <- DIBcont(X = X, ncl = 3, s = -1, nstart = 50)
