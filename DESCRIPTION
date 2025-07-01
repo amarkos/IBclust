@@ -1,13 +1,24 @@
 Package: IBclust
 Type: Package
-Title: Deterministic Information Bottleneck Method for Clustering Mixed-Type Data
+Title: Information Bottleneck Methods for Clustering Mixed-Type Data
 Version: 1.2
 Author: Efthymios Costa, Ioanna Papatsouma, Angelos Markos
-Maintainer: Angelos Markos <amarkos@eled.duth.gr>
-Description: Implements the Deterministic Information Bottleneck method for clustering datasets with both categorical and continuous variables. The package handles data preprocessing, feature selection, and clustering optimization using information-theoretic approaches <doi:10.48550/arXiv.2407.03389>. 
+Maintainer: Angelos Markos <amarkos@gmail.com>
+Description: Implements multiple variants of the Information Bottleneck (IB) method 
+    for clustering datasets containing mixed-type variables (nominal, ordinal, and 
+    continuous). The package provides deterministic, agglomerative, generalized, 
+    and standard IB clustering algorithms that preserve relevant information while 
+    forming interpretable clusters. The Deterministic Information Bottleneck is described in 
+    Costa et al. (2024) <doi:10.48550/arXiv.2407.03389>. The standard IB method 
+    originates from Tishby et al. (2000) doi:10.48550/arXiv.physics/0004057, the agglomerative variant from Slonim and Tishby (1999), 
+    and the generalized IB for Gaussian variables from Chechik et al. (2005).
 License: MIT + file LICENSE
+URL: https://github.com/amarkos/IBclust
+BugReports: https://github.com/amarkos/IBclust/issues
 Encoding: UTF-8
+Depends: R (>= 3.5.0)
 Imports: Rcpp, RcppEigen, stats, utils, np, rje, Rdpack
 LinkingTo: Rcpp, RcppArmadillo, RcppEigen
 RoxygenNote: 7.3.2
 RdMacros: Rdpack
+NeedsCompilation: yes
