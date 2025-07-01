@@ -8,7 +8,7 @@ You can install the latest version of the package directly from GitHub using `de
 
 ```r
 install.packages("devtools")  # Install devtools if not already installed
-devtools::install_github("amarkos/IBclust")  # Install DIBclust from GitHub
+devtools::install_github("amarkos/IBclust")  # Install IBclust from GitHub
 ```
 
 ## Getting Started
