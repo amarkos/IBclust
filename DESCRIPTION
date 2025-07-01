@@ -2,7 +2,16 @@ Package: IBclust
 Type: Package
 Title: Information Bottleneck Methods for Clustering Mixed-Type Data
 Version: 1.2
-Author: Efthymios Costa, Ioanna Papatsouma, Angelos Markos
+Authors@R: c(person(given = "Efthymios",
+                    family = "Costa",
+                    role = "aut"),
+             person(given = "Ioanna",
+                    family = "Papatsouma",
+                    role = "aut"),
+             person(given = "Angelos",
+                    family = "Markos",
+                    role = c("aut", "cre"),
+                    email = "amarkos@gmail.com"))
 Maintainer: Angelos Markos <amarkos@gmail.com>
 Description: Implements multiple variants of the Information Bottleneck (IB) method 
     for clustering datasets containing mixed-type variables (nominal, ordinal, and 
@@ -10,15 +19,17 @@ Description: Implements multiple variants of the Information Bottleneck (IB) met
     and standard IB clustering algorithms that preserve relevant information while 
     forming interpretable clusters. The Deterministic Information Bottleneck is described in 
     Costa et al. (2024) <doi:10.48550/arXiv.2407.03389>. The standard IB method 
-    originates from Tishby et al. (2000) doi:10.48550/arXiv.physics/0004057, the agglomerative variant from Slonim and Tishby (1999), 
+    originates from Tishby et al. (2000) <doi:10.48550/arXiv.physics/0004057>, the agglomerative variant from Slonim and Tishby (1999), 
     and the generalized IB for Gaussian variables from Chechik et al. (2005).
 License: MIT + file LICENSE
-URL: https://github.com/amarkos/IBclust
-BugReports: https://github.com/amarkos/IBclust/issues
 Encoding: UTF-8
 Depends: R (>= 3.5.0)
-Imports: Rcpp, RcppEigen, stats, utils, np, rje, Rdpack
+Imports: Rcpp, stats, utils, np, rje, Rdpack
 LinkingTo: Rcpp, RcppArmadillo, RcppEigen
 RoxygenNote: 7.3.2
 RdMacros: Rdpack
 NeedsCompilation: yes
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
