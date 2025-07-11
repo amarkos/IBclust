@@ -9,7 +9,8 @@ preserve relevant information while forming concise and interpretable cluster re
 }
 \usage{
 IBcont(X, ncl, beta, randinit = NULL, s = -1, scale = TRUE,
-       maxiter = 100, nstart = 100, verbose = FALSE)
+       maxiter = 100, nstart = 100, contkernel = "gaussian",
+       verbose = FALSE)
 }
 \arguments{
   \item{X}{
@@ -36,6 +37,9 @@ A numeric value or vector specifying the bandwidth parameter(s) for continuous v
   \item{nstart}{
     The number of random initializations to run. The best clustering result (based on the information-theoretic criterion) is returned. Defaults to \code{100}.
   }
+  \item{contkernel}{
+    Kernel used for continuous variables. Can be one of \code{gaussian} (default) or \code{epanechnikov}.
+  }
   \item{verbose}{
     Logical. Default to \code{FALSE} to suppress progress messages. Change to \code{TRUE} to print.
   }
@@ -56,11 +60,17 @@ A list containing the following elements:
 \details{
 The \code{IBcont} function applies the Information Bottleneck algorithm to do fuzzy clustering of datasets comprising only continuous variables. This method leverages an information-theoretic objective to optimize the trade-off between data compression and the preservation of relevant information about the underlying data distribution.
 
-The function utilizes the Gaussian kernel \insertCite{silverman_density_1998}{IBclust} for estimating probability densities of continuous features. The kernel is defined as:
+To estimate the distributions of continuous features, the function utilizes specialized kernel functions:
 
-\deqn{K_c\left(\frac{x - x'}{s}\right) = \frac{1}{\sqrt{2\pi}} \exp\left\{-\frac{\left(x - x'\right)^2}{2s^2}\right\}, \quad s > 0.}
-
-The bandwidth parameter \eqn{s}, which controls the smoothness of the density estimate, is automatically determined by the algorithm if not provided by the user.
+\itemize{
+  \item \emph{Gaussian (RBF) kernel \insertCite{silverman_density_1998}{IBclust}:}
+  \deqn{K_c\left(\frac{x - x'}{s}\right) = \frac{1}{\sqrt{2\pi}} \exp\left\{-\frac{\left(x - x'\right)^2}{2s^2}\right\}, \quad s > 0.}
+  \item \emph{Epanechnikov kernel \insertCite{epanechnikov1969non}{IBclust}:}
+  \deqn{K_c(x - x'; s) = \begin{cases}
+    \frac{3}{4\sqrt{5}}\left(1 - \frac{(x-x')^2}{5s^2} \right), & \text{if } \frac{(x - x')^2}{s^2} < 5 \\
+    0, & \text{otherwise}
+\end{cases}, \quad s > 0.}
+}
 }
 
 
@@ -88,6 +98,8 @@ Efthymios Costa, Ioanna Papatsouma, Angelos Markos
 \insertRef{strouse_ib_2019}{IBclust}
 
 \insertRef{silverman_density_1998}{IBclust}
+
+\insertRef{epanechnikov1969non}{IBclust}
 }
 }
 \keyword{clustering}

@@ -10,6 +10,7 @@ different categorical data types (nominal and ordinal) effectively \insertCite{c
 \usage{
 DIBcat(X, ncl, randinit = NULL, lambda = -1,
        maxiter = 100, nstart = 100,
+       nomkernel = "aitchisonaitken", ordkernel = "liracine",
        verbose = FALSE)
 }
 \arguments{
@@ -33,8 +34,14 @@ A numeric value or vector specifying the bandwidth parameter for categorical var
   \item{nstart}{
     The number of random initializations to run. The best clustering result (based on the information-theoretic criterion) is returned. Defaults to \eqn{100}.
   }
+  \item{nomkernel}{
+    Kernel used for nominal (unordered categorical) variables. Can be one of \code{aitchisonaitken} (default) or \code{liracine}.
+  }
+  \item{ordkernel}{
+    Kernel used for ordinal (ordered categorical) variables. Can be one of \code{liracine} (default) or \code{wangvanryzin}.
+  }
   \item{verbose}{
-    Logical. Default to \code{FALSE} to suppress progress messages. Change to \code{TRUE} to print.
+    Logical. Defaults to \code{FALSE} to suppress progress messages. Change to \code{TRUE} to print.
   }
 }
 
@@ -52,20 +59,37 @@ A list containing the following elements:
 \details{
 The \code{DIBcat} function applies the Deterministic Information Bottleneck algorithm to cluster datasets containing only categorical variables, both nominal and ordinal. The algorithm optimizes an information-theoretic objective to balance the trade-off between data compression and the retention of information about the original distribution.
 
-To estimate the distributions of categorical features, the function utilizes specialized kernel functions, as follows:
+To estimate the distributions of categorical features, the function utilizes specialized kernel functions.
 
+For nominal (unordered categorical) variables, the kernel functions implemented are:
+
+\itemize{
+\item \emph{Aitchison & Aitken kernel \insertCite{aitchison_kernel_1976}{IBclust}:}
 \deqn{K_u(x = x'; \lambda) = \begin{cases}
     1 - \lambda, & \text{if } x = x' \\
     \frac{\lambda}{\ell - 1}, & \text{otherwise}
-\end{cases}, \quad 0 \leq \lambda \leq \frac{\ell - 1}{\ell},}
-where \eqn{\ell} is the number of categories, and \eqn{\lambda} controls the smoothness of the Aitchison & Aitken kernel for nominal variables \insertCite{aitchison_kernel_1976}{IBclust}.
+\end{cases}, \quad 0 \leq \lambda \leq \frac{\ell - 1}{\ell}.}
+\item \emph{Li & Racine kernel \insertCite{ouyang2006cross}{IBclust}:}
+\deqn{K_u(x = x'; \lambda) = \begin{cases}
+    1, & \text{if } x = x' \\
+    \lambda, & \text{otherwise}
+\end{cases}, \quad 0 \leq \lambda \leq 1.}
+}
 
+For ordinal (ordered categorical) variables, the kernel functions implemented are:
+
+\itemize{
+\item \emph{Li & Racine kernel \insertCite{li_nonparametric_2003}{IBclust}:}
 \deqn{K_o(x = x'; \nu) = \begin{cases}
     1, & \text{if } x = x' \\
     \nu^{|x - x'|}, & \text{otherwise}
-\end{cases}, \quad 0 \leq \nu \leq 1,}
-where \eqn{\nu} is the bandwidth parameter for ordinal variables, accounting for the ordinal relationship between categories \insertCite{li_nonparametric_2003}{IBclust}.
-
+\end{cases}, \quad 0 \leq \nu \leq 1.}
+\item \emph{Wang & van Ryzin kernel \insertCite{wang1981class}{IBclust}:}
+\deqn{K_o(x = x'; \nu) = \begin{cases}
+    1 - \nu, & \text{if } x = x' \\
+    \frac{1-\nu}{2}\nu^{|x - x'|}, & \text{otherwise}
+\end{cases}, \quad 0 \leq \nu \leq 1.}
+}
 Here, \eqn{\lambda}, and \eqn{\nu} are bandwidth or smoothing parameters, while \eqn{\ell} is the number of levels of the categorical variable. The lambda parameter is automatically determined by the algorithm if not provided by the user. For ordinal variables, the lambda parameter of the function is used to define \eqn{\nu}.
 }
 
@@ -101,6 +125,10 @@ Efthymios Costa, Ioanna Papatsouma, Angelos Markos
 \insertRef{aitchison_kernel_1976}{IBclust}
 
 \insertRef{li_nonparametric_2003}{IBclust}
+
+\insertRef{ouyang2006cross}{IBclust}
+
+\insertRef{wang1981class}{IBclust}
 }
 }
 \keyword{clustering}

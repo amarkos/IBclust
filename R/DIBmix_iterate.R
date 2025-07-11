@@ -49,7 +49,7 @@ DIBmix_iterate <- function(X, ncl, randinit,
     for (i in c(1:runs)){
       #beta_vec <- c(beta0)
       beta_vec <- c()
-      set.seed(i)
+      #set.seed(i)
       # 2. Initialize qt_x (randomly)
       qt_x_init <- matrix(0, nrow = ncl, ncol = nrow(X))
       if (is.null(randinit)){

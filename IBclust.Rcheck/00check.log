@@ -1,4 +1,4 @@
-* using log directory 'C:/Users/ec1917/Desktop/DIBclust/IBclust.Rcheck'
+* using log directory 'C:/Users/ec1917/Desktop/IBclust/IBclust.Rcheck'
 * using R version 4.4.2 (2024-10-31 ucrt)
 * using platform: x86_64-w64-mingw32
 * R was compiled by
@@ -8,7 +8,7 @@
 * using session charset: UTF-8
 * checking for file 'IBclust/DESCRIPTION' ... OK
 * checking extension type ... Package
-* this is package 'IBclust' version '1.2'
+* this is package 'IBclust' version '1.2.1'
 * package encoding: UTF-8
 * checking package namespace information ... OK
 * checking package dependencies ... OK

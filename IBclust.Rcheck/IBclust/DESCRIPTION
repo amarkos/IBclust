@@ -1,18 +1,38 @@
 Package: IBclust
 Type: Package
-Title: Deterministic Information Bottleneck Method for Clustering
-        Mixed-Type Data
-Version: 1.2
-Author: Efthymios Costa, Ioanna Papatsouma, Angelos Markos
-Maintainer: Angelos Markos <amarkos@eled.duth.gr>
-Description: Implements the Deterministic Information Bottleneck method for clustering datasets with both categorical and continuous variables. The package handles data preprocessing, feature selection, and clustering optimization using information-theoretic approaches <doi:10.48550/arXiv.2407.03389>. 
+Title: Information Bottleneck Methods for Clustering Mixed-Type Data
+Version: 1.2.1
+Authors@R: c(person(given = "Efthymios",
+                    family = "Costa",
+                    role = "aut"),
+             person(given = "Ioanna",
+                    family = "Papatsouma",
+                    role = "aut"),
+             person(given = "Angelos",
+                    family = "Markos",
+                    role = c("aut", "cre"),
+                    email = "amarkos@gmail.com"))
+Description: Implements multiple variants of the Information Bottleneck ('IB') method 
+    for clustering datasets containing mixed-type variables (nominal, ordinal, and 
+    continuous). The package provides deterministic, agglomerative, generalized, 
+    and standard 'IB' clustering algorithms that preserve relevant information while 
+    forming interpretable clusters. The Deterministic Information Bottleneck is described in 
+    Costa et al. (2024) <doi:10.48550/arXiv.2407.03389>. The standard 'IB' method 
+    originates from Tishby et al. (2000) <doi:10.48550/arXiv.physics/0004057>, 
+    the agglomerative variant from Slonim and Tishby (1999) <https://papers.nips.cc/paper/1651-agglomerative-information-bottleneck>, 
+    and the generalized 'IB' from Strouse and Schwab (2017) <doi:10.1162/NECO_a_00961>.
 License: MIT + file LICENSE
 Encoding: UTF-8
-Imports: Rcpp, RcppEigen, stats, utils, np, rje, Rdpack
+Depends: R (>= 3.5.0)
+Imports: Rcpp, stats, utils, np, rje, Rdpack, RcppEigen
 LinkingTo: Rcpp, RcppArmadillo, RcppEigen
 RoxygenNote: 7.3.2
 RdMacros: Rdpack
 NeedsCompilation: yes
-Packaged: 2025-07-01 16:17:44 UTC; ec1917
-Built: R 4.4.2; x86_64-w64-mingw32; 2025-07-01 16:18:05 UTC; windows
+Packaged: 2025-07-11 21:52:28 UTC; ec1917
+Author: Efthymios Costa [aut],
+  Ioanna Papatsouma [aut],
+  Angelos Markos [aut, cre]
+Maintainer: Angelos Markos <amarkos@gmail.com>
+Built: R 4.4.2; x86_64-w64-mingw32; 2025-07-11 21:52:57 UTC; windows
 Archs: x64

@@ -1,5 +1,5 @@
 IBcont <- function(X, ncl, beta, randinit = NULL, s = -1, scale = TRUE,
-                   maxiter = 100, nstart = 100,
+                   maxiter = 100, nstart = 100, contkernel = "gaussian",
                    verbose = FALSE) {
   
   # Validate inputs
@@ -26,6 +26,10 @@ IBcont <- function(X, ncl, beta, randinit = NULL, s = -1, scale = TRUE,
   if (!is.null(randinit) && (!is.numeric(randinit) || length(randinit) != nrow(X))) {
     stop("'randinit' must be a numeric vector with length equal to the number of rows in 'X', or NULL.")
   }
+  # Check kernel types
+  if (!contkernel %in% c("gaussian", "epanechnikov")){
+    stop("'contkernel' can only be one of 'gaussian' or 'epanechnikov'")
+  }
   
   # Validate s
   if (!is.numeric(s) ||
@@ -43,13 +47,14 @@ IBcont <- function(X, ncl, beta, randinit = NULL, s = -1, scale = TRUE,
   # Bandwidth computation
   if (length(s) == 1){
     if (s == -1){
-      s <- compute_bandwidth_cont(X)
+      s <- compute_bandwidth_cont(X, contkernel = contkernel)
     }
   }
   
   # Compute joint probability density for continuous variables
   pxy_list <- coord_to_pxy_R(as.data.frame(X), s = s, cat_cols = c(),
-                             cont_cols = seq_len(ncol(X)), lambda = 0)
+                             cont_cols = seq_len(ncol(X)), lambda = 0,
+                             contkernel = contkernel)
   py_x <- pxy_list$py_x
   px <- pxy_list$px
   hy <- pxy_list$hy

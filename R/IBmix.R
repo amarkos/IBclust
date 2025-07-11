@@ -1,6 +1,7 @@
 IBmix <- function(X, ncl, beta, catcols, contcols, randinit = NULL,
                   lambda = -1, s = -1, scale = TRUE,
-                  maxiter = 100, nstart = 100,
+                  maxiter = 100, nstart = 100, contkernel = "gaussian",
+                  nomkernel = "aitchisonaitken", ordkernel = "liracine",
                   verbose = FALSE) {
   
   # Validate inputs
@@ -44,6 +45,17 @@ IBmix <- function(X, ncl, beta, catcols, contcols, randinit = NULL,
     stop("'randinit' must be a numeric vector with length equal to the number of rows in 'X', or NULL.")
   }
   
+  # Check kernel types
+  if (!contkernel %in% c("gaussian", "epanechnikov")){
+    stop("'contkernel' can only be one of 'gaussian' or 'epanechnikov'")
+  }
+  if (!nomkernel %in% c("aitchisonaitken", "liracine")){
+    stop("'nomkernel' can only be one of 'aitchisonaitken' or 'liracine'")
+  }
+  if (!ordkernel %in% c("liracine", "wangvanryzin")){
+    stop("'ordkernel' can only be one of 'liracine' or 'wangvanryzin'")
+  }
+  
   # Validate lambda
   if (!is.numeric(lambda) ||
       !(length(lambda) == 1 || length(lambda) == length(catcols)) ||
@@ -53,12 +65,16 @@ IBmix <- function(X, ncl, beta, catcols, contcols, randinit = NULL,
   
   # Additional check for maximum lambda value for nominal variables
   if (length(lambda) > 1 && length(lambda) == length(catcols)) {
-    max_lambda <- sapply(catcols, function(col) {
-      l <- length(unique(X[, col]))
-      (l - 1) / l
-    })
+    if (nomkernel == "liracine"){
+      max_lambda <- sapply(catcols, function(col) {
+        l <- length(unique(X[, col]))
+        (l - 1) / l
+      })
+    } else {
+      max_lambda <- 1
+    }
     if (any(lambda > max_lambda)) {
-      stop("'lambda' values for nominal variables must not exceed their maximum allowable value of (l - 1)/l, where l is the number of categories in the variable.")
+      stop("'lambda' values for nominal variables must not exceed their maximum allowable value.")
     }
   }
   
@@ -76,12 +92,16 @@ IBmix <- function(X, ncl, beta, catcols, contcols, randinit = NULL,
     X[, contcols] <- preprocess_cont_data(X[, contcols])
   }
   
-  bws_vec <- compute_s_lambda(X, contcols, catcols, s, lambda)
+  bws_vec <- compute_s_lambda(X, contcols, catcols, s, lambda,
+                              contkernel, nomkernel, ordkernel)
   
   # Construct joint density with final bandwidths
   pxy_list <- coord_to_pxy_R(X, s = bws_vec[contcols],
                              cat_cols = catcols, cont_cols = contcols,
-                             lambda = bws_vec[catcols])
+                             lambda = bws_vec[catcols],
+                             contkernel = contkernel,
+                             nomkernel = nomkernel,
+                             ordkernel = ordkernel)
   
   py_x <- pxy_list$py_x
   px <- pxy_list$px

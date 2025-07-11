@@ -8,11 +8,11 @@ You can install the latest version of the package directly from GitHub using `de
 
 ```r
 install.packages("devtools")  # Install devtools if not already installed
-devtools::install_github("amarkos/IBclust")  # Install DIBclust from GitHub
+devtools::install_github("amarkos/IBclust")  # Install IBclust from GitHub
 ```
 
 ## Getting Started
-Below is a comprehensive example demonstrating how to use the package for clustering mixed-type, continuous, and categorical datasets, and displaying the results. The examples make use of the Deterministic Information Bottleneck (DIB) method for lcustering; other options include the Agglomerative IB for hierarchical clustering, the Generalised IB and the standard IB for fuzzy clustering.
+Below is a comprehensive example demonstrating how to use the package for clustering mixed-type, continuous, and categorical datasets, and displaying the results. The examples make use of the Deterministic Information Bottleneck (DIB) method for clustering; other options include the Agglomerative IB for hierarchical clustering, the Generalised IB and the standard IB for fuzzy clustering.
 
 ```r
 library(IBclust)

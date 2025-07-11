@@ -145,7 +145,7 @@ flush(stderr()); flush(stdout())
 
 # Generate simulated continuous data
 set.seed(123)
-X <- matrix(rnorm(1000), ncol = 5)  # 200 observations, 5 features
+X <- matrix(rnorm(200), ncol = 5)  # 200 observations, 5 features
 
 # Run DIBcont with automatic bandwidth selection and multiple initializations
 result <- DIBcont(X = X, ncl = 3, s = -1, nstart = 50)
@@ -216,7 +216,7 @@ X <- data.frame(
 )
 
 # Run GIBcat with automatic lambda selection and multiple initializations
-result <- GIBcat(X = X, ncl = 2, beta = 25, alpha = 0.75, lambda = -1, nstart = 20)
+result <- GIBcat(X = X, ncl = 2, beta = 25, alpha = 0.75, lambda = -1, nstart = 10)
 
 # Print clustering results
 print(result$Cluster)       # Cluster membership matrix
@@ -242,7 +242,7 @@ flush(stderr()); flush(stdout())
 
 # Generate simulated continuous data
 set.seed(123)
-X <- matrix(rnorm(1000), ncol = 5)  # 200 observations, 5 features
+X <- matrix(rnorm(200), ncol = 5)  # 200 observations, 5 features
 
 # Run GIBcont with automatic bandwidth selection and multiple initializations
 result <- GIBcont(X = X, ncl = 2, beta = 50, alpha = 0.75, s = -1, nstart = 20)
@@ -340,7 +340,7 @@ flush(stderr()); flush(stdout())
 
 # Generate simulated continuous data
 set.seed(123)
-X <- matrix(rnorm(1000), ncol = 5)  # 200 observations, 5 features
+X <- matrix(rnorm(200), ncol = 5)  # 200 observations, 5 features
 
 # Run IBcont with automatic bandwidth selection and multiple initializations
 result <- IBcont(X = X, ncl = 3, beta = 50, s = -1, nstart = 20)

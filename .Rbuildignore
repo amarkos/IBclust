@@ -6,3 +6,4 @@
 ^\.Rhistory$
 ^.*\.Rproj$
 ^LICENSE\.md$
+^cran-comments\.md$

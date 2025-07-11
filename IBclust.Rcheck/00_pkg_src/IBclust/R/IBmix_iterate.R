@@ -50,7 +50,7 @@ IBmix_iterate <- function(X, ncl, beta, randinit,
     best_clust$losses <- 0
   } else {
     for (i in c(1:runs)){
-      set.seed(i)
+      #set.seed(i)
       # 2. Initialize qt_x (randomly)
       qt_x_init <- matrix(0, nrow = ncl, ncol = nrow(X))
       if (is.null(randinit)){

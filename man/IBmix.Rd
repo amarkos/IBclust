@@ -12,6 +12,8 @@ relevant information in the cluster assignments while achieving effective data c
 IBmix(X, ncl, beta, catcols, contcols, randinit = NULL,
        lambda = -1, s = -1, scale = TRUE,
        maxiter = 100, nstart = 100,
+       contkernel = "gaussian",
+       nomkernel = "aitchisonaitken", ordkernel = "liracine",
        verbose = FALSE)
 }
 \arguments{
@@ -42,7 +44,13 @@ A numeric value or vector specifying the bandwidth parameter(s) for continuous v
 
 \item{nstart}{The number of random initializations to run. The best clustering solution is returned. Defaults to \eqn{100}.}
 
-\item{verbose}{Logical. Default to \code{FALSE} to suppress progress messages. Change to \code{TRUE} to print.}
+\item{contkernel}{Kernel used for continuous variables. Can be one of \code{gaussian} (default) or \code{epanechnikov}.}
+
+\item{nomkernel}{Kernel used for nominal (unordered categorical) variables. Can be one of \code{aitchisonaitken} (default) or \code{liracine}.}
+
+\item{ordkernel}{Kernel used for ordinal (ordered categorical) variables. Can be one of \code{liracine} (default) or \code{wangvanryzin}.}
+
+\item{verbose}{Logical. Defaults to \code{FALSE} to suppress progress messages. Change to \code{TRUE} to print.}
 }
 
 \value{
@@ -68,23 +76,49 @@ process identifies stable and interpretable cluster assignments by maximizing mu
 controlling complexity. The method is well-suited for datasets with mixed-type variables and integrates
 information from all variable types effectively.
 
-The following kernel functions are used to estimate densities for the clustering procedure:
+The following kernel functions can be used to estimate densities for the clustering procedure. For continuous variables:
+
 \itemize{
-    \item \emph{Continuous variables: Gaussian kernel}
-    \deqn{K_c\left(\frac{x-x'}{s}\right) = \frac{1}{\sqrt{2\pi}} \exp\left\{ - \frac{\left(x-x'\right)^2}{2s^2} \right\}, \quad s > 0.}
-    \item \emph{Nominal categorical variables: Aitchison & Aitken kernel}
-    \deqn{K_u\left(x = x' ; \lambda\right) = \begin{cases}
-          1-\lambda & \text{if } x = x' \\
-          \frac{\lambda}{\ell-1} & \text{otherwise}
-        \end{cases}, \quad 0 \leq \lambda \leq \frac{\ell-1}{\ell}.}
-    \item \emph{Ordinal categorical variables: Li & Racine kernel}
-    \deqn{K_o\left(x = x' ; \nu\right) = \begin{cases}
-          1 & \text{if } x = x' \\
-          \nu^{|x - x'|} & \text{otherwise}
-        \end{cases}, \quad 0 \leq \nu \leq 1.}
+  \item \emph{Gaussian (RBF) kernel \insertCite{silverman_density_1998}{IBclust}:}
+  \deqn{K_c\left(\frac{x - x'}{s}\right) = \frac{1}{\sqrt{2\pi}} \exp\left\{-\frac{\left(x - x'\right)^2}{2s^2}\right\}, \quad s > 0.}
+  \item \emph{Epanechnikov kernel \insertCite{epanechnikov1969non}{IBclust}:}
+  \deqn{K_c(x - x'; s) = \begin{cases}
+    \frac{3}{4\sqrt{5}}\left(1 - \frac{(x-x')^2}{5s^2} \right), & \text{if } \frac{(x - x')^2}{s^2} < 5 \\
+    0, & \text{otherwise}
+\end{cases}, \quad s > 0.}
 }
 
-Here, \eqn{s}, \eqn{\lambda}, and \eqn{\nu} are bandwidth or smoothing parameters, while \eqn{\ell} is the number of levels of the categorical variable. \eqn{s} and \eqn{\lambda} are automatically determined by the algorithm if not provided by the user. For ordinal variables, the lambda parameter of the function is used to define \eqn{\nu}.
+For nominal (unordered categorical variables):
+
+\itemize{
+\item \emph{Aitchison & Aitken kernel \insertCite{aitchison_kernel_1976}{IBclust}:}
+\deqn{K_u(x = x'; \lambda) = \begin{cases}
+    1 - \lambda, & \text{if } x = x' \\
+    \frac{\lambda}{\ell - 1}, & \text{otherwise}
+\end{cases}, \quad 0 \leq \lambda \leq \frac{\ell - 1}{\ell}.}
+\item \emph{Li & Racine kernel \insertCite{ouyang2006cross}{IBclust}:}
+\deqn{K_u(x = x'; \lambda) = \begin{cases}
+    1, & \text{if } x = x' \\
+    \lambda, & \text{otherwise}
+\end{cases}, \quad 0 \leq \lambda \leq 1.}
+}
+
+For ordinal (ordered categorical) variables:
+
+\itemize{
+\item \emph{Li & Racine kernel \insertCite{li_nonparametric_2003}{IBclust}:}
+\deqn{K_o(x = x'; \nu) = \begin{cases}
+    1, & \text{if } x = x' \\
+    \nu^{|x - x'|}, & \text{otherwise}
+\end{cases}, \quad 0 \leq \nu \leq 1.}
+\item \emph{Wang & van Ryzin kernel \insertCite{wang1981class}{IBclust}:}
+\deqn{K_o(x = x'; \nu) = \begin{cases}
+    1 - \nu, & \text{if } x = x' \\
+    \frac{1-\nu}{2}\nu^{|x - x'|}, & \text{otherwise}
+\end{cases}, \quad 0 \leq \nu \leq 1.}
+}
+
+The bandwidth parameters \eqn{s}, \eqn{\lambda}, and \eqn{\nu} control the smoothness of the density estimate and are automatically determined by the algorithm if not provided by the user. \eqn{\ell} is the number of levels of the categorical variable. For ordinal variables, the lambda parameter of the function is used to define \eqn{\nu}.
 }
 
 
@@ -123,6 +157,12 @@ Efthymios Costa, Ioanna Papatsouma, Angelos Markos
 \insertRef{li_nonparametric_2003}{IBclust}
 
 \insertRef{silverman_density_1998}{IBclust}
+
+\insertRef{ouyang2006cross}{IBclust}
+
+\insertRef{wang1981class}{IBclust}
+
+\insertRef{epanechnikov1969non}{IBclust}
 }
 }
 \keyword{clustering}
