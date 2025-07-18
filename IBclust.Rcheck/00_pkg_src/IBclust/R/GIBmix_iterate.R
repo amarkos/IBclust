@@ -33,8 +33,9 @@ GIBmix_iterate <- function(X, ncl, beta, alpha, randinit,
   Loss <- Inf
   best_clust$Cluster <- rep(NA, nrow(X))
   best_clust$Entropy <- Inf
-  best_clust$RelEntropy <- Inf
+  best_clust$CondEntropy <- Inf
   best_clust$MutualInfo <- Inf
+  best_clust$InfoXT <- Inf
   best_clust$beta <- beta
   best_clust$alpha <- alpha
   best_clust$s <- bws_vec[contcols]
@@ -47,9 +48,9 @@ GIBmix_iterate <- function(X, ncl, beta, alpha, randinit,
     Loss <- 0
     best_clust$Cluster <- rep(1, nrow(X))
     best_clust$Entropy <- 0
-    best_clust$RelEntropy <- 0
+    best_clust$CondEntropy <- 0
     best_clust$MutualInfo <- 0
-    best_clust$InfoYT <- 0
+    best_clust$InfoXT <- 0
     best_clust$beta <- beta
     best_clust$alpha <- alpha
     best_clust$ht <- 0
@@ -152,8 +153,9 @@ GIBmix_iterate <- function(X, ncl, beta, alpha, randinit,
         best_clust[[2]] <- as.numeric(metrics[[1]])
         best_clust[[3]] <- as.numeric(metrics[[2]])
         best_clust[[4]] <- as.numeric(metrics[[3]])
-        best_clust[[5]] <- beta
-        best_clust[[6]] <- alpha
+        best_clust[[5]] <- as.numeric(metrics[[4]])
+        best_clust[[6]] <- beta
+        best_clust[[7]] <- alpha
       }
       metrics <- calc_metrics(beta = beta, qt, qy_t, hy, px, qt_x, quiet = TRUE)
       best_clust$ht <- c(best_clust$ht, metrics[[1]])

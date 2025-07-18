@@ -46,7 +46,9 @@ A numeric value or vector specifying the bandwidth parameter(s) for continuous v
 A list containing the following elements:
   \item{Cluster}{An integer vector indicating the cluster assignment for each observation.}
   \item{Entropy}{A numeric value representing the entropy of the cluster assignments at convergence.}
+  \item{CondEntropy}{A numeric value representing the conditional entropy of cluster assignment, given the observation weights \eqn{H(T \mid X)}.}
   \item{MutualInfo}{A numeric value representing the mutual information, \eqn{I(Y;T)}, between the underlying data distribution and the cluster assignments.}
+  \item{InfoXT}{A numeric value representing the mutual information, \eqn{I(X;T)}, between the original observations weights (\eqn{X}) and the cluster assignments (\eqn{T}).}
   \item{beta}{A numeric vector of the final beta values used during the iterative optimization.}
   \item{s}{A numeric value or vector of bandwidth parameters used for the continuous variables. Typically, this will be a single value if all continuous variables share the same bandwidth.}
   \item{ents}{A numeric vector tracking the entropy values over the iterations, providing insight into the convergence process.}

@@ -23,7 +23,7 @@ GIBcont(X, ncl, beta, alpha, randinit = NULL, s = -1, scale = TRUE,
     Regularisation strength.
   }
   \item{alpha}{
-    Strength of relative entropy term.
+    Strength of conditional entropy term.
   }
   \item{randinit}{
     Optional. A vector specifying initial cluster assignments. If \code{NULL}, cluster assignments are initialized randomly.
@@ -50,15 +50,16 @@ A numeric value or vector specifying the bandwidth parameter(s) for continuous v
 
 \value{
 A list containing the following elements:
- \item{Cluster}{A cluster membership matrix.}
-  \item{Entropy}{A numeric value representing the entropy of the cluster assignment, \eqn{H(T)}.}
-  \item{RelEntropy}{A numeric value representing the relative entropy of cluster assignment, given the observation weights \eqn{H(X \mid T)}.}
-  \item{MutualInfo}{A numeric value representing the mutual information, \eqn{I(Y;T)}, between the original labels (\eqn{Y}) and the cluster assignments (\eqn{T}).}
+  \item{Cluster}{A cluster membership matrix.}
+  \item{Entropy}{A numeric value representing the entropy of the cluster assignments at the end of the iterative procedure.}
+  \item{CondEntropy}{A numeric value representing the conditional entropy of cluster assignment, given the observation weights \eqn{H(T \mid X)}.}
+  \item{MutualInfo}{A numeric value representing the mutual information, \eqn{I(Y;T)}, between the data distribution and the cluster assignments.}
+  \item{InfoXT}{A numeric value representing the mutual information, \eqn{I(X;T)}, between the original observations weights (\eqn{X}) and the cluster assignments (\eqn{T}).}
   \item{beta}{A numeric value of the regularisation strength beta used.}
-  \item{alpha}{A numeric value of the strength of relative entropy used.}
+  \item{alpha}{A numeric value of the strength of conditional entropy used.}
   \item{s}{A numeric vector of bandwidth parameters used for the continuous variables.}
   \item{ht}{A numeric vector tracking the entropy value of the cluster assignments across iterations.}
-  \item{hy_t}{A numeric vector tracking the relative entropy values between the cluster assignments and observations weights across iterations.}
+  \item{hy_t}{A numeric vector tracking the conditional entropy values between the cluster assignments and observations weights across iterations.}
   \item{iyt}{A numeric vector tracking the mutual information values between original labels and cluster assignments across iterations.}
   \item{losses}{A numeric vector tracking the final loss values across iterations.}
 }
@@ -95,7 +96,7 @@ result <- GIBcont(X = X, ncl = 2, beta = 50, alpha = 0.75, s = -1, nstart = 20)
 # Print clustering results
 print(result$Cluster)       # Cluster membership matrix
 print(result$Entropy)       # Entropy of final clustering
-print(result$RelEntropy)    # Relative entropy of final clustering
+print(result$CondEntropy)   # Conditional entropy of final clustering
 print(result$MutualInfo)    # Mutual information between Y and T
 }
 \seealso{

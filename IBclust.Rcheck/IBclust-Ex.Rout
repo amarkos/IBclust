@@ -360,7 +360,7 @@ Type 'q()' to quit R.
 [2,] 0.996387525 0.997444129
 > print(result$Entropy)       # Entropy of final clustering
 [1] 0.9600031
-> print(result$RelEntropy)    # Relative entropy of final clustering
+> print(result$CondEntropy)   # Conditional entropy of final clustering
 [1] 0.06962192
 > print(result$MutualInfo)    # Mutual information between Y and T
 [1] 0.04832157
@@ -416,7 +416,7 @@ Type 'q()' to quit R.
 [2,] 0.0000598545 2.218145e-07 7.924577e-06 9.978058e-07
 > print(result$Entropy)       # Entropy of final clustering
 [1] 0.1602504
-> print(result$RelEntropy)    # Relative entropy of final clustering
+> print(result$CondEntropy)   # Conditional entropy of final clustering
 [1] 0.02015292
 > print(result$MutualInfo)    # Mutual information between Y and T
 [1] 0.00335043
@@ -516,7 +516,7 @@ Type 'q()' to quit R.
 [2,] 2.090072e-14 9.999490e-01
 > print(result$Entropy)       # Entropy of final clustering
 [1] 0.4888888
-> print(result$RelEntropy)    # Relative entropy of final clustering
+> print(result$CondEntropy)   # Conditional entropy of final clustering
 [1] 0.05448026
 > print(result$MutualInfo)    # Mutual information between Y and T
 [1] 0.2604078
@@ -673,7 +673,7 @@ Type 'q()' to quit R.
 [3,] 0.3744193
 > print(result$InfoXT)       # Mutual information between X and T
 [1] 0.4207379
-> print(result$InfoYT)    # Mutual information between Y and T
+> print(result$MutualInfo)    # Mutual information between Y and T
 [1] 0.02990098
 > 
 > 
@@ -727,7 +727,7 @@ Type 'q()' to quit R.
 [3,] 0.3148117 0.3148094 0.3148066 0.3148090 0.3148075
 > print(result$InfoXT)       # Mutual information between X and T
 [1] 1.086042e-11
-> print(result$InfoYT)    # Mutual information between Y and T
+> print(result$MutualInfo)    # Mutual information between Y and T
 [1] 2.424727e-13
 > 
 > 
@@ -831,7 +831,7 @@ Type 'q()' to quit R.
 [3,] 0.0008519289 0.000764859 0.0005212913 4.423660e-06 0.969509066
 > print(result$InfoXT)       # Mutual information between X and T
 [1] 0.8411178
-> print(result$InfoYT)    # Mutual information between Y and T
+> print(result$MutualInfo)    # Mutual information between Y and T
 [1] 0.5291988
 > 
 > 
@@ -841,7 +841,7 @@ Type 'q()' to quit R.
 > cleanEx()
 > options(digits = 7L)
 > base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
-Time elapsed:  22.6 0.33 26.07 NA NA 
+Time elapsed:  23.98 0.61 26.78 NA NA 
 > grDevices::dev.off()
 null device 
           1 

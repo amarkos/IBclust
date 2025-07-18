@@ -48,8 +48,10 @@ A numeric value or vector specifying the bandwidth parameter(s) for continuous v
 \value{
 A list containing the following elements:
   \item{Cluster}{A cluster membership matrix.}
+  \item{Entropy}{A numeric value representing the entropy of the cluster assignments at the end of the iterative procedure.}
+  \item{CondEntropy}{A numeric value representing the conditional entropy of cluster assignment, given the observation weights \eqn{H(T \mid X)}.}
+  \item{MutualInfo}{A numeric value representing the mutual information, \eqn{I(Y;T)}, between the data distribution and the cluster assignments.}
   \item{InfoXT}{A numeric value representing the mutual information, \eqn{I(X;T)}, between the original observations weights (\eqn{X}) and the cluster assignments (\eqn{T}).}
-  \item{InfoYT}{A numeric value representing the mutual information, \eqn{I(Y;T)}, between the original labels (\eqn{Y}) and the cluster assignments (\eqn{T}).}
   \item{beta}{A numeric value of the regularisation strength beta used.}
   \item{s}{A numeric vector of bandwidth parameters used for the continuous variables.}
   \item{ixt}{A numeric vector tracking the mutual information values between original observation weights and cluster assignments across iterations.}
@@ -85,7 +87,7 @@ result <- IBcont(X = X, ncl = 3, beta = 50, s = -1, nstart = 20)
 # Print clustering results
 print(result$Cluster)       # Cluster membership matrix
 print(result$InfoXT)       # Mutual information between X and T
-print(result$InfoYT)    # Mutual information between Y and T
+print(result$MutualInfo)    # Mutual information between Y and T
 }
 \seealso{
 \code{\link{IBmix}}, \code{\link{IBcat}}

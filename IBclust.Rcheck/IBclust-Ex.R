@@ -221,7 +221,7 @@ result <- GIBcat(X = X, ncl = 2, beta = 25, alpha = 0.75, lambda = -1, nstart = 
 # Print clustering results
 print(result$Cluster)       # Cluster membership matrix
 print(result$Entropy)       # Entropy of final clustering
-print(result$RelEntropy)    # Relative entropy of final clustering
+print(result$CondEntropy)   # Conditional entropy of final clustering
 print(result$MutualInfo)    # Mutual information between Y and T
 
 
@@ -250,7 +250,7 @@ result <- GIBcont(X = X, ncl = 2, beta = 50, alpha = 0.75, s = -1, nstart = 20)
 # Print clustering results
 print(result$Cluster)       # Cluster membership matrix
 print(result$Entropy)       # Entropy of final clustering
-print(result$RelEntropy)    # Relative entropy of final clustering
+print(result$CondEntropy)   # Conditional entropy of final clustering
 print(result$MutualInfo)    # Mutual information between Y and T
 
 
@@ -286,7 +286,7 @@ result <- GIBmix(X = data, ncl = 3, beta = 2, alpha = 0.5, catcols = 1:2, contco
 # Print clustering results
 print(result$Cluster)       # Cluster membership matrix
 print(result$Entropy)       # Entropy of final clustering
-print(result$RelEntropy)    # Relative entropy of final clustering
+print(result$CondEntropy)   # Conditional entropy of final clustering
 print(result$MutualInfo)    # Mutual information between Y and T
 
 
@@ -320,7 +320,7 @@ result <- IBcat(X = X, ncl = 3, beta = 15, lambda = -1, nstart = 20)
 # Print clustering results
 print(result$Cluster)       # Cluster membership matrix
 print(result$InfoXT)       # Mutual information between X and T
-print(result$InfoYT)    # Mutual information between Y and T
+print(result$MutualInfo)    # Mutual information between Y and T
 
 
 
@@ -348,7 +348,7 @@ result <- IBcont(X = X, ncl = 3, beta = 50, s = -1, nstart = 20)
 # Print clustering results
 print(result$Cluster)       # Cluster membership matrix
 print(result$InfoXT)       # Mutual information between X and T
-print(result$InfoYT)    # Mutual information between Y and T
+print(result$MutualInfo)    # Mutual information between Y and T
 
 
 
@@ -382,7 +382,7 @@ result <- IBmix(X = data, ncl = 3, beta = 2, catcols = 1:2, contcols = 3:4, nsta
 # Print clustering results
 print(result$Cluster)       # Cluster membership matrix
 print(result$InfoXT)       # Mutual information between X and T
-print(result$InfoYT)    # Mutual information between Y and T
+print(result$MutualInfo)    # Mutual information between Y and T
 
 
 

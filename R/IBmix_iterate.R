@@ -31,8 +31,10 @@ IBmix_iterate <- function(X, ncl, beta, randinit,
   best_clust <- list()
   Loss <- Inf
   best_clust$Cluster <- rep(NA, nrow(X))
+  best_clust$Entropy <- Inf
+  best_clust$CondEntropy <- Inf
+  best_clust$MutualInfo <- Inf
   best_clust$InfoXT <- Inf
-  best_clust$InfoYT <- Inf
   best_clust$beta <- beta
   best_clust$s <- bws_vec[contcols]
   best_clust$lambda <- bws_vec[catcols]
@@ -42,8 +44,10 @@ IBmix_iterate <- function(X, ncl, beta, randinit,
   if (ncl == 1){
     Loss <- 0
     best_clust$Cluster <- rep(1, nrow(X))
+    best_clust$Entropy <- 0
+    best_clust$CondEntropy <- 0
+    best_clust$MutualInfo <- 0
     best_clust$InfoXT <- 0
-    best_clust$InfoYT <- 0
     best_clust$beta <- beta
     best_clust$ixt <- 0
     best_clust$iyt <- 0
@@ -141,9 +145,11 @@ IBmix_iterate <- function(X, ncl, beta, randinit,
         Loss <- Lval
         best_clust[[1]] <- qt_x
         metrics <- calc_metrics(beta = beta, qt, qy_t, hy, px, qt_x, quiet = TRUE)
-        best_clust[[2]] <- as.numeric(metrics[[4]])
-        best_clust[[3]] <- as.numeric(metrics[[3]])
-        best_clust[[4]] <- beta
+        best_clust[[2]] <- as.numeric(metrics[[1]])
+        best_clust[[3]] <- as.numeric(metrics[[2]])
+        best_clust[[4]] <- as.numeric(metrics[[3]])
+        best_clust[[5]] <- as.numeric(metrics[[4]])
+        best_clust[[6]] <- beta
       }
       metrics <- calc_metrics(beta = beta, qt, qy_t, hy, px, qt_x, quiet = TRUE)
       best_clust$ixt <- c(best_clust$ixt, metrics[[4]])

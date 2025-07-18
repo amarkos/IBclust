@@ -48,7 +48,9 @@ DIBcat(X, ncl, randinit = NULL, lambda = -1,
 A list containing the following elements:
   \item{Cluster}{An integer vector indicating the cluster assignment for each data point at convergence.}
   \item{Entropy}{A numeric value representing the entropy of the cluster assignments at the end of the iterative procedure.}
+  \item{CondEntropy}{A numeric value representing the conditional entropy of cluster assignment, given the observation weights \eqn{H(T \mid X)}.}
   \item{MutualInfo}{A numeric value representing the mutual information, \eqn{I(Y;T)}, between the data distribution and the cluster assignments.}
+  \item{InfoXT}{A numeric value representing the mutual information, \eqn{I(X;T)}, between the original observations weights (\eqn{X}) and the cluster assignments (\eqn{T}).}
   \item{lambda}{A numeric vector of bandwidth parameters for categorical variables, controlling how categories are weighted in the clustering.}
   \item{beta}{A numeric vector of the final beta values used during the iterative optimization.}
   \item{ents}{A numeric vector tracking the entropy values across iterations, providing insights into the convergence pattern.}

@@ -52,7 +52,9 @@ A numeric value or vector specifying the bandwidth parameter(s) for continuous v
 A list containing the following elements:
   \item{Cluster}{An integer vector giving the cluster assignments for each data point.}
   \item{Entropy}{A numeric value representing the entropy of the cluster assignments at convergence.}
+  \item{CondEntropy}{A numeric value representing the conditional entropy of cluster assignment, given the observation weights \eqn{H(T \mid X)}.}
   \item{MutualInfo}{A numeric value representing the mutual information, \eqn{I(Y;T)}, between the original labels (\eqn{Y}) and the cluster assignments (\eqn{T}).}
+  \item{InfoXT}{A numeric value representing the mutual information, \eqn{I(X;T)}, between the original observations weights (\eqn{X}) and the cluster assignments (\eqn{T}).}
   \item{beta}{A numeric vector of the final beta values used in the iterative procedure.}
   \item{s}{A numeric vector of bandwidth parameters used for the continuous variables.}
   \item{lambda}{A numeric vector of bandwidth parameters used for the categorical variables.}
