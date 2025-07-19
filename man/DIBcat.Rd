@@ -106,7 +106,7 @@ X <- data.frame(
 )
 
 # Run DIBcat with automatic lambda selection and multiple initializations
-result <- DIBcat(X = X, ncl = 3, lambda = -1, nstart = 50)
+result <- DIBcat(X = X, ncl = 3, lambda = -1, nstart = 10)
 
 # Print clustering results
 print(result$Cluster)       # Cluster assignments

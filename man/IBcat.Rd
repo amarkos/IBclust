@@ -110,7 +110,7 @@ X <- data.frame(
 )
 
 # Run IBcat with automatic lambda selection and multiple initializations
-result <- IBcat(X = X, ncl = 3, beta = 15, lambda = -1, nstart = 20)
+result <- IBcat(X = X, ncl = 3, beta = 15, lambda = -1, nstart = 10)
 
 # Print clustering results
 print(result$Cluster)       # Cluster membership matrix

@@ -82,7 +82,7 @@ set.seed(123)
 X <- matrix(rnorm(200), ncol = 5)  # 200 observations, 5 features
 
 # Run IBcont with automatic bandwidth selection and multiple initializations
-result <- IBcont(X = X, ncl = 3, beta = 50, s = -1, nstart = 20)
+result <- IBcont(X = X, ncl = 3, beta = 50, s = -1, nstart = 10)
 
 # Print clustering results
 print(result$Cluster)       # Cluster membership matrix
