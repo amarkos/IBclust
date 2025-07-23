@@ -131,7 +131,7 @@ data <- data.frame(
 )
 
 # Perform Mixed-Type Clustering
-result <- DIBmix(X = data, ncl = 3, catcols = 1:2, contcols = 3:4)
+result <- DIBmix(X = data, ncl = 3, catcols = 1:2, contcols = 3:4, nstart = 10)
 
 # Print clustering results
 print(result$Cluster)       # Cluster assignments

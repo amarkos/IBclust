@@ -89,7 +89,7 @@ IBmix <- function(X, ncl, beta, catcols, contcols, randinit = NULL,
   X <- data.frame(X)
   X[, catcols] <- preprocess_cat_data(X[, catcols])
   if (scale){
-    X[, contcols] <- preprocess_cont_data(X[, contcols])
+    X[, contcols] <- as.data.frame(preprocess_cont_data(X[, contcols]))
   }
   
   bws_vec <- compute_s_lambda(X, contcols, catcols, s, lambda,

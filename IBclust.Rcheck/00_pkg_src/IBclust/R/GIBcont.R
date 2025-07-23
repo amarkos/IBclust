@@ -56,7 +56,7 @@ GIBcont <- function(X, ncl, beta, alpha, randinit = NULL, s = -1, scale = TRUE,
   } else {
     # Preprocessing
     if (scale){
-      X <- preprocess_cont_data(X)
+      X <- as.data.frame(preprocess_cont_data(X))
     }
     
     # Bandwidth computation

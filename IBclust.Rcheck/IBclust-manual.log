@@ -1,9 +1,9 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.11.25) (preloaded format=pdflatex 2022.12.4)  18 JUL 2025 15:44
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.11.25) (preloaded format=pdflatex 2022.12.4)  23 JUL 2025 15:52
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**C:/Users/ec1917/AppData/Local/Temp/Rtmpue7xyS/Rd2pdf4b405feb1c73/Rd2.tex
-(C:/Users/ec1917/AppData/Local/Temp/Rtmpue7xyS/Rd2pdf4b405feb1c73/Rd2.tex
+**C:/Users/ec1917/AppData/Local/Temp/RtmpsNDcoM/Rd2pdf13884d664df0/Rd2.tex
+(C:/Users/ec1917/AppData/Local/Temp/RtmpsNDcoM/Rd2pdf13884d664df0/Rd2.tex
 LaTeX2e <2022-11-01> patch level 1
 L3 programming layer <2022-11-02>
 (C:\Users\ec1917\AppData\Local\Programs\MiKTeX\tex/latex/base\book.cls
@@ -652,60 +652,54 @@ Overfull \hbox (20.22874pt too wide) in paragraph at lines 1460--1460
       # Nominal categorical variable[] 
  []
 
-
-Overfull \hbox (30.71341pt too wide) in paragraph at lines 1469--1469
- []\T1/zi4/m/n/9 result <- GIBmix(X = data, ncl = 3, beta = 2, alpha = 0.5, cat
-cols = 1:2, contcols = 3:4, nstart = 20)[] 
- []
-
 [26]
-Overfull \hbox (9.0392pt too wide) in paragraph at lines 1513--1514
+Overfull \hbox (9.0392pt too wide) in paragraph at lines 1514--1515
 \T1/ptm/m/n/10 op-ti-mal band-width. For nom-i-nal vari-ables and []\T1/zi4/m/n
 /10 nomkernel = \TS1/zi4/m/n/10 '\T1/zi4/m/n/10 aitchisonaitken\TS1/zi4/m/n/10 
 '[]\T1/ptm/m/n/10 ,
  []
 
 
-Overfull \hbox (46.26848pt too wide) in paragraph at lines 1522--1523
+Overfull \hbox (46.26848pt too wide) in paragraph at lines 1523--1524
 []\T1/ptm/m/n/10 Kernel used for nom-i-nal (un-ordered cat-e-gor-i-cal) vari-ab
 les. Can be one of []\T1/zi4/m/n/10 aitchisonaitken
  []
 
 
-Overfull \hbox (19.91667pt too wide) in paragraph at lines 1534--1535
+Overfull \hbox (19.91667pt too wide) in paragraph at lines 1535--1536
 \T1/ptm/m/n/10 con-tain-ing only cat-e-gor-i-cal vari-ables, both nom-i-nal and
  or-di-nal. The al-go-rithm op-ti-mizes an information-
  []
 
 [27] [28]
-Overfull \hbox (12.02605pt too wide) in paragraph at lines 1602--1605
+Overfull \hbox (12.02605pt too wide) in paragraph at lines 1603--1606
 []\T1/ptm/m/n/10 Aitchison J, Aitken CG (1976). ``Mul-ti-vari-ate bi-nary dis-c
 rim-i-na-tion by the ker-nel method.'' \T1/ptm/m/it/10 Biometrika\T1/ptm/m/n/10
  ,
  []
 
 [29] [30] [31]
-Overfull \hbox (9.0392pt too wide) in paragraph at lines 1808--1809
+Overfull \hbox (9.0392pt too wide) in paragraph at lines 1809--1810
 \T1/ptm/m/n/10 op-ti-mal band-width. For nom-i-nal vari-ables and []\T1/zi4/m/n
 /10 nomkernel = \TS1/zi4/m/n/10 '\T1/zi4/m/n/10 aitchisonaitken\TS1/zi4/m/n/10 
 '[]\T1/ptm/m/n/10 ,
  []
 
 [32]
-Overfull \hbox (46.26848pt too wide) in paragraph at lines 1822--1823
+Overfull \hbox (46.26848pt too wide) in paragraph at lines 1823--1824
 []\T1/ptm/m/n/10 Kernel used for nom-i-nal (un-ordered cat-e-gor-i-cal) vari-ab
 les. Can be one of []\T1/zi4/m/n/10 aitchisonaitken
  []
 
 [33]
-Overfull \hbox (12.02605pt too wide) in paragraph at lines 1920--1923
+Overfull \hbox (12.02605pt too wide) in paragraph at lines 1921--1924
 []\T1/ptm/m/n/10 Aitchison J, Aitken CG (1976). ``Mul-ti-vari-ate bi-nary dis-c
 rim-i-na-tion by the ker-nel method.'' \T1/ptm/m/it/10 Biometrika\T1/ptm/m/n/10
  ,
  []
 
 [34]
-Overfull \hbox (20.22874pt too wide) in paragraph at lines 1955--1955
+Overfull \hbox (20.22874pt too wide) in paragraph at lines 1956--1956
  []  \T1/zi4/m/n/9 cat_var = factor(sample(letters[1:3], 100, replace = TRUE)),
       # Nominal categorical variable[] 
  []
@@ -744,7 +738,7 @@ TeX/fonts/type1/urw/times/utmb8a.pfb><C:/Users/ec1917/AppData/Local/Programs/Mi
 KTeX/fonts/type1/urw/times/utmr8a.pfb><C:/Users/ec1917/AppData/Local/Programs/M
 iKTeX/fonts/type1/urw/times/utmr8a.pfb><C:/Users/ec1917/AppData/Local/Programs/
 MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
-Output written on Rd2.pdf (36 pages, 323326 bytes).
+Output written on Rd2.pdf (36 pages, 323322 bytes).
 PDF statistics:
  541 PDF objects out of 1000 (max. 8388607)
  172 named destinations out of 1000 (max. 500000)

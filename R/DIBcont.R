@@ -38,7 +38,7 @@ DIBcont <- function(X, ncl, randinit = NULL, s = -1, scale = TRUE,
 
   # Preprocessing
   if (scale)
-    X <- preprocess_cont_data(X)
+    X <- as.data.frame(preprocess_cont_data(X))
 
   # Bandwidth computation
   if (length(s) == 1){

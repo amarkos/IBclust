@@ -15,7 +15,7 @@ AIBcont <- function(X, s = -1, scale = TRUE, contkernel = "gaussian"){
   }
   # Preprocessing
   if (scale){
-    X <- preprocess_cont_data(X)
+    X <- as.data.frame(preprocess_cont_data(X))
   }
   
   # Bandwidth computation

@@ -120,7 +120,7 @@ X <- data.frame(
 )
 
 # Run DIBcat with automatic lambda selection and multiple initializations
-result <- DIBcat(X = X, ncl = 3, lambda = -1, nstart = 50)
+result <- DIBcat(X = X, ncl = 3, lambda = -1, nstart = 10)
 
 # Print clustering results
 print(result$Cluster)       # Cluster assignments
@@ -148,7 +148,7 @@ set.seed(123)
 X <- matrix(rnorm(200), ncol = 5)  # 200 observations, 5 features
 
 # Run DIBcont with automatic bandwidth selection and multiple initializations
-result <- DIBcont(X = X, ncl = 3, s = -1, nstart = 50)
+result <- DIBcont(X = X, ncl = 3, s = -1, nstart = 10)
 
 # Print clustering results
 print(result$Cluster)       # Cluster assignments
@@ -183,7 +183,7 @@ data <- data.frame(
 )
 
 # Perform Mixed-Type Clustering
-result <- DIBmix(X = data, ncl = 3, catcols = 1:2, contcols = 3:4)
+result <- DIBmix(X = data, ncl = 3, catcols = 1:2, contcols = 3:4, nstart = 10)
 
 # Print clustering results
 print(result$Cluster)       # Cluster assignments
@@ -245,7 +245,7 @@ set.seed(123)
 X <- matrix(rnorm(200), ncol = 5)  # 200 observations, 5 features
 
 # Run GIBcont with automatic bandwidth selection and multiple initializations
-result <- GIBcont(X = X, ncl = 2, beta = 50, alpha = 0.75, s = -1, nstart = 20)
+result <- GIBcont(X = X, ncl = 2, beta = 50, alpha = 0.75, s = -1, nstart = 10)
 
 # Print clustering results
 print(result$Cluster)       # Cluster membership matrix
@@ -281,7 +281,8 @@ data <- data.frame(
 )
 
 # Perform Mixed-Type Fuzzy Clustering with Generalised IB
-result <- GIBmix(X = data, ncl = 3, beta = 2, alpha = 0.5, catcols = 1:2, contcols = 3:4, nstart = 20)
+result <- GIBmix(X = data, ncl = 3, beta = 2, alpha = 0.5, catcols = 1:2, 
+contcols = 3:4, nstart = 10)
 
 # Print clustering results
 print(result$Cluster)       # Cluster membership matrix
@@ -315,7 +316,7 @@ X <- data.frame(
 )
 
 # Run IBcat with automatic lambda selection and multiple initializations
-result <- IBcat(X = X, ncl = 3, beta = 15, lambda = -1, nstart = 20)
+result <- IBcat(X = X, ncl = 3, beta = 15, lambda = -1, nstart = 10)
 
 # Print clustering results
 print(result$Cluster)       # Cluster membership matrix
@@ -343,7 +344,7 @@ set.seed(123)
 X <- matrix(rnorm(200), ncol = 5)  # 200 observations, 5 features
 
 # Run IBcont with automatic bandwidth selection and multiple initializations
-result <- IBcont(X = X, ncl = 3, beta = 50, s = -1, nstart = 20)
+result <- IBcont(X = X, ncl = 3, beta = 50, s = -1, nstart = 10)
 
 # Print clustering results
 print(result$Cluster)       # Cluster membership matrix
@@ -377,7 +378,7 @@ data <- data.frame(
 )
 
 # Perform Mixed-Type Fuzzy Clustering
-result <- IBmix(X = data, ncl = 3, beta = 2, catcols = 1:2, contcols = 3:4, nstart = 20)
+result <- IBmix(X = data, ncl = 3, beta = 2, catcols = 1:2, contcols = 3:4, nstart = 10)
 
 # Print clustering results
 print(result$Cluster)       # Cluster membership matrix
