@@ -14,7 +14,7 @@ GIBmix(X, ncl, beta, alpha, catcols, contcols, randinit = NULL,
        maxiter = 100, nstart = 100,
        contkernel = "gaussian",
        nomkernel = "aitchisonaitken", ordkernel = "liracine",
-       verbose = FALSE)
+       cat_first = FALSE, verbose = FALSE)
 }
 \arguments{
 \item{X}{A data frame containing the input data to be clustered. It should include categorical variables
@@ -49,6 +49,8 @@ A numeric value or vector specifying the bandwidth parameter(s) for continuous v
 \item{nomkernel}{Kernel used for nominal (unordered categorical) variables. Can be one of \code{aitchisonaitken} (default) or \code{liracine}.}
 
 \item{ordkernel}{Kernel used for ordinal (ordered categorical) variables. Can be one of \code{liracine} (default) or \code{wangvanryzin}.}
+
+\item{cat_first}{A logical value indicating whether bandwidth selection is prioritised for the categorical variables, instead of the continuous. Default to \code{FALSE}. Set to \code{TRUE} if you suspect that your continuous variables are not informative of the cluster structure. Can only be \code{TRUE} when all bandwidths are selected automatically (i.e. \code{s = -1}, \code{lambda = -1}).}
 
 \item{verbose}{Logical. Defaults to \code{FALSE} to suppress progress messages. Change to \code{TRUE} to print.}
 }
@@ -141,8 +143,7 @@ data <- data.frame(
 )
 
 # Perform Mixed-Type Fuzzy Clustering with Generalised IB
-result <- GIBmix(X = data, ncl = 3, beta = 2, alpha = 0.5, catcols = 1:2, 
-contcols = 3:4, nstart = 10)
+result <- GIBmix(X = data, ncl = 3, beta = 2, alpha = 0.5, catcols = 1:2, contcols = 3:4, nstart = 20)
 
 # Print clustering results
 print(result$Cluster)       # Cluster membership matrix

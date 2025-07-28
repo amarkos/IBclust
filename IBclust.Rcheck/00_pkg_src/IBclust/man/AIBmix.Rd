@@ -10,7 +10,8 @@ leveraging bandwidth parameters to handle different categorical data types (nomi
 \usage{
 AIBmix(X, catcols, contcols, lambda = -1, s = -1,
        scale = TRUE, contkernel = "gaussian",
-       nomkernel = "aitchisonaitken", ordkernel = "liracine")
+       nomkernel = "aitchisonaitken", ordkernel = "liracine",
+       cat_first = FALSE)
 }
 \arguments{
   \item{X}{
@@ -36,6 +37,9 @@ AIBmix(X, catcols, contcols, lambda = -1, s = -1,
   }
   \item{ordkernel}{
     Kernel used for ordinal (ordered categorical) variables. Can be one of \code{liracine} (default) or \code{wangvanryzin}.
+  }
+  \item{cat_first}{
+    A logical value indicating whether bandwidth selection is prioritised for the categorical variables, instead of the continuous. Default to \code{FALSE}. Set to \code{TRUE} if you suspect that your continuous variables are not informative of the cluster structure. Can only be \code{TRUE} when all bandwidths are selected automatically (i.e. \code{s = -1}, \code{lambda = -1}). 
   }
 }
 

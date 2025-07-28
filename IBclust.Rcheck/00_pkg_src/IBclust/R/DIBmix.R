@@ -2,7 +2,7 @@ DIBmix <- function(X, ncl, catcols, contcols, randinit = NULL,
                    lambda = -1, s = -1, scale = TRUE,
                    maxiter = 100, nstart = 100, contkernel = "gaussian",
                    nomkernel = "aitchisonaitken", ordkernel = "liracine",
-                   verbose = FALSE) {
+                   cat_first = FALSE, verbose = FALSE) {
 
   # Validate inputs
   if (!is.data.frame(X)) {
@@ -28,6 +28,10 @@ DIBmix <- function(X, ncl, catcols, contcols, randinit = NULL,
   if (!is.logical(scale)) {
     stop("'scale' must be a logical value (TRUE or FALSE).")
   }
+  
+  if (!is.logical(cat_first)) {
+    stop("'cat_first' must be a logical value (TRUE or FALSE).")
+  }
 
   if (!is.numeric(maxiter) || maxiter <= 0 || maxiter != round(maxiter)) {
     stop("'maxiter' must be a positive integer.")
@@ -40,6 +44,10 @@ DIBmix <- function(X, ncl, catcols, contcols, randinit = NULL,
   
   if (!is.null(randinit) && (!is.numeric(randinit) || length(randinit) != nrow(X))) {
     stop("'randinit' must be a numeric vector with length equal to the number of rows in 'X', or NULL.")
+  }
+  
+  if (cat_first & any(c(s, lambda) != -1)){
+    stop("'cat_first' can only be TRUE when all bandwidths are determined by the algorithm (s = -1, lambda = -1).")
   }
   
   # Check kernel types
@@ -90,7 +98,8 @@ DIBmix <- function(X, ncl, catcols, contcols, randinit = NULL,
   }
   
   bws_vec <- compute_s_lambda(X, contcols, catcols, s, lambda,
-                              contkernel, nomkernel, ordkernel)
+                              contkernel, nomkernel, ordkernel,
+                              cat_first)
   
   # Construct joint density with final bandwidths
   pxy_list <- coord_to_pxy_R(X, s = bws_vec[contcols],

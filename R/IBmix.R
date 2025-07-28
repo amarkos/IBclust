@@ -2,7 +2,7 @@ IBmix <- function(X, ncl, beta, catcols, contcols, randinit = NULL,
                   lambda = -1, s = -1, scale = TRUE,
                   maxiter = 100, nstart = 100, contkernel = "gaussian",
                   nomkernel = "aitchisonaitken", ordkernel = "liracine",
-                  verbose = FALSE) {
+                  cat_first = FALSE, verbose = FALSE) {
   
   # Validate inputs
   if (!is.data.frame(X)) {
@@ -33,6 +33,10 @@ IBmix <- function(X, ncl, beta, catcols, contcols, randinit = NULL,
     stop("'scale' must be a logical value (TRUE or FALSE).")
   }
   
+  if (!is.logical(cat_first)) {
+    stop("'cat_first' must be a logical value (TRUE or FALSE).")
+  }
+  
   if (!is.numeric(maxiter) || maxiter <= 0 || maxiter != round(maxiter)) {
     stop("'maxiter' must be a positive integer.")
   }
@@ -54,6 +58,10 @@ IBmix <- function(X, ncl, beta, catcols, contcols, randinit = NULL,
   }
   if (!ordkernel %in% c("liracine", "wangvanryzin")){
     stop("'ordkernel' can only be one of 'liracine' or 'wangvanryzin'")
+  }
+  
+  if (cat_first & any(c(s, lambda) != -1)){
+    stop("'cat_first' can only be TRUE when all bandwidths are determined by the algorithm (s = -1, lambda = -1).")
   }
   
   # Validate lambda
@@ -93,7 +101,8 @@ IBmix <- function(X, ncl, beta, catcols, contcols, randinit = NULL,
   }
   
   bws_vec <- compute_s_lambda(X, contcols, catcols, s, lambda,
-                              contkernel, nomkernel, ordkernel)
+                              contkernel, nomkernel, ordkernel,
+                              cat_first)
   
   # Construct joint density with final bandwidths
   pxy_list <- coord_to_pxy_R(X, s = bws_vec[contcols],

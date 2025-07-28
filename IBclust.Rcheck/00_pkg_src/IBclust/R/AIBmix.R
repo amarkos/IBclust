@@ -2,7 +2,8 @@ AIBmix <- function(X, catcols, contcols, lambda = -1,
                  s = -1, scale = TRUE,
                  contkernel = "gaussian",
                  nomkernel = "aitchisonaitken",
-                 ordkernel = "liracine") {
+                 ordkernel = "liracine",
+                 cat_first = FALSE) {
   
   # Validate inputs
   if (!is.data.frame(X)) {
@@ -23,6 +24,9 @@ AIBmix <- function(X, catcols, contcols, lambda = -1,
   if (!is.logical(scale)) {
     stop("'scale' must be a logical value (TRUE or FALSE).")
   }
+  if (!is.logical(cat_first)) {
+    stop("'cat_first' must be a logical value (TRUE or FALSE).")
+  }
   # Check kernel types
   if (!contkernel %in% c("gaussian", "epanechnikov")){
     stop("'contkernel' can only be one of 'gaussian' or 'epanechnikov'")
@@ -32,6 +36,10 @@ AIBmix <- function(X, catcols, contcols, lambda = -1,
   }
   if (!ordkernel %in% c("liracine", "wangvanryzin")){
     stop("'ordkernel' can only be one of 'liracine' or 'wangvanryzin'")
+  }
+  
+  if (cat_first & any(c(s, lambda) != -1)){
+    stop("'cat_first' can only be TRUE when all bandwidths are determined by the algorithm (s = -1, lambda = -1).")
   }
   
   # Validate lambda
@@ -71,7 +79,8 @@ AIBmix <- function(X, catcols, contcols, lambda = -1,
   }
   
   bws_vec <- compute_s_lambda(X, contcols, catcols, s, lambda,
-                              contkernel, nomkernel, ordkernel)
+                              contkernel, nomkernel, ordkernel,
+                              cat_first)
   
   # Construct joint density with final bandwidths
   pxy_list <- coord_to_pxy_R(X, s = bws_vec[contcols],
