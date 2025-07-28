@@ -1,9 +1,9 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.11.25) (preloaded format=pdflatex 2022.12.4)  28 JUL 2025 18:36
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.11.25) (preloaded format=pdflatex 2022.12.4)  28 JUL 2025 18:41
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**C:/Users/ec1917/AppData/Local/Temp/RtmpsHKbHK/Rd2pdfba823334f83/Rd2.tex
-(C:/Users/ec1917/AppData/Local/Temp/RtmpsHKbHK/Rd2pdfba823334f83/Rd2.tex
+**C:/Users/ec1917/AppData/Local/Temp/Rtmpstuioj/Rd2pdf33fc6f113bb9/Rd2.tex
+(C:/Users/ec1917/AppData/Local/Temp/Rtmpstuioj/Rd2pdf33fc6f113bb9/Rd2.tex
 LaTeX2e <2022-11-01> patch level 1
 L3 programming layer <2022-11-02>
 (C:\Users\ec1917\AppData\Local\Programs\MiKTeX\tex/latex/base\book.cls
@@ -719,12 +719,12 @@ Package rerunfilecheck Info: File `Rd2.out' has not changed.
  ) 
 Here is how much of TeX's memory you used:
  10516 strings out of 475281
- 163694 string characters out of 2773593
+ 163705 string characters out of 2773593
  504888 words of memory out of 3000000
  31641 multiletter control sequences out of 15000+600000
  506703 words of font info for 74 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 89i,9n,93p,734b,728s stack positions out of 10000i,1000n,20000p,200000b,80000s
+ 89i,9n,93p,735b,728s stack positions out of 10000i,1000n,20000p,200000b,80000s
 {C:/Users/ec1917/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/inconsolata/i4
 -ts1.enc}{C:/Users/ec1917/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/base/8r
 .enc}{C:/Users/ec1917/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/inconsolata
@@ -744,7 +744,7 @@ TeX/fonts/type1/urw/times/utmb8a.pfb><C:/Users/ec1917/AppData/Local/Programs/Mi
 KTeX/fonts/type1/urw/times/utmr8a.pfb><C:/Users/ec1917/AppData/Local/Programs/M
 iKTeX/fonts/type1/urw/times/utmr8a.pfb><C:/Users/ec1917/AppData/Local/Programs/
 MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
-Output written on Rd2.pdf (36 pages, 323722 bytes).
+Output written on Rd2.pdf (36 pages, 323750 bytes).
 PDF statistics:
  541 PDF objects out of 1000 (max. 8388607)
  172 named destinations out of 1000 (max. 500000)

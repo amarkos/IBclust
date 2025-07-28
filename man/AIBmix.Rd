@@ -39,7 +39,7 @@ AIBmix(X, catcols, contcols, lambda = -1, s = -1,
     Kernel used for ordinal (ordered categorical) variables. Can be one of \code{liracine} (default) or \code{wangvanryzin}.
   }
   \item{cat_first}{
-    A logical value indicating whether bandwidth selection is prioritised for the categorical variables, instead of the continuous. Default to \code{FALSE}. Set to \code{TRUE} if you suspect that your continuous variables are not informative of the cluster structure. Can only be \code{TRUE} when all bandwidths are selected automatically (i.e. \code{s = -1}, \code{lambda = -1}). 
+    A logical value indicating whether bandwidth selection is prioritised for the categorical variables, instead of the continuous. Defaults to \code{FALSE}. Set to \code{TRUE} if you suspect that the continuous variables are not informative of the cluster structure. Can only be \code{TRUE} when all bandwidths are selected automatically (i.e. \code{s = -1}, \code{lambda = -1}). 
   }
 }
 
