@@ -31,7 +31,7 @@ DIBmix_iterate <- function(X, ncl, randinit,
   Loss <- -Inf
   best_clust$Cluster <- rep(NA, nrow(X))
   best_clust$Entropy <- Inf
-  best_clust$RelEntropy <- Inf
+  best_clust$CondEntropy <- Inf
   best_clust$MutualInfo <- Inf
   best_clust$InfoXT <- Inf
   best_clust$beta <- NA
@@ -43,7 +43,7 @@ DIBmix_iterate <- function(X, ncl, randinit,
     Loss <- 0
     best_clust$Cluster <- rep(1, nrow(X))
     best_clust$Entropy <- 0
-    best_clust$RelEntropy <- 0
+    best_clust$CondEntropy <- 0
     best_clust$MutualInfo <- 0
     best_clust$InfoXT <- 0
     best_clust$beta <- 1
