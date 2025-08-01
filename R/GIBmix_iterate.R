@@ -147,7 +147,7 @@ GIBmix_iterate <- function(X, ncl, beta, alpha, randinit,
       # cat("Iteration:", iterations, "- Change in qt_x:", change_in_qt_x, "\n")
       # Removed conditions: & nrow(qt_x)==ncl & !all(apply(qt_x, 2, function(col) which(col == 1)) == rand_init)
       #if (Lval < best_clust[[1]]){
-      if (Lval < Loss){
+      if (Lval < Loss & nrow(qt_x)==ncl){
         #   best_clust[[1]] <- Lval
         Loss <- Lval
         best_clust[[1]] <- qt_x

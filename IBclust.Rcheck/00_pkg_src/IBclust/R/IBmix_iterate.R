@@ -53,7 +53,9 @@ IBmix_iterate <- function(X, ncl, beta, randinit,
     best_clust$iyt <- 0
     best_clust$losses <- 0
   } else {
+    pb <- txtProgressBar(style = 3, min = 0, max = runs)
     for (i in c(1:runs)){
+      setTxtProgressBar(pb, i)
       #set.seed(i)
       # 2. Initialize qt_x (randomly)
       qt_x_init <- matrix(0, nrow = ncl, ncol = nrow(X))
@@ -140,7 +142,7 @@ IBmix_iterate <- function(X, ncl, beta, randinit,
       # cat("Iteration:", iterations, "- Change in qt_x:", change_in_qt_x, "\n")
       # Removed conditions: & nrow(qt_x)==ncl & !all(apply(qt_x, 2, function(col) which(col == 1)) == rand_init)
       #if (Lval < best_clust[[1]]){
-      if (Lval < Loss){
+      if (Lval < Loss & nrow(qt_x)==ncl){
         #   best_clust[[1]] <- Lval
         Loss <- Lval
         best_clust[[1]] <- qt_x
@@ -159,7 +161,99 @@ IBmix_iterate <- function(X, ncl, beta, randinit,
         message('Run ', i, ' complete.\n')
       }
     }
+    close(pb) 
   }
   
   return(best_clust)
+}
+
+txtProgressBar <- function(min = 0, max = 1, initial = 0, char = "=", width = NA, 
+                           title, label, style = 1, file = "") 
+{
+  if (!identical(file, "") && !(inherits(file, "connection") && 
+                                isOpen(file))) 
+    stop("'file' must be \"\" or an open connection object")
+  if (!style %in% 1L:3L) 
+    style <- 1
+  .val <- initial
+  .killed <- FALSE
+  .nb <- 0L
+  .pc <- -1L
+  nw <- nchar(char, "w")
+  if (is.na(width)) {
+    width <- getOption("width")
+    if (style == 3L) 
+      width <- width - 10L
+    width <- trunc(width/nw)
+  }
+  if (max <= min) 
+    stop("must have 'max' > 'min'")
+  up1 <- function(value) {
+    if (!is.finite(value) || value < min || value > max) 
+      return()
+    .val <<- value
+    nb <- round(width * (value - min)/(max - min))
+    if (.nb < nb) {
+      cat(strrep(char, nb - .nb), file = file)
+      flush.console()
+    }
+    else if (.nb > nb) {
+      cat("\r", strrep(" ", .nb * nw), "\r", strrep(char, 
+                                                    nb), sep = "", file = file)
+      flush.console()
+    }
+    .nb <<- nb
+  }
+  up2 <- function(value) {
+    if (!is.finite(value) || value < min || value > max) 
+      return()
+    .val <<- value
+    nb <- round(width * (value - min)/(max - min))
+    if (.nb <= nb) {
+      cat("\r", strrep(char, nb), sep = "", file = file)
+      flush.console()
+    }
+    else {
+      cat("\r", strrep(" ", .nb * nw), "\r", strrep(char, 
+                                                    nb), sep = "", file = file)
+      flush.console()
+    }
+    .nb <<- nb
+  }
+  up3 <- function(value) {
+    if (!is.finite(value) || value < min || value > max) 
+      return()
+    .val <<- value
+    nb <- round(width * (value - min)/(max - min))
+    pc <- round(100 * (value - min)/(max - min))
+    if (nb == .nb && pc == .pc) 
+      return()
+    cat(paste0("\r  |", strrep(" ", nw * width + 6)), file = file)
+    cat(paste(c("\r  |", rep.int(char, nb), rep.int(" ", 
+                                                    nw * (width - nb)), sprintf("| %3d%%", pc)), collapse = ""), 
+        file = file)
+    flush.console()
+    .nb <<- nb
+    .pc <<- pc
+  }
+  getVal <- function() .val
+  kill <- function() if (!.killed) {
+    cat("\n", file = file)
+    flush.console()
+    .killed <<- TRUE
+  }
+  up <- switch(style, up1, up2, up3)
+  up(initial)
+  structure(list(getVal = getVal, up = up, kill = kill), class = "txtProgressBar")
+}
+
+
+setTxtProgressBar <- function (pb, value, title = NULL, label = NULL) 
+{
+  if (!inherits(pb, "txtProgressBar")) 
+    stop(gettextf("'pb' is not from class %s", dQuote("txtProgressBar")), 
+         domain = NA)
+  oldval <- pb$getVal()
+  pb$up(value)
+  invisible(oldval)
 }

@@ -169,10 +169,11 @@ result_cont_first <- DIBmix(X = data, ncl = 3,
                            nstart = 50)
 
 # Compare clustering performance
-library(mclust)  # For adjustedRandIndex
-print(paste("Agreement between approaches:", 
-           round(adjustedRandIndex(result_cat_first$Cluster, 
-                                 result_cont_first$Cluster), 3)))                        
+if (requireNamespace("mclust", quietly = TRUE)){  # For adjustedRandIndex
+  print(paste("Agreement between approaches:", 
+              round(mclust::adjustedRandIndex(result_cat_first$Cluster, 
+                    result_cont_first$Cluster), 3)))
+  }
 }
 \seealso{
 \code{\link{DIBcont}}, \code{\link{DIBcat}}

@@ -121,24 +121,59 @@ The bandwidth parameters \eqn{s}, \eqn{\lambda}, and \eqn{\nu} control the smoot
 
 
 \examples{
-# Example dataset with categorical, ordinal, and continuous variables
+# Example 1: Basic Mixed-Type Clustering
 set.seed(123)
+
+# Create a more realistic dataset with mixed variable types
 data <- data.frame(
-  cat_var = factor(sample(letters[1:3], 100, replace = TRUE)),      # Nominal categorical variable
-  ord_var = factor(sample(c("low", "medium", "high"), 100, replace = TRUE),
-                   levels = c("low", "medium", "high"),
-                   ordered = TRUE),                                # Ordinal variable
-  cont_var1 = rnorm(100),                                          # Continuous variable 1
-  cont_var2 = runif(100)                                           # Continuous variable 2
+  # Categorical variables
+  education = factor(sample(c("High School", "Bachelor", "Master", "PhD"), 150, 
+                           replace = TRUE, prob = c(0.4, 0.3, 0.2, 0.1))),
+  employment = factor(sample(c("Full-time", "Part-time", "Unemployed"), 150, 
+                            replace = TRUE, prob = c(0.6, 0.25, 0.15))),
+  
+  # Ordinal variable
+  satisfaction = factor(sample(c("Low", "Medium", "High"), 150, replace = TRUE),
+                       levels = c("Low", "Medium", "High"), ordered = TRUE),
+  
+  # Continuous variables  
+  income = rlnorm(150, meanlog = 10, sdlog = 0.5),  # Log-normal income
+  age = rnorm(150, mean = 35, sd = 10),             # Normally distributed age
+  experience = rpois(150, lambda = 8)               # Years of experience
 )
 
 # Perform Mixed-Type Clustering
-result <- DIBmix(X = data, ncl = 3, catcols = 1:2, contcols = 3:4, nstart = 10)
+result <- DIBmix(X = data, ncl = 3, 
+                catcols = c(1, 2, 3),    # education, employment, satisfaction
+                contcols = c(4, 5, 6),   # income, age, experience
+                nstart = 50)
 
-# Print clustering results
-print(result$Cluster)       # Cluster assignments
-print(result$Entropy)       # Final entropy
-print(result$MutualInfo)    # Mutual information
+# View results
+print(paste("Number of clusters found:", length(unique(result$Cluster))))
+print(paste("Mutual Information:", round(result$MutualInfo, 3)))
+table(result$Cluster)
+
+# Example 2: Comparing cat_first parameter
+# When categorical variables are more informative
+result_cat_first <- DIBmix(X = data, ncl = 3,
+                          catcols = c(1, 2, 3), 
+                          contcols = c(4, 5, 6),
+                          cat_first = TRUE,  # Prioritize categorical variables
+                          nstart = 50)
+
+# When continuous variables are more informative (default)
+result_cont_first <- DIBmix(X = data, ncl = 3,
+                           catcols = c(1, 2, 3), 
+                           contcols = c(4, 5, 6),
+                           cat_first = FALSE,
+                           nstart = 50)
+
+# Compare clustering performance
+if (requireNamespace("mclust", quietly = TRUE)){  # For adjustedRandIndex
+  print(paste("Agreement between approaches:", 
+              round(mclust::adjustedRandIndex(result_cat_first$Cluster, 
+                    result_cont_first$Cluster), 3)))
+  }
 }
 \seealso{
 \code{\link{DIBcont}}, \code{\link{DIBcat}}

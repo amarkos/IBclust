@@ -25,6 +25,7 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 Depends: R (>= 3.5.0)
 Imports: Rcpp, stats, utils, np, rje, Rdpack, RcppEigen
+Suggests: mclust
 LinkingTo: Rcpp, RcppArmadillo, RcppEigen
 RoxygenNote: 7.3.2
 RdMacros: Rdpack
