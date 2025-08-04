@@ -22,7 +22,7 @@ GIBcat(X, ncl, beta, alpha, randinit = NULL, lambda = -1,
     Regularisation strength.
   }
   \item{alpha}{
-    Strength of conditional entropy term.
+    Strength of conditional entropy term. Must be in the range \eqn{[0, 1]}. Setting \code{alpha = 0} calls the \code{DIBcat} function and ignores the value of \code{beta}, while \code{alpha = 1} calls \code{IBcat} instead.
   }
   \item{ncl}{
     An integer specifying the number of clusters to form.

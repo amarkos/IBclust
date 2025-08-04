@@ -11,8 +11,8 @@ GIBcont <- function(X, ncl, beta, alpha, randinit = NULL, s = -1, scale = TRUE,
     stop("Input 'beta' must be a positive number.")
   }
   
-  if (!is.numeric(alpha) || alpha < 0) {
-    stop("Input 'alpha' must be a non-negative number.")
+  if (!is.numeric(alpha) || alpha < 0 || alpha > 1) {
+    stop("Input 'alpha' must be a number between 0 and 1.")
   }
   
   if (!is.logical(scale)) {

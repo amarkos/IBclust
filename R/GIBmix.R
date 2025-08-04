@@ -17,8 +17,8 @@ GIBmix <- function(X, ncl, beta, alpha, catcols, contcols, randinit = NULL,
     stop("Input 'beta' must be a positive number.")
   }
   
-  if (!is.numeric(alpha) || alpha < 0) {
-    stop("Input 'alpha' must be a non-negative number.")
+  if (!is.numeric(alpha) || alpha < 0 || alpha > 1) {
+    stop("Input 'alpha' must be a number between 0 and 1.")
   }
   
   if (!all(catcols %in% seq_along(X))) {

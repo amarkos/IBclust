@@ -24,7 +24,7 @@ GIBmix(X, ncl, beta, alpha, catcols, contcols, randinit = NULL,
 
 \item{beta}{Regularisation strength.}
 
-\item{alpha}{Strength of conditional entropy term.}
+\item{alpha}{Strength of conditional entropy term. Must be in the range \eqn{[0, 1]}. Setting \code{alpha = 0} calls the \code{DIBmix} function and ignores the value of \code{beta}, while \code{alpha = 1} calls \code{IBmix} instead.}
 
 \item{catcols}{A vector indicating the indices of the categorical variables in \code{X}.}
 
@@ -143,7 +143,8 @@ data <- data.frame(
 )
 
 # Perform Mixed-Type Fuzzy Clustering with Generalised IB
-result <- GIBmix(X = data, ncl = 3, beta = 2, alpha = 0.5, catcols = 1:2, contcols = 3:4, nstart = 20)
+result <- GIBmix(X = data, ncl = 3, beta = 2, alpha = 0.5, 
+catcols = 1:2, contcols = 3:4, nstart = 20)
 
 # Print clustering results
 print(result$Cluster)       # Cluster membership matrix

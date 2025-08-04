@@ -23,7 +23,7 @@ GIBcont(X, ncl, beta, alpha, randinit = NULL, s = -1, scale = TRUE,
     Regularisation strength.
   }
   \item{alpha}{
-    Strength of conditional entropy term.
+    Strength of conditional entropy term. Must be in the range \eqn{[0, 1]}. Setting \code{alpha = 0} calls the \code{DIBcont} function and ignores the value of \code{beta}, while \code{alpha = 1} calls \code{IBcont} instead.
   }
   \item{randinit}{
     Optional. A vector specifying initial cluster assignments. If \code{NULL}, cluster assignments are initialized randomly.

@@ -316,7 +316,8 @@ data <- data.frame(
 )
 
 # Perform Mixed-Type Fuzzy Clustering with Generalised IB
-result <- GIBmix(X = data, ncl = 3, beta = 2, alpha = 0.5, catcols = 1:2, contcols = 3:4, nstart = 20)
+result <- GIBmix(X = data, ncl = 3, beta = 2, alpha = 0.5, 
+catcols = 1:2, contcols = 3:4, nstart = 20)
 
 # Print clustering results
 print(result$Cluster)       # Cluster membership matrix
