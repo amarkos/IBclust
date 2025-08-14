@@ -21,7 +21,7 @@ Description: Implements multiple variants of the Information Bottleneck ('IB') m
     originates from Tishby et al. (2000) <doi:10.48550/arXiv.physics/0004057>, 
     the agglomerative variant from Slonim and Tishby (1999) <https://papers.nips.cc/paper/1651-agglomerative-information-bottleneck>, 
     and the generalized 'IB' from Strouse and Schwab (2017) <doi:10.1162/NECO_a_00961>.
-License: MIT + file LICENSE
+License: GPL (>= 3)
 Encoding: UTF-8
 Depends: R (>= 3.5.0)
 Imports: Rcpp, stats, utils, np, rje, Rdpack, RcppEigen
