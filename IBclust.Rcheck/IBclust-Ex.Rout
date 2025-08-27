@@ -26,63 +26,6 @@ Type 'q()' to quit R.
 > base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
 > base::assign(".old_wd", base::getwd(), pos = 'CheckExEnv')
 > cleanEx()
-> nameEx("AIBcat")
-> ### * AIBcat
-> 
-> flush(stderr()); flush(stdout())
-> 
-> ### Name: AIBcat
-> ### Title: Cluster Categorical Data Using the Agglomerative Information
-> ###   Bottleneck Algorithm
-> ### Aliases: AIBcat
-> ### Keywords: clustering
-> 
-> ### ** Examples
-> 
-> # Simulated categorical data
-> set.seed(123)
-> X <- data.frame(
-+   Var1 = as.factor(sample(letters[1:3], 200, replace = TRUE)),  # Nominal variable
-+   Var2 = as.factor(sample(letters[4:6], 200, replace = TRUE)),  # Nominal variable
-+   Var3 = factor(sample(c("low", "medium", "high"), 200, replace = TRUE),
-+                 levels = c("low", "medium", "high"), ordered = TRUE)  # Ordinal variable
-+ )
-> 
-> # Run AIBcat with automatic lambda selection 
-> result <- AIBcat(X = X, lambda = -1)
-> 
-> # Print clustering results
-> plot(result$dendrogram, xlab = "", sub = "")  # Plot dendrogram
-> 
-> 
-> 
-> cleanEx()
-> nameEx("AIBcont")
-> ### * AIBcont
-> 
-> flush(stderr()); flush(stdout())
-> 
-> ### Name: AIBcont
-> ### Title: Cluster Continuous Data Using the Agglomerative Information
-> ###   Bottleneck Algorithm
-> ### Aliases: AIBcont
-> ### Keywords: clustering
-> 
-> ### ** Examples
-> 
-> # Generate simulated continuous data
-> set.seed(123)
-> X <- matrix(rnorm(1000), ncol = 5)  # 200 observations, 5 features
-> 
-> # Run AIBcont with automatic bandwidth selection 
-> result <- AIBcont(X = X, s = -1, scale = TRUE)
-> 
-> # Print clustering results
-> plot(result$dendrogram, xlab = "", sub = "")  # Plot dendrogram
-> 
-> 
-> 
-> cleanEx()
 > nameEx("AIBmix")
 > ### * AIBmix
 > 
@@ -98,7 +41,7 @@ Type 'q()' to quit R.
 > 
 > # Example dataset with categorical, ordinal, and continuous variables
 > set.seed(123)
-> data <- data.frame(
+> data_mix <- data.frame(
 +   cat_var = factor(sample(letters[1:3], 100, replace = TRUE)),      # Nominal categorical variable
 +   ord_var = factor(sample(c("low", "medium", "high"), 100, replace = TRUE),
 +                    levels = c("low", "medium", "high"),
@@ -108,85 +51,37 @@ Type 'q()' to quit R.
 + )
 > 
 > # Perform Mixed-Type Hierarchical Clustering with Agglomerative IB
-> result <- AIBmix(X = data, catcols = 1:2, contcols = 3:4, lambda = -1, s = -1, scale = TRUE)
+> result_mix <- AIBmix(X = data_mix, lambda = -1, s = -1, scale = TRUE)
 > 
 > # Print clustering results
-> plot(result$dendrogram, xlab = "", sub = "")  # Plot dendrogram
+> plot(result_mix$dendrogram, xlab = "", sub = "")  # Plot dendrogram
 > 
-> 
-> 
-> cleanEx()
-> nameEx("DIBcat")
-> ### * DIBcat
-> 
-> flush(stderr()); flush(stdout())
-> 
-> ### Name: DIBcat
-> ### Title: Cluster Categorical Data Using the Deterministic Information
-> ###   Bottleneck Algorithm
-> ### Aliases: DIBcat
-> ### Keywords: clustering
-> 
-> ### ** Examples
-> 
-> # Simulated categorical data
+> # Simulated categorical data example
 > set.seed(123)
-> X <- data.frame(
+> data_cat <- data.frame(
 +   Var1 = as.factor(sample(letters[1:3], 200, replace = TRUE)),  # Nominal variable
 +   Var2 = as.factor(sample(letters[4:6], 200, replace = TRUE)),  # Nominal variable
 +   Var3 = factor(sample(c("low", "medium", "high"), 200, replace = TRUE),
 +                 levels = c("low", "medium", "high"), ordered = TRUE)  # Ordinal variable
 + )
 > 
-> # Run DIBcat with automatic lambda selection and multiple initializations
-> result <- DIBcat(X = X, ncl = 3, lambda = -1, nstart = 10)
-  |                                                                              |                                                                      |   0%  |                                                                              |=======                                                               |  10%  |                                                                              |==============                                                        |  20%  |                                                                              |=====================                                                 |  30%  |                                                                              |============================                                          |  40%  |                                                                              |===================================                                   |  50%  |                                                                              |==========================================                            |  60%  |                                                                              |=================================================                     |  70%  |                                                                              |========================================================              |  80%  |                                                                              |===============================================================       |  90%  |                                                                              |======================================================================| 100%
+> # Run AIBmix with automatic lambda selection 
+> result_cat <- AIBmix(X = data_cat, lambda = -1)
 > 
 > # Print clustering results
-> print(result$Cluster)       # Cluster assignments
-  [1] 2 2 2 3 2 3 3 3 2 1 3 3 1 3 2 1 2 2 1 1 1 1 2 3 2 3 1 3 2 3 1 2 2 1 2 3 1
- [38] 2 1 1 3 2 2 1 2 1 2 3 1 3 1 1 2 1 3 1 1 2 1 3 1 2 1 2 3 2 3 3 2 3 3 2 2 1
- [75] 3 3 1 3 1 1 3 2 2 1 3 1 3 1 2 2 3 2 1 3 3 2 3 1 2 2 2 3 3 2 1 1 2 3 3 3 3
-[112] 3 3 2 3 1 3 3 3 2 3 2 3 2 1 2 2 2 1 2 2 3 3 3 2 2 2 3 1 3 1 2 2 3 1 2 1 2
-[149] 3 3 1 2 3 1 2 2 2 1 3 3 1 3 2 2 1 3 1 3 2 2 1 2 3 1 1 3 2 1 3 3 1 3 1 1 3
-[186] 1 2 1 1 3 1 3 1 1 1 2 2 3 1 3
-> print(result$Entropy)       # Final entropy
-[1] 1.583624
-> print(result$MutualInfo)    # Mutual information
-[1] 0.08759985
+> plot(result_cat$dendrogram, xlab = "", sub = "")  # Plot dendrogram
 > 
-> 
-> 
-> cleanEx()
-> nameEx("DIBcont")
-> ### * DIBcont
-> 
-> flush(stderr()); flush(stdout())
-> 
-> ### Name: DIBcont
-> ### Title: Cluster Continuous Data Using the Deterministic Information
-> ###   Bottleneck Algorithm
-> ### Aliases: DIBcont
-> ### Keywords: clustering
-> 
-> ### ** Examples
-> 
-> # Generate simulated continuous data
+> # Simulated continuous data example
 > set.seed(123)
-> X <- matrix(rnorm(200), ncol = 5)  # 200 observations, 5 features
+> # Continuous data with 200 observations, 5 features
+> data_cont <- as.data.frame(matrix(rnorm(1000), ncol = 5))
 > 
-> # Run DIBcont with automatic bandwidth selection and multiple initializations
-> result <- DIBcont(X = X, ncl = 3, s = -1, nstart = 10)
-  |                                                                              |                                                                      |   0%  |                                                                              |=======                                                               |  10%  |                                                                              |==============                                                        |  20%  |                                                                              |=====================                                                 |  30%  |                                                                              |============================                                          |  40%  |                                                                              |===================================                                   |  50%  |                                                                              |==========================================                            |  60%  |                                                                              |=================================================                     |  70%  |                                                                              |========================================================              |  80%  |                                                                              |===============================================================       |  90%  |                                                                              |======================================================================| 100%
+> # Run AIBmix with automatic bandwidth selection 
+> result_cont <- AIBmix(X = data_cont, s = -1, scale = TRUE)
 > 
 > # Print clustering results
-> print(result$Cluster)       # Cluster assignments
- [1] 3 2 2 3 1 2 3 2 3 3 1 1 2 3 2 1 2 3 1 2 1 3 2 2 2 2 3 1 1 3 1 2 1 2 2 3 1 2
-[39] 1 2
-> print(result$Entropy)       # Final entropy
-[1] 1.557924
-> print(result$MutualInfo)    # Mutual information
-[1] 0.01232257
+> plot(result_cont$dendrogram, xlab = "", sub = "")  # Plot dendrogram
+> 
 > 
 > 
 > 
@@ -208,7 +103,7 @@ Type 'q()' to quit R.
 > set.seed(123)
 > 
 > # Create a more realistic dataset with mixed variable types
-> data <- data.frame(
+> data_mix <- data.frame(
 +   # Categorical variables
 +   education = factor(sample(c("High School", "Bachelor", "Master", "PhD"), 150, 
 +                            replace = TRUE, prob = c(0.4, 0.3, 0.2, 0.1))),
@@ -226,37 +121,30 @@ Type 'q()' to quit R.
 + )
 > 
 > # Perform Mixed-Type Clustering
-> result <- DIBmix(X = data, ncl = 3, 
-+                 catcols = c(1, 2, 3),    # education, employment, satisfaction
-+                 contcols = c(4, 5, 6),   # income, age, experience
-+                 nstart = 50)
+> result_mix <- DIBmix(X = data_mix, ncl = 3, nstart = 50)
   |                                                                              |                                                                      |   0%  |                                                                              |=                                                                     |   2%  |                                                                              |===                                                                   |   4%  |                                                                              |====                                                                  |   6%  |                                                                              |======                                                                |   8%  |                                                                              |=======                                                               |  10%  |                                                                              |========                                                              |  12%  |                                                                              |==========                                                            |  14%  |                                                                              |===========                                                           |  16%  |                                                                              |=============                                                         |  18%  |                                                                              |==============                                                        |  20%  |                                                                              |===============                                                       |  22%  |                                                                              |=================                                                     |  24%  |                                                                              |==================                                                    |  26%  |                                                                              |====================                                                  |  28%  |                                                                              |=====================                                                 |  30%  |                                                                              |======================                                                |  32%  |                                                                              |========================                                              |  34%  |                                                                              |=========================                                             |  36%  |                                                                              |===========================                                           |  38%  |                                                                              |============================                                          |  40%  |                                                                              |=============================                                         |  42%  |                                                                              |===============================                                       |  44%  |                                                                              |================================                                      |  46%  |                                                                              |==================================                                    |  48%  |                                                                              |===================================                                   |  50%  |                                                                              |====================================                                  |  52%  |                                                                              |======================================                                |  54%  |                                                                              |=======================================                               |  56%  |                                                                              |=========================================                             |  58%  |                                                                              |==========================================                            |  60%  |                                                                              |===========================================                           |  62%  |                                                                              |=============================================                         |  64%  |                                                                              |==============================================                        |  66%  |                                                                              |================================================                      |  68%  |                                                                              |=================================================                     |  70%  |                                                                              |==================================================                    |  72%  |                                                                              |====================================================                  |  74%  |                                                                              |=====================================================                 |  76%  |                                                                              |=======================================================               |  78%  |                                                                              |========================================================              |  80%  |                                                                              |=========================================================             |  82%  |                                                                              |===========================================================           |  84%  |                                                                              |============================================================          |  86%  |                                                                              |==============================================================        |  88%  |                                                                              |===============================================================       |  90%  |                                                                              |================================================================      |  92%  |                                                                              |==================================================================    |  94%  |                                                                              |===================================================================   |  96%  |                                                                              |===================================================================== |  98%  |                                                                              |======================================================================| 100%
 > 
 > # View results
-> print(paste("Number of clusters found:", length(unique(result$Cluster))))
+> print(paste("Number of clusters found:", length(unique(result_mix$Cluster))))
 [1] "Number of clusters found: 3"
-> print(paste("Mutual Information:", round(result$MutualInfo, 3)))
+> print(paste("Mutual Information:", round(result_mix$MutualInfo, 3)))
 [1] "Mutual Information: 0.338"
-> table(result$Cluster)
+> table(result_mix$Cluster)
 
  1  2  3 
 36 50 64 
 > 
 > # Example 2: Comparing cat_first parameter
 > # When categorical variables are more informative
-> result_cat_first <- DIBmix(X = data, ncl = 3,
-+                           catcols = c(1, 2, 3), 
-+                           contcols = c(4, 5, 6),
-+                           cat_first = TRUE,  # Prioritize categorical variables
-+                           nstart = 50)
+> result_cat_first <- DIBmix(X = data_mix, ncl = 3,
++                            cat_first = TRUE,  # Prioritize categorical variables
++                            nstart = 50)
   |                                                                              |                                                                      |   0%  |                                                                              |=                                                                     |   2%  |                                                                              |===                                                                   |   4%  |                                                                              |====                                                                  |   6%  |                                                                              |======                                                                |   8%  |                                                                              |=======                                                               |  10%  |                                                                              |========                                                              |  12%  |                                                                              |==========                                                            |  14%  |                                                                              |===========                                                           |  16%  |                                                                              |=============                                                         |  18%  |                                                                              |==============                                                        |  20%  |                                                                              |===============                                                       |  22%  |                                                                              |=================                                                     |  24%  |                                                                              |==================                                                    |  26%  |                                                                              |====================                                                  |  28%  |                                                                              |=====================                                                 |  30%  |                                                                              |======================                                                |  32%  |                                                                              |========================                                              |  34%  |                                                                              |=========================                                             |  36%  |                                                                              |===========================                                           |  38%  |                                                                              |============================                                          |  40%  |                                                                              |=============================                                         |  42%  |                                                                              |===============================                                       |  44%  |                                                                              |================================                                      |  46%  |                                                                              |==================================                                    |  48%  |                                                                              |===================================                                   |  50%  |                                                                              |====================================                                  |  52%  |                                                                              |======================================                                |  54%  |                                                                              |=======================================                               |  56%  |                                                                              |=========================================                             |  58%  |                                                                              |==========================================                            |  60%  |                                                                              |===========================================                           |  62%  |                                                                              |=============================================                         |  64%  |                                                                              |==============================================                        |  66%  |                                                                              |================================================                      |  68%  |                                                                              |=================================================                     |  70%  |                                                                              |==================================================                    |  72%  |                                                                              |====================================================                  |  74%  |                                                                              |=====================================================                 |  76%  |                                                                              |=======================================================               |  78%  |                                                                              |========================================================              |  80%  |                                                                              |=========================================================             |  82%  |                                                                              |===========================================================           |  84%  |                                                                              |============================================================          |  86%  |                                                                              |==============================================================        |  88%  |                                                                              |===============================================================       |  90%  |                                                                              |================================================================      |  92%  |                                                                              |==================================================================    |  94%  |                                                                              |===================================================================   |  96%  |                                                                              |===================================================================== |  98%  |                                                                              |======================================================================| 100%
 > 
 > # When continuous variables are more informative (default)
-> result_cont_first <- DIBmix(X = data, ncl = 3,
-+                            catcols = c(1, 2, 3), 
-+                            contcols = c(4, 5, 6),
-+                            cat_first = FALSE,
-+                            nstart = 50)
+> result_cont_first <- DIBmix(X = data_mix, ncl = 3,
++                             cat_first = FALSE,
++                             nstart = 50)
   |                                                                              |                                                                      |   0%  |                                                                              |=                                                                     |   2%  |                                                                              |===                                                                   |   4%  |                                                                              |====                                                                  |   6%  |                                                                              |======                                                                |   8%  |                                                                              |=======                                                               |  10%  |                                                                              |========                                                              |  12%  |                                                                              |==========                                                            |  14%  |                                                                              |===========                                                           |  16%  |                                                                              |=============                                                         |  18%  |                                                                              |==============                                                        |  20%  |                                                                              |===============                                                       |  22%  |                                                                              |=================                                                     |  24%  |                                                                              |==================                                                    |  26%  |                                                                              |====================                                                  |  28%  |                                                                              |=====================                                                 |  30%  |                                                                              |======================                                                |  32%  |                                                                              |========================                                              |  34%  |                                                                              |=========================                                             |  36%  |                                                                              |===========================                                           |  38%  |                                                                              |============================                                          |  40%  |                                                                              |=============================                                         |  42%  |                                                                              |===============================                                       |  44%  |                                                                              |================================                                      |  46%  |                                                                              |==================================                                    |  48%  |                                                                              |===================================                                   |  50%  |                                                                              |====================================                                  |  52%  |                                                                              |======================================                                |  54%  |                                                                              |=======================================                               |  56%  |                                                                              |=========================================                             |  58%  |                                                                              |==========================================                            |  60%  |                                                                              |===========================================                           |  62%  |                                                                              |=============================================                         |  64%  |                                                                              |==============================================                        |  66%  |                                                                              |================================================                      |  68%  |                                                                              |=================================================                     |  70%  |                                                                              |==================================================                    |  72%  |                                                                              |====================================================                  |  74%  |                                                                              |=====================================================                 |  76%  |                                                                              |=======================================================               |  78%  |                                                                              |========================================================              |  80%  |                                                                              |=========================================================             |  82%  |                                                                              |===========================================================           |  84%  |                                                                              |============================================================          |  86%  |                                                                              |==============================================================        |  88%  |                                                                              |===============================================================       |  90%  |                                                                              |================================================================      |  92%  |                                                                              |==================================================================    |  94%  |                                                                              |===================================================================   |  96%  |                                                                              |===================================================================== |  98%  |                                                                              |======================================================================| 100%
 > 
 > # Compare clustering performance
@@ -267,37 +155,192 @@ Type 'q()' to quit R.
 +   }
 [1] "Agreement between approaches: -0.007"
 > 
-> 
-> 
-> cleanEx()
-> nameEx("GIBcat")
-> ### * GIBcat
-> 
-> flush(stderr()); flush(stdout())
-> 
-> ### Name: GIBcat
-> ### Title: Cluster Categorical Data Using the Generalised Information
-> ###   Bottleneck Algorithm
-> ### Aliases: GIBcat
-> ### Keywords: clustering
-> 
-> ### ** Examples
-> 
-> # Simulated categorical data
-> set.seed(123)
-> X <- data.frame(
+> # Simulated categorical data example
+> data_cat <- data.frame(
 +   Var1 = as.factor(sample(letters[1:3], 200, replace = TRUE)),  # Nominal variable
 +   Var2 = as.factor(sample(letters[4:6], 200, replace = TRUE)),  # Nominal variable
 +   Var3 = factor(sample(c("low", "medium", "high"), 200, replace = TRUE),
 +                 levels = c("low", "medium", "high"), ordered = TRUE)  # Ordinal variable
 + )
 > 
-> # Run GIBcat with automatic lambda selection and multiple initializations
-> result <- GIBcat(X = X, ncl = 2, beta = 25, alpha = 0.75, lambda = -1, nstart = 10)
+> # Perform hard clustering on categorical data with Deterministic IB
+> result_cat <- DIBmix(X = data_cat, ncl = 3, lambda = -1, nstart = 10)
   |                                                                              |                                                                      |   0%  |                                                                              |=======                                                               |  10%  |                                                                              |==============                                                        |  20%  |                                                                              |=====================                                                 |  30%  |                                                                              |============================                                          |  40%  |                                                                              |===================================                                   |  50%  |                                                                              |==========================================                            |  60%  |                                                                              |=================================================                     |  70%  |                                                                              |========================================================              |  80%  |                                                                              |===============================================================       |  90%  |                                                                              |======================================================================| 100%
 > 
 > # Print clustering results
-> print(result$Cluster)       # Cluster membership matrix
+> print(result_cat$Cluster)       # Cluster assignments
+  [1] 3 3 1 3 3 3 1 2 1 3 3 3 1 1 2 3 1 1 1 3 2 1 1 1 3 1 1 1 1 1 2 3 3 3 1 1 1
+ [38] 1 3 3 2 2 3 1 3 1 3 3 3 1 1 1 3 3 1 1 3 2 1 3 3 1 3 3 1 3 3 1 2 1 3 1 3 3
+ [75] 1 2 1 2 3 3 1 1 3 2 1 3 2 2 3 1 1 1 2 3 3 1 3 3 2 2 3 2 3 2 3 1 3 2 1 3 3
+[112] 1 1 1 1 2 3 1 2 3 1 1 2 3 3 1 3 1 1 2 1 1 3 2 3 2 1 2 1 1 3 1 1 1 3 3 3 1
+[149] 2 1 3 1 1 1 1 3 3 1 2 2 1 3 3 1 2 2 2 1 1 1 3 2 3 1 1 1 1 1 1 2 1 3 1 2 2
+[186] 1 2 3 2 3 2 2 3 3 1 2 2 3 1 2
+> print(result_cat$Entropy)       # Final entropy
+[1] 1.532045
+> print(result_cat$MutualInfo)    # Mutual information
+[1] 0.07739956
+> 
+> # Simulated continuous data example
+> set.seed(123)
+> # Continuous data with 200 observations, 5 features
+> data_cont <- as.data.frame(matrix(rnorm(1000), ncol = 5))
+> 
+> # Perform hard clustering on continuous data with Deterministic IB
+> result_cont <- DIBmix(X = data_cont, ncl = 3, s = -1, nstart = 10)
+  |                                                                              |                                                                      |   0%  |                                                                              |=======                                                               |  10%  |                                                                              |==============                                                        |  20%  |                                                                              |=====================                                                 |  30%  |                                                                              |============================                                          |  40%  |                                                                              |===================================                                   |  50%  |                                                                              |==========================================                            |  60%  |                                                                              |=================================================                     |  70%  |                                                                              |========================================================              |  80%  |                                                                              |===============================================================       |  90%  |                                                                              |======================================================================| 100%
+> 
+> # Print clustering results
+> print(result_cont$Cluster)       # Cluster assignments
+  [1] 3 3 1 1 2 3 2 1 1 2 2 2 3 2 3 1 2 1 2 3 2 1 3 1 2 3 2 2 2 3 1 2 3 1 2 2 2
+ [38] 3 3 2 2 1 3 2 1 3 2 2 1 3 2 2 1 2 1 3 3 3 3 1 2 3 3 3 1 1 2 2 3 1 2 1 3 2
+ [75] 1 1 2 1 1 2 2 3 2 1 2 2 2 3 2 2 3 3 3 1 1 3 3 2 3 1 2 2 2 1 1 3 2 1 3 3 1
+[112] 3 2 2 3 3 1 2 3 1 2 1 2 1 2 1 2 3 1 3 3 2 2 3 2 2 2 2 3 1 3 3 3 3 2 2 3 1
+[149] 2 3 3 2 2 1 2 3 3 1 2 1 3 1 3 2 3 3 3 2 3 3 1 2 3 2 1 3 2 2 3 2 1 3 3 2 1
+[186] 3 3 2 2 1 3 2 3 2 2 3 1 3 2 2
+> print(result_cont$Entropy)       # Final entropy
+[1] 1.559739
+> print(result_cont$MutualInfo)    # Mutual information
+[1] 0.0308789
+> 
+> 
+> 
+> cleanEx()
+> nameEx("GIBmix")
+> ### * GIBmix
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: GIBmix
+> ### Title: Generalised Information Bottleneck Clustering for Mixed-Type
+> ###   Data
+> ### Aliases: GIBmix
+> ### Keywords: clustering
+> 
+> ### ** Examples
+> 
+> # Example dataset with categorical, ordinal, and continuous variables
+> set.seed(123)
+> data_mix <- data.frame(
++   cat_var = factor(sample(letters[1:3], 100, replace = TRUE)),      # Nominal categorical variable
++   ord_var = factor(sample(c("low", "medium", "high"), 100, replace = TRUE),
++                    levels = c("low", "medium", "high"),
++                    ordered = TRUE),                                # Ordinal variable
++   cont_var1 = rnorm(100),                                          # Continuous variable 1
++   cont_var2 = runif(100)                                           # Continuous variable 2
++ )
+> 
+> # Perform Mixed-Type Fuzzy Clustering with Generalised IB
+> result_mix <- GIBmix(X = data_mix, ncl = 3, beta = 2, alpha = 0.5, nstart = 20)
+  |                                                                              |                                                                      |   0%  |                                                                              |====                                                                  |   5%  |                                                                              |=======                                                               |  10%  |                                                                              |==========                                                            |  15%  |                                                                              |==============                                                        |  20%  |                                                                              |==================                                                    |  25%  |                                                                              |=====================                                                 |  30%  |                                                                              |========================                                              |  35%  |                                                                              |============================                                          |  40%  |                                                                              |================================                                      |  45%  |                                                                              |===================================                                   |  50%  |                                                                              |======================================                                |  55%  |                                                                              |==========================================                            |  60%  |                                                                              |==============================================                        |  65%  |                                                                              |=================================================                     |  70%  |                                                                              |====================================================                  |  75%  |                                                                              |========================================================              |  80%  |                                                                              |============================================================          |  85%  |                                                                              |===============================================================       |  90%1 cluster(s) dropped. Down to 2 cluster(s).
+
+  |                                                                              |==================================================================    |  95%  |                                                                              |======================================================================| 100%1 cluster(s) dropped. Down to 2 cluster(s).
+
+
+> 
+> # Print clustering results
+> print(result_mix$Cluster)       # Cluster membership matrix
+             [,1]         [,2]         [,3]         [,4]         [,5]
+[1,] 9.787348e-01 9.999945e-01 2.546564e-01 9.992981e-01 9.999886e-01
+[2,] 1.588792e-17 5.308457e-17 1.538404e-25 3.608745e-35 2.223532e-10
+[3,] 2.126516e-02 5.510909e-06 7.453436e-01 7.018758e-04 1.137978e-05
+             [,6]         [,7]         [,8]         [,9]        [,10]
+[1,] 1.221325e-02 9.999228e-01 1.943070e-05 9.999929e-01 4.907937e-04
+[2,] 7.966591e-34 6.021035e-14 5.037375e-14 1.974676e-28 2.403206e-21
+[3,] 9.877867e-01 7.720459e-05 9.999806e-01 7.136783e-06 9.995092e-01
+            [,11]        [,12]        [,13]        [,14]        [,15]
+[1,] 9.845392e-01 3.600092e-03 5.219329e-02 9.267465e-01 8.764802e-02
+[2,] 4.900406e-22 3.192289e-35 1.441900e-32 1.432841e-31 4.929146e-27
+[3,] 1.546085e-02 9.963999e-01 9.478067e-01 7.325347e-02 9.123520e-01
+            [,16]        [,17]        [,18]        [,19]        [,20]
+[1,] 9.999987e-01 9.999939e-01 9.677942e-05 9.998462e-01 6.412939e-04
+[2,] 1.428025e-29 4.094354e-13 9.479920e-12 1.227494e-27 1.769205e-20
+[3,] 1.271448e-06 6.092329e-06 9.999032e-01 1.538241e-04 9.993587e-01
+            [,21]        [,22]        [,23]        [,24]        [,25]
+[1,] 9.998482e-01 3.137644e-02 1.620001e-04 9.999920e-01 9.999939e-01
+[2,] 1.631986e-14 7.501047e-22 5.155470e-34 5.021107e-18 1.348137e-19
+[3,] 1.517829e-04 9.686236e-01 9.998380e-01 7.992462e-06 6.089634e-06
+            [,26]        [,27]        [,28]        [,29]        [,30]
+[1,] 3.428356e-02 9.776718e-01 3.258794e-04 6.578854e-05 9.999996e-01
+[2,] 8.136598e-20 2.688782e-23 4.316362e-19 7.368336e-31 1.234430e-10
+[3,] 9.657164e-01 2.232823e-02 9.996741e-01 9.999342e-01 4.222175e-07
+            [,31]        [,32]        [,33]        [,34]        [,35]
+[1,] 9.262474e-01 9.871541e-03 1.235365e-07 9.321711e-05 9.999638e-01
+[2,] 2.301125e-27 2.594935e-32 9.999999e-01 3.136487e-31 4.387492e-16
+[3,] 7.375256e-02 9.901285e-01 3.146127e-13 9.999068e-01 3.623979e-05
+            [,36]        [,37]        [,38]        [,39]        [,40]
+[1,] 9.999995e-01 7.669978e-02 7.962706e-04 9.987318e-01 9.972696e-01
+[2,] 8.473097e-13 8.583341e-27 2.747581e-22 1.183486e-17 1.204089e-21
+[3,] 5.121701e-07 9.233002e-01 9.992037e-01 1.268164e-03 2.730425e-03
+            [,41]        [,42]        [,43]        [,44]        [,45]
+[1,] 9.996009e-01 9.999985e-01 0.9968706225 9.999365e-01 4.157948e-01
+[2,] 1.052148e-18 9.618750e-17 0.0001259737 9.807453e-24 6.883939e-29
+[3,] 3.991420e-04 1.470658e-06 0.0030034037 6.351908e-05 5.842052e-01
+            [,46]        [,47]        [,48]        [,49]        [,50]
+[1,] 8.911165e-01 6.858230e-05 9.993570e-01 9.577558e-01 9.999892e-01
+[2,] 1.708382e-21 1.412130e-25 1.569274e-16 5.854134e-24 7.681839e-26
+[3,] 1.088835e-01 9.999314e-01 6.429671e-04 4.224415e-02 1.083776e-05
+            [,51]        [,52]        [,53]        [,54]        [,55]
+[1,] 7.101900e-05 9.900305e-01 5.838762e-03 9.999645e-01 9.671984e-01
+[2,] 1.323879e-18 7.188132e-23 7.713372e-31 2.251596e-20 6.394591e-22
+[3,] 9.999290e-01 9.969454e-03 9.941612e-01 3.554196e-05 3.280160e-02
+            [,56]        [,57]        [,58]        [,59]        [,60]
+[1,] 5.642797e-04 9.999981e-01 2.380369e-04 9.992264e-01 9.983811e-01
+[2,] 1.470907e-18 7.328675e-17 2.827828e-21 7.239394e-23 2.587966e-18
+[3,] 9.994357e-01 1.907982e-06 9.997620e-01 7.736306e-04 1.618915e-03
+            [,61]        [,62]        [,63]        [,64]        [,65]
+[1,] 9.991529e-01 9.999995e-01 7.888810e-01 2.239656e-02 4.621279e-06
+[2,] 6.763999e-22 9.106126e-16 5.671147e-27 6.080738e-32 9.205584e-15
+[3,] 8.470614e-04 5.024589e-07 2.111190e-01 9.776034e-01 9.999954e-01
+            [,66]        [,67]        [,68]        [,69]        [,70]
+[1,] 9.999998e-01 4.709107e-05 9.989823e-01 1.866511e-04 1.947097e-04
+[2,] 9.555049e-13 1.042015e-36 3.169470e-23 1.112366e-34 3.267376e-11
+[3,] 2.013051e-07 9.999529e-01 1.017692e-03 9.998133e-01 9.998053e-01
+            [,71]        [,72]        [,73]        [,74]        [,75]
+[1,] 9.827728e-01 1.876710e-03 9.999997e-01 8.260989e-03 9.968375e-01
+[2,] 3.388687e-11 4.729263e-28 4.190924e-13 6.798599e-28 9.523573e-23
+[3,] 1.722721e-02 9.981233e-01 2.620025e-07 9.917390e-01 3.162492e-03
+            [,76]        [,77]        [,78]        [,79]        [,80]
+[1,] 1.376236e-03 7.540501e-01 9.999302e-01 2.469565e-03 9.999971e-01
+[2,] 6.728886e-32 1.785379e-25 1.081973e-07 2.865305e-26 5.393755e-17
+[3,] 9.986238e-01 2.459499e-01 6.973035e-05 9.975304e-01 2.939568e-06
+            [,81]        [,82]        [,83]        [,84]        [,85]
+[1,] 1.116387e-03 9.999793e-01 3.160919e-03 7.448698e-05 9.999989e-01
+[2,] 1.753801e-24 4.853453e-10 3.646690e-29 1.893180e-34 6.225183e-07
+[3,] 9.988836e-01 2.070715e-05 9.968391e-01 9.999255e-01 4.509708e-07
+            [,86]        [,87]        [,88]        [,89]        [,90]
+[1,] 6.250690e-04 4.150354e-03 9.907275e-01 9.974004e-01 9.999557e-01
+[2,] 6.400980e-30 1.411384e-30 4.661266e-28 3.357718e-28 6.127857e-22
+[3,] 9.993749e-01 9.958496e-01 9.272458e-03 2.599564e-03 4.429948e-05
+            [,91]        [,92]        [,93]        [,94]        [,95]
+[1,] 4.660967e-01 3.517254e-05 7.264170e-01 3.456119e-01 5.853598e-02
+[2,] 1.171829e-17 4.109281e-19 6.235358e-17 1.334601e-24 3.610588e-23
+[3,] 5.339033e-01 9.999648e-01 2.735830e-01 6.543881e-01 9.414640e-01
+            [,96]        [,97]        [,98]        [,99]       [,100]
+[1,] 5.773933e-01 8.065852e-01 9.999998e-01 9.999971e-01 3.222986e-06
+[2,] 2.587324e-26 6.916612e-26 8.537092e-12 2.146050e-25 7.734450e-15
+[3,] 4.226067e-01 1.934148e-01 1.876514e-07 2.909191e-06 9.999968e-01
+> print(result_mix$Entropy)       # Entropy of final clustering
+[1] 1.058023
+> print(result_mix$CondEntropy)   # Conditional entropy of final clustering
+[1] 0.1297683
+> print(result_mix$MutualInfo)    # Mutual information between Y and T
+[1] 0.5294276
+> 
+> # Simulated categorical data example
+> set.seed(123)
+> data_cat <- data.frame(
++   Var1 = as.factor(sample(letters[1:3], 200, replace = TRUE)),  # Nominal variable
++   Var2 = as.factor(sample(letters[4:6], 200, replace = TRUE)),  # Nominal variable
++   Var3 = factor(sample(c("low", "medium", "high"), 200, replace = TRUE),
++                 levels = c("low", "medium", "high"), ordered = TRUE)  # Ordinal variable
++ )
+> 
+> # Perform Fuzzy Clustering on categorical data with Generalised IB
+> result_cat <- GIBmix(X = data_cat, ncl = 2, beta = 25, alpha = 0.75, lambda = -1, nstart = 10)
+  |                                                                              |                                                                      |   0%  |                                                                              |=======                                                               |  10%  |                                                                              |==============                                                        |  20%  |                                                                              |=====================                                                 |  30%  |                                                                              |============================                                          |  40%  |                                                                              |===================================                                   |  50%  |                                                                              |==========================================                            |  60%  |                                                                              |=================================================                     |  70%  |                                                                              |========================================================              |  80%  |                                                                              |===============================================================       |  90%  |                                                                              |======================================================================| 100%
+> 
+> # Print clustering results
+> print(result_cat$Cluster)       # Cluster membership matrix
             [,1]        [,2]        [,3]        [,4]       [,5]        [,6]
 [1,] 0.005527515 0.003914096 0.007123054 0.002555871 0.00851922 0.993385746
 [2,] 0.994472485 0.996085904 0.992876946 0.997444129 0.99148078 0.006614254
@@ -400,89 +443,148 @@ Type 'q()' to quit R.
           [,199]      [,200]
 [1,] 0.003612475 0.002555871
 [2,] 0.996387525 0.997444129
-> print(result$Entropy)       # Entropy of final clustering
+> print(result_cat$Entropy)       # Entropy of final clustering
 [1] 0.9600031
-> print(result$CondEntropy)   # Conditional entropy of final clustering
+> print(result_cat$CondEntropy)   # Conditional entropy of final clustering
 [1] 0.06962192
-> print(result$MutualInfo)    # Mutual information between Y and T
+> print(result_cat$MutualInfo)    # Mutual information between Y and T
 [1] 0.04832157
 > 
-> 
-> 
-> cleanEx()
-> nameEx("GIBcont")
-> ### * GIBcont
-> 
-> flush(stderr()); flush(stdout())
-> 
-> ### Name: GIBcont
-> ### Title: Cluster Continuous Data Using the Generalised Information
-> ###   Bottleneck Algorithm
-> ### Aliases: GIBcont
-> ### Keywords: clustering
-> 
-> ### ** Examples
-> 
-> # Generate simulated continuous data
+> # Simulated continuous data example
 > set.seed(123)
-> X <- matrix(rnorm(200), ncol = 5)  # 200 observations, 5 features
+> # Continuous data with 200 observations, 5 features
+> data_cont <- as.data.frame(matrix(rnorm(1000), ncol = 5))
 > 
-> # Run GIBcont with automatic bandwidth selection and multiple initializations
-> result <- GIBcont(X = X, ncl = 2, beta = 50, alpha = 0.75, s = -1, nstart = 10)
+> # Perform Fuzzy Clustering on continuous data with Generalised IB
+> result_cont <- GIBmix(X = data_cont, ncl = 2, beta = 50, alpha = 0.75, s = -1, nstart = 10)
   |                                                                              |                                                                      |   0%  |                                                                              |=======                                                               |  10%  |                                                                              |==============                                                        |  20%  |                                                                              |=====================                                                 |  30%  |                                                                              |============================                                          |  40%  |                                                                              |===================================                                   |  50%  |                                                                              |==========================================                            |  60%  |                                                                              |=================================================                     |  70%  |                                                                              |========================================================              |  80%  |                                                                              |===============================================================       |  90%  |                                                                              |======================================================================| 100%
 > 
 > # Print clustering results
-> print(result$Cluster)       # Cluster membership matrix
-             [,1]         [,2]         [,3]      [,4]         [,5]         [,6]
-[1,] 9.999399e-01 9.999981e-01 9.999998e-01 0.1059648 9.999016e-01 9.999934e-01
-[2,] 6.005455e-05 1.856941e-06 2.285785e-07 0.8940352 9.838863e-05 6.570729e-06
-             [,7]         [,8]         [,9]        [,10]        [,11]
-[1,] 9.999255e-01 9.999951e-01 0.9998566092 9.999343e-01 9.999466e-01
-[2,] 7.448284e-05 4.881072e-06 0.0001433908 6.572486e-05 5.343717e-05
-            [,12]        [,13]      [,14]        [,15]        [,16]
-[1,] 9.999639e-01 9.999777e-01 0.97556143 9.999966e-01 9.999676e-01
-[2,] 3.606506e-05 2.233399e-05 0.02443857 3.366996e-06 3.239862e-05
-            [,17]        [,18]        [,19]        [,20]        [,21]
-[1,] 9.999969e-01 0.9997496718 0.9998987921 9.999953e-01 9.999957e-01
-[2,] 3.132590e-06 0.0002503282 0.0001012079 4.657291e-06 4.278445e-06
-           [,22]        [,23]        [,24]        [,25]        [,26]
-[1,] 0.999863303 9.999969e-01 9.999996e-01 9.999991e-01 9.999832e-01
-[2,] 0.000136697 3.130893e-06 4.257892e-07 9.210475e-07 1.680887e-05
-            [,27]        [,28]        [,29]        [,30]        [,31]
-[1,] 0.9997183314 9.999839e-01 0.9993826161 0.9996642886 9.999847e-01
-[2,] 0.0002816686 1.611514e-05 0.0006173839 0.0003357114 1.530811e-05
-            [,32]        [,33]        [,34]        [,35]      [,36]
-[1,] 9.999994e-01 9.999238e-01 9.999990e-01 9.999992e-01 0.98409556
-[2,] 5.782546e-07 7.619578e-05 9.702151e-07 8.237759e-07 0.01590444
-            [,37]        [,38]        [,39]        [,40]
-[1,] 9.999401e-01 9.999998e-01 9.999921e-01 9.999990e-01
-[2,] 5.985452e-05 2.218146e-07 7.924579e-06 9.978061e-07
-> print(result$Entropy)       # Entropy of final clustering
-[1] 0.1602505
-> print(result$CondEntropy)   # Conditional entropy of final clustering
-[1] 0.02015292
-> print(result$MutualInfo)    # Mutual information between Y and T
-[1] 0.00335043
+> print(result_cont$Cluster)       # Cluster membership matrix
+          [,1]       [,2]       [,3]      [,4]         [,5]         [,6]
+[1,] 0.6114497 0.04188058 0.00532807 0.6341944 0.0009490579 0.0008864489
+[2,] 0.3885503 0.95811942 0.99467193 0.3658056 0.9990509421 0.9991135511
+             [,7]       [,8]      [,9]       [,10]        [,11]        [,12]
+[1,] 0.0006366646 0.91757404 0.7070546 0.006577243 4.873902e-07 7.544543e-05
+[2,] 0.9993633354 0.08242596 0.2929454 0.993422757 9.999995e-01 9.999246e-01
+           [,13]       [,14]       [,15]      [,16]        [,17]     [,18]
+[1,] 0.003567206 0.002276117 0.001339275 0.98949524 0.0006235165 0.4119524
+[2,] 0.996432794 0.997723883 0.998660725 0.01050476 0.9993764835 0.5880476
+            [,19]        [,20]        [,21]     [,22]      [,23]     [,24]
+[1,] 8.962606e-06 5.371527e-06 6.769355e-05 0.1171346 0.06501404 0.1634144
+[2,] 9.999910e-01 9.999946e-01 9.999323e-01 0.8828654 0.93498596 0.8365856
+           [,25]       [,26]        [,27]        [,28]       [,29]        [,30]
+[1,] 0.006943729 0.004940661 9.427429e-06 5.079834e-06 0.002969707 5.388422e-07
+[2,] 0.993056271 0.995059339 9.999906e-01 9.999949e-01 0.997030293 9.999995e-01
+         [,31]       [,32]       [,33]      [,34]        [,35]       [,36]
+[1,] 0.9185912 0.002411733 0.009637647 0.03851214 0.0005397828 0.002278928
+[2,] 0.0814088 0.997588267 0.990362353 0.96148786 0.9994602172 0.997721072
+            [,37]        [,38]      [,39]       [,40]        [,41]     [,42]
+[1,] 3.775146e-06 0.0001424919 0.04429041 0.001562696 0.0009657519 0.8543419
+[2,] 9.999962e-01 0.9998575081 0.95570959 0.998437304 0.9990342481 0.1456581
+          [,43]        [,44]       [,45]    [,46]       [,47]       [,48]
+[1,] 0.08220562 1.320025e-05 0.007993245 0.349575 0.001019772 0.006564203
+[2,] 0.91779438 9.999868e-01 0.992006755 0.650425 0.998980228 0.993435797
+          [,49]      [,50]       [,51]        [,52]      [,53]        [,54]
+[1,] 0.08948849 0.01717982 0.008630936 0.0003376375 0.02002317 3.444446e-05
+[2,] 0.91051151 0.98282018 0.991369064 0.9996623625 0.97997683 9.999656e-01
+           [,55]       [,56]        [,57]       [,58]       [,59]      [,60]
+[1,] 0.992031455 0.001504031 0.0007516606 0.002274361 0.001778308 0.01966121
+[2,] 0.007968545 0.998495969 0.9992483394 0.997725639 0.998221692 0.98033879
+           [,61]       [,62]        [,63]      [,64]      [,65]       [,66]
+[1,] 0.003061584 0.001762174 1.399307e-05 0.03494136 0.98919631 0.991944981
+[2,] 0.996938416 0.998237826 9.999860e-01 0.96505864 0.01080369 0.008055019
+            [,67]        [,68]        [,69]      [,70]        [,71]     [,72]
+[1,] 2.751234e-06 0.0007944037 5.505012e-05 0.00591124 0.0004333323 0.7064891
+[2,] 9.999972e-01 0.9992055963 9.999449e-01 0.99408876 0.9995666677 0.2935109
+            [,73]      [,74]     [,75]    [,76]      [,77]     [,78]     [,79]
+[1,] 0.0003642739 0.01572865 0.8974936 0.402218 0.05528163 0.9752303 0.3746036
+[2,] 0.9996357261 0.98427135 0.1025064 0.597782 0.94471837 0.0247697 0.6253964
+           [,80]        [,81]        [,82]       [,83]      [,84]      [,85]
+[1,] 0.007277106 0.0003430587 0.0002140525 0.005013406 0.07379985 0.04620853
+[2,] 0.992722894 0.9996569413 0.9997859475 0.994986594 0.92620015 0.95379147
+           [,86]        [,87]      [,88]        [,89]      [,90]        [,91]
+[1,] 0.009740124 3.219134e-05 0.01509717 0.0001164452 0.03079155 0.0008218596
+[2,] 0.990259876 9.999678e-01 0.98490283 0.9998835548 0.96920845 0.9991781404
+          [,92]        [,93]     [,94]     [,95]       [,96]      [,97]
+[1,] 0.01135523 0.0001503243 0.7997928 0.7178241 0.000387145 0.02079808
+[2,] 0.98864477 0.9998496757 0.2002072 0.2821759 0.999612855 0.97920192
+            [,98]       [,99]    [,100]     [,101]       [,102]      [,103]
+[1,] 7.778731e-06 0.009533986 0.6357354 0.00028287 0.0003588171 0.001277638
+[2,] 9.999922e-01 0.990466014 0.3642646 0.99971713 0.9996411829 0.998722362
+         [,104]    [,105]       [,106]      [,107]   [,108]    [,109]    [,110]
+[1,] 0.05644166 0.6590416 0.0008784424 0.003179871 0.435049 0.1743306 0.1086256
+[2,] 0.94355834 0.3409584 0.9991215576 0.996820129 0.564951 0.8256694 0.8913744
+          [,111]      [,112]       [,113]       [,114]      [,115]   [,116]
+[1,] 0.996625515 0.000256548 0.0005808139 4.715677e-06 0.002500861 0.185308
+[2,] 0.003374485 0.999743452 0.9994191861 9.999953e-01 0.997499139 0.814692
+        [,117]       [,118]    [,119]     [,120]      [,121]    [,122]
+[1,] 0.1203661 1.659988e-06 0.7864017 0.94586024 0.001564563 0.4298628
+[2,] 0.8796339 9.999983e-01 0.2135983 0.05413976 0.998435437 0.5701372
+           [,123]    [,124]       [,125]    [,126]       [,127]     [,128]
+[1,] 0.0003892423 0.2840601 0.0002528094 0.6164213 0.0004107187 0.01995826
+[2,] 0.9996107577 0.7159399 0.9997471906 0.3835787 0.9995892813 0.98004174
+           [,129]     [,130]      [,131]       [,132]     [,133]    [,134]
+[1,] 0.9993496281 0.01109103 0.001033541 2.058639e-06 0.01275423 0.0281617
+[2,] 0.0006503719 0.98890897 0.998966459 9.999979e-01 0.98724577 0.9718383
+         [,135]       [,136]       [,137]       [,138]      [,139]    [,140]
+[1,] 0.02649916 6.261736e-07 4.269681e-05 7.886455e-05 0.001662254 0.4790218
+[2,] 0.97350084 9.999994e-01 9.999573e-01 9.999211e-01 0.998337746 0.5209782
+         [,141]    [,142]       [,143]      [,144]      [,145]       [,146]
+[1,] 0.08670798 0.0101492 0.0005608574 0.004288511 0.003159781 0.0005410043
+[2,] 0.91329202 0.9898508 0.9994391426 0.995711489 0.996840219 0.9994589957
+          [,147]    [,148]       [,149]       [,150]      [,151]       [,152]
+[1,] 0.001001341 0.1705743 1.209096e-07 0.0004711142 0.001010712 1.622008e-06
+[2,] 0.998998659 0.8294257 9.999999e-01 0.9995288858 0.998989288 9.999984e-01
+          [,153]     [,154]       [,155]       [,156]      [,157]     [,158]
+[1,] 0.000410378 0.02930709 0.0005707404 0.0003860873 0.003735613 0.02906572
+[2,] 0.999589622 0.97069291 0.9994292596 0.9996139127 0.996264387 0.97093428
+           [,159]      [,160]      [,161]     [,162]     [,163]       [,164]
+[1,] 2.483494e-07 0.990847687 0.007245486 0.98141674 0.08819089 0.0003624275
+[2,] 9.999998e-01 0.009152313 0.992754514 0.01858326 0.91180911 0.9996375725
+        [,165]       [,166]       [,167]       [,168]     [,169]       [,170]
+[1,] 0.1029899 0.0008363382 3.554481e-06 4.385103e-06 0.01740343 4.117114e-05
+[2,] 0.8970101 0.9991636618 9.999964e-01 9.999956e-01 0.98259657 9.999588e-01
+        [,171]       [,172]       [,173]       [,174]    [,175]       [,176]
+[1,] 0.7997986 6.721280e-07 2.137475e-05 0.0001307872 0.4698123 1.255853e-05
+[2,] 0.2002014 9.999993e-01 9.999786e-01 0.9998692128 0.5301877 9.999874e-01
+           [,177]      [,178]     [,179]       [,180]     [,181]       [,182]
+[1,] 2.097755e-05 0.005266254 0.00172667 0.0002848903 0.95437151 1.815111e-05
+[2,] 9.999790e-01 0.994733746 0.99827333 0.9997151097 0.04562849 9.999818e-01
+          [,183]       [,184]     [,185]     [,186]       [,187]     [,188]
+[1,] 0.009988803 0.0003961057 0.93479827 0.02552924 0.0006277911 0.02969397
+[2,] 0.990011197 0.9996038943 0.06520173 0.97447076 0.9993722089 0.97030603
+           [,189]    [,190]     [,191]       [,192]     [,193]      [,194]
+[1,] 5.050863e-05 0.9406445 0.03104686 2.589249e-06 0.02309172 0.001099534
+[2,] 9.999495e-01 0.0593555 0.96895314 9.999974e-01 0.97690828 0.998900466
+         [,195]      [,196]      [,197]     [,198]       [,199]       [,200]
+[1,] 0.01356347 0.005841718 0.006843147 0.02398759 3.747719e-05 0.0005222238
+[2,] 0.98643653 0.994158282 0.993156853 0.97601241 9.999625e-01 0.9994777762
+> print(result_cont$Entropy)       # Entropy of final clustering
+[1] 0.6124841
+> print(result_cont$CondEntropy)   # Conditional entropy of final clustering
+[1] 0.1814156
+> print(result_cont$MutualInfo)    # Mutual information between Y and T
+[1] 0.011842
 > 
 > 
 > 
 > cleanEx()
-> nameEx("GIBmix")
-> ### * GIBmix
+> nameEx("IBmix")
+> ### * IBmix
 > 
 > flush(stderr()); flush(stdout())
 > 
-> ### Name: GIBmix
-> ### Title: Generalised Information Bottleneck Clustering for Mixed-Type
-> ###   Data
-> ### Aliases: GIBmix
+> ### Name: IBmix
+> ### Title: Information Bottleneck Clustering for Mixed-Type Data
+> ### Aliases: IBmix
 > ### Keywords: clustering
 > 
 > ### ** Examples
 > 
 > # Example dataset with categorical, ordinal, and continuous variables
 > set.seed(123)
-> data <- data.frame(
+> data_mix <- data.frame(
 +   cat_var = factor(sample(letters[1:3], 100, replace = TRUE)),      # Nominal categorical variable
 +   ord_var = factor(sample(c("low", "medium", "high"), 100, replace = TRUE),
 +                    levels = c("low", "medium", "high"),
@@ -491,135 +593,100 @@ Type 'q()' to quit R.
 +   cont_var2 = runif(100)                                           # Continuous variable 2
 + )
 > 
-> # Perform Mixed-Type Fuzzy Clustering with Generalised IB
-> result <- GIBmix(X = data, ncl = 3, beta = 2, alpha = 0.5, 
-+ catcols = 1:2, contcols = 3:4, nstart = 20)
-  |                                                                              |                                                                      |   0%  |                                                                              |====                                                                  |   5%  |                                                                              |=======                                                               |  10%  |                                                                              |==========                                                            |  15%  |                                                                              |==============                                                        |  20%  |                                                                              |==================                                                    |  25%  |                                                                              |=====================                                                 |  30%  |                                                                              |========================                                              |  35%  |                                                                              |============================                                          |  40%  |                                                                              |================================                                      |  45%  |                                                                              |===================================                                   |  50%  |                                                                              |======================================                                |  55%  |                                                                              |==========================================                            |  60%  |                                                                              |==============================================                        |  65%  |                                                                              |=================================================                     |  70%  |                                                                              |====================================================                  |  75%  |                                                                              |========================================================              |  80%  |                                                                              |============================================================          |  85%  |                                                                              |===============================================================       |  90%1 cluster(s) dropped. Down to 2 cluster(s).
-
-  |                                                                              |==================================================================    |  95%  |                                                                              |======================================================================| 100%1 cluster(s) dropped. Down to 2 cluster(s).
-
-
+> # Perform Mixed-Type Fuzzy Clustering
+> result_mix <- IBmix(X = data_mix, ncl = 3, beta = 2, nstart = 10)
+  |                                                                              |                                                                      |   0%  |                                                                              |=======                                                               |  10%  |                                                                              |==============                                                        |  20%  |                                                                              |=====================                                                 |  30%  |                                                                              |============================                                          |  40%  |                                                                              |===================================                                   |  50%  |                                                                              |==========================================                            |  60%  |                                                                              |=================================================                     |  70%  |                                                                              |========================================================              |  80%  |                                                                              |===============================================================       |  90%  |                                                                              |======================================================================| 100%
 > 
 > # Print clustering results
-> print(result$Cluster)       # Cluster membership matrix
-             [,1]         [,2]         [,3]         [,4]         [,5]
-[1,] 9.787348e-01 9.999945e-01 2.546564e-01 9.992981e-01 9.999886e-01
-[2,] 1.588792e-17 5.308457e-17 1.538404e-25 3.608745e-35 2.223532e-10
-[3,] 2.126516e-02 5.510909e-06 7.453436e-01 7.018758e-04 1.137978e-05
-             [,6]         [,7]         [,8]         [,9]        [,10]
-[1,] 1.221325e-02 9.999228e-01 1.943070e-05 9.999929e-01 4.907937e-04
-[2,] 7.966591e-34 6.021035e-14 5.037375e-14 1.974676e-28 2.403206e-21
-[3,] 9.877867e-01 7.720459e-05 9.999806e-01 7.136783e-06 9.995092e-01
-            [,11]        [,12]        [,13]        [,14]        [,15]
-[1,] 9.845392e-01 3.600092e-03 5.219329e-02 9.267465e-01 8.764802e-02
-[2,] 4.900406e-22 3.192289e-35 1.441900e-32 1.432841e-31 4.929146e-27
-[3,] 1.546085e-02 9.963999e-01 9.478067e-01 7.325347e-02 9.123520e-01
-            [,16]        [,17]        [,18]        [,19]        [,20]
-[1,] 9.999987e-01 9.999939e-01 9.677942e-05 9.998462e-01 6.412939e-04
-[2,] 1.428025e-29 4.094354e-13 9.479920e-12 1.227494e-27 1.769205e-20
-[3,] 1.271448e-06 6.092329e-06 9.999032e-01 1.538241e-04 9.993587e-01
-            [,21]        [,22]        [,23]        [,24]        [,25]
-[1,] 9.998482e-01 3.137644e-02 1.620001e-04 9.999920e-01 9.999939e-01
-[2,] 1.631986e-14 7.501047e-22 5.155470e-34 5.021107e-18 1.348137e-19
-[3,] 1.517829e-04 9.686236e-01 9.998380e-01 7.992462e-06 6.089634e-06
-            [,26]        [,27]        [,28]        [,29]        [,30]
-[1,] 3.428356e-02 9.776718e-01 3.258794e-04 6.578854e-05 9.999996e-01
-[2,] 8.136598e-20 2.688782e-23 4.316362e-19 7.368336e-31 1.234430e-10
-[3,] 9.657164e-01 2.232823e-02 9.996741e-01 9.999342e-01 4.222175e-07
-            [,31]        [,32]        [,33]        [,34]        [,35]
-[1,] 9.262474e-01 9.871541e-03 1.235365e-07 9.321711e-05 9.999638e-01
-[2,] 2.301125e-27 2.594935e-32 9.999999e-01 3.136487e-31 4.387492e-16
-[3,] 7.375256e-02 9.901285e-01 3.146127e-13 9.999068e-01 3.623979e-05
-            [,36]        [,37]        [,38]        [,39]        [,40]
-[1,] 9.999995e-01 7.669978e-02 7.962706e-04 9.987318e-01 9.972696e-01
-[2,] 8.473097e-13 8.583341e-27 2.747581e-22 1.183486e-17 1.204089e-21
-[3,] 5.121701e-07 9.233002e-01 9.992037e-01 1.268164e-03 2.730425e-03
-            [,41]        [,42]        [,43]        [,44]        [,45]
-[1,] 9.996009e-01 9.999985e-01 0.9968706225 9.999365e-01 4.157948e-01
-[2,] 1.052148e-18 9.618750e-17 0.0001259737 9.807453e-24 6.883939e-29
-[3,] 3.991420e-04 1.470658e-06 0.0030034037 6.351908e-05 5.842052e-01
-            [,46]        [,47]        [,48]        [,49]        [,50]
-[1,] 8.911165e-01 6.858230e-05 9.993570e-01 9.577558e-01 9.999892e-01
-[2,] 1.708382e-21 1.412130e-25 1.569274e-16 5.854134e-24 7.681839e-26
-[3,] 1.088835e-01 9.999314e-01 6.429671e-04 4.224415e-02 1.083776e-05
-            [,51]        [,52]        [,53]        [,54]        [,55]
-[1,] 7.101900e-05 9.900305e-01 5.838762e-03 9.999645e-01 9.671984e-01
-[2,] 1.323879e-18 7.188132e-23 7.713372e-31 2.251596e-20 6.394591e-22
-[3,] 9.999290e-01 9.969454e-03 9.941612e-01 3.554196e-05 3.280160e-02
-            [,56]        [,57]        [,58]        [,59]        [,60]
-[1,] 5.642797e-04 9.999981e-01 2.380369e-04 9.992264e-01 9.983811e-01
-[2,] 1.470907e-18 7.328675e-17 2.827828e-21 7.239394e-23 2.587966e-18
-[3,] 9.994357e-01 1.907982e-06 9.997620e-01 7.736306e-04 1.618915e-03
-            [,61]        [,62]        [,63]        [,64]        [,65]
-[1,] 9.991529e-01 9.999995e-01 7.888810e-01 2.239656e-02 4.621279e-06
-[2,] 6.763999e-22 9.106126e-16 5.671147e-27 6.080738e-32 9.205584e-15
-[3,] 8.470614e-04 5.024589e-07 2.111190e-01 9.776034e-01 9.999954e-01
-            [,66]        [,67]        [,68]        [,69]        [,70]
-[1,] 9.999998e-01 4.709107e-05 9.989823e-01 1.866511e-04 1.947097e-04
-[2,] 9.555049e-13 1.042015e-36 3.169470e-23 1.112366e-34 3.267376e-11
-[3,] 2.013051e-07 9.999529e-01 1.017692e-03 9.998133e-01 9.998053e-01
-            [,71]        [,72]        [,73]        [,74]        [,75]
-[1,] 9.827728e-01 1.876710e-03 9.999997e-01 8.260989e-03 9.968375e-01
-[2,] 3.388687e-11 4.729263e-28 4.190924e-13 6.798599e-28 9.523573e-23
-[3,] 1.722721e-02 9.981233e-01 2.620025e-07 9.917390e-01 3.162492e-03
-            [,76]        [,77]        [,78]        [,79]        [,80]
-[1,] 1.376236e-03 7.540501e-01 9.999302e-01 2.469565e-03 9.999971e-01
-[2,] 6.728886e-32 1.785379e-25 1.081973e-07 2.865305e-26 5.393755e-17
-[3,] 9.986238e-01 2.459499e-01 6.973035e-05 9.975304e-01 2.939568e-06
-            [,81]        [,82]        [,83]        [,84]        [,85]
-[1,] 1.116387e-03 9.999793e-01 3.160919e-03 7.448698e-05 9.999989e-01
-[2,] 1.753801e-24 4.853453e-10 3.646690e-29 1.893180e-34 6.225183e-07
-[3,] 9.988836e-01 2.070715e-05 9.968391e-01 9.999255e-01 4.509708e-07
-            [,86]        [,87]        [,88]        [,89]        [,90]
-[1,] 6.250690e-04 4.150354e-03 9.907275e-01 9.974004e-01 9.999557e-01
-[2,] 6.400980e-30 1.411384e-30 4.661266e-28 3.357718e-28 6.127857e-22
-[3,] 9.993749e-01 9.958496e-01 9.272458e-03 2.599564e-03 4.429948e-05
-            [,91]        [,92]        [,93]        [,94]        [,95]
-[1,] 4.660967e-01 3.517254e-05 7.264170e-01 3.456119e-01 5.853598e-02
-[2,] 1.171829e-17 4.109281e-19 6.235358e-17 1.334601e-24 3.610588e-23
-[3,] 5.339033e-01 9.999648e-01 2.735830e-01 6.543881e-01 9.414640e-01
-            [,96]        [,97]        [,98]        [,99]       [,100]
-[1,] 5.773933e-01 8.065852e-01 9.999998e-01 9.999971e-01 3.222986e-06
-[2,] 2.587324e-26 6.916612e-26 8.537092e-12 2.146050e-25 7.734450e-15
-[3,] 4.226067e-01 1.934148e-01 1.876514e-07 2.909191e-06 9.999968e-01
-> print(result$Entropy)       # Entropy of final clustering
-[1] 1.058023
-> print(result$CondEntropy)   # Conditional entropy of final clustering
-[1] 0.1297683
-> print(result$MutualInfo)    # Mutual information between Y and T
-[1] 0.5294276
+> print(result_mix$Cluster)       # Cluster membership matrix
+            [,1]         [,2]        [,3]         [,4]        [,5]         [,6]
+[1,] 0.711628372 0.9727876964 0.216262914 7.440675e-01 0.979648922 0.0611440133
+[2,] 0.279926110 0.0270344890 0.781700505 2.559295e-01 0.015436587 0.9386042976
+[3,] 0.008445518 0.0001778146 0.002036581 2.968175e-06 0.004914491 0.0002516892
+            [,7]        [,8]         [,9]      [,10]       [,11]        [,12]
+[1,] 0.954042957 0.002678608 9.482810e-01 0.03700524 0.672579317 0.0383216580
+[2,] 0.043069656 0.029752398 5.171667e-02 0.75129484 0.326318265 0.9614643338
+[3,] 0.002887386 0.967568993 2.341047e-06 0.21169992 0.001102418 0.0002140082
+            [,13]        [,14]       [,15]        [,16]       [,17]       [,18]
+[1,] 0.0994953384 4.193605e-01 0.142809140 9.632722e-01 0.979614808 0.004011268
+[2,] 0.9002537252 5.805829e-01 0.855359266 3.672678e-02 0.019294748 0.020423125
+[3,] 0.0002509363 5.659355e-05 0.001831594 9.934343e-07 0.001090444 0.975565607
+            [,19]      [,20]       [,21]      [,22]       [,23]        [,24]
+[1,] 8.736797e-01 0.04023242 0.940055345 0.13654086 0.014154161 0.9664403781
+[2,] 1.263050e-01 0.69573483 0.057145165 0.82695864 0.984837308 0.0333986050
+[3,] 1.529973e-05 0.26403275 0.002799489 0.03650051 0.001008532 0.0001610169
+            [,25]      [,26]        [,27]     [,28]       [,29]       [,30]
+[1,] 9.676742e-01 0.16319442 0.6147338868 0.0308227 0.012410617 0.991538602
+[2,] 3.226682e-02 0.75591253 0.3844025211 0.4892472 0.980775124 0.006971681
+[3,] 5.902402e-05 0.08089304 0.0008635921 0.4799301 0.006814258 0.001489717
+            [,31]        [,32]        [,33]       [,34]        [,35]
+[1,] 0.4608249813 0.0579846566 1.281181e-03 0.013596018 0.9555360564
+[2,] 0.5388895772 0.9415782511 5.053353e-07 0.980158010 0.0437705228
+[3,] 0.0002854414 0.0004370923 9.987183e-01 0.006245973 0.0006934208
+            [,36]       [,37]      [,38]       [,39]        [,40]        [,41]
+[1,] 0.9896544262 0.136067442 0.04377262 0.863005500 0.7842693081 0.8973830916
+[2,] 0.0098039511 0.861046296 0.84473770 0.135008943 0.2151519113 0.1018920596
+[3,] 0.0005416227 0.002886262 0.11148968 0.001985557 0.0005787806 0.0007248488
+            [,42]       [,43]        [,44]        [,45]       [,46]      [,47]
+[1,] 0.9813105746 0.516833061 9.159959e-01 0.2386587416 0.502487482 0.01675415
+[2,] 0.0185796018 0.009932386 8.396384e-02 0.7609920196 0.493744644 0.91185532
+[3,] 0.0001098235 0.473234553 4.022919e-05 0.0003492388 0.003767874 0.07139053
+           [,48]        [,49]        [,50]      [,51]        [,52]      [,53]
+[1,] 0.896019222 0.5555042810 9.449665e-01 0.01389208 0.6829283909 0.05155040
+[2,] 0.101416834 0.4436721497 5.502530e-02 0.33009714 0.3163659282 0.94737706
+[3,] 0.002563943 0.0008235694 8.157071e-06 0.65601078 0.0007056809 0.00107254
+           [,54]       [,55]      [,56]        [,57]      [,58]       [,59]
+[1,] 0.940528345 0.611282800 0.03603139 0.9783625475 0.02939221 0.836923815
+[2,] 0.059361940 0.386962188 0.50068400 0.0215052883 0.72683093 0.162885493
+[3,] 0.000109715 0.001755013 0.46328462 0.0001321642 0.24377687 0.000190692
+         [,60]        [,61]        [,62]        [,63]        [,64]       [,65]
+[1,] 0.8498536 0.8426929386 0.9872270117 0.3630613820 0.0753949584 0.001331116
+[2,] 0.1483844 0.1570205807 0.0126698317 0.6364036748 0.9242291834 0.023139856
+[3,] 0.0017620 0.0002864807 0.0001031566 0.0005349432 0.0003758582 0.975529028
+            [,66]        [,67]      [,68]        [,69]       [,70]      [,71]
+[1,] 0.9920790754 0.0089872635 0.82596044 0.0142445810 0.004916198 0.78495453
+[2,] 0.0076235800 0.9904736616 0.17385314 0.9850853531 0.015803914 0.11793729
+[3,] 0.0002973446 0.0005390748 0.00018642 0.0006700659 0.979279888 0.09710819
+           [,72]        [,73]       [,74]        [,75]       [,76]       [,77]
+[1,] 0.040745836 0.9912644294 0.066515324 0.7741542526 0.031471397 0.363323679
+[2,] 0.952647417 0.0084578805 0.928810495 0.2254631616 0.967081776 0.635594697
+[3,] 0.006606746 0.0002776901 0.004674181 0.0003825857 0.001446826 0.001081624
+          [,78]      [,79]        [,80]      [,81]       [,82]       [,83]
+[1,] 0.94548440 0.04962867 0.9758087896 0.04472345 0.975092408 0.046270026
+[2,] 0.01493327 0.93434228 0.0240449575 0.90760439 0.017227803 0.950580962
+[3,] 0.03958234 0.01602904 0.0001462529 0.04767216 0.007679789 0.003149011
+           [,84]       [,85]       [,86]       [,87]        [,88]        [,89]
+[1,] 0.011044450 0.986282398 0.026632155 0.046776861 6.446398e-01 7.402879e-01
+[2,] 0.987488366 0.003681923 0.967873048 0.951473623 3.552761e-01 2.596738e-01
+[3,] 0.001467184 0.010035679 0.005494797 0.001749515 8.413653e-05 3.833448e-05
+            [,90]      [,91]      [,92]      [,93]       [,94]      [,95]
+[1,] 9.334359e-01 0.40298672 0.01133621 0.49657117 0.259306726 0.15916736
+[2,] 6.650316e-02 0.55089791 0.35207887 0.46667335 0.737713033 0.82581203
+[3,] 6.096467e-05 0.04611537 0.63658492 0.03675548 0.002980241 0.01502061
+            [,96]       [,97]        [,98]        [,99]      [,100]
+[1,] 0.2958372194 0.390075580 0.9923884729 9.651589e-01 0.001250998
+[2,] 0.7033108517 0.609159561 0.0070902357 3.483664e-02 0.029239936
+[3,] 0.0008519289 0.000764859 0.0005212913 4.423660e-06 0.969509066
+> print(result_mix$InfoXT)        # Mutual information between X and T
+[1] 0.8411178
+> print(result_mix$MutualInfo)    # Mutual information between Y and T
+[1] 0.5291988
 > 
-> 
-> 
-> cleanEx()
-> nameEx("IBcat")
-> ### * IBcat
-> 
-> flush(stderr()); flush(stdout())
-> 
-> ### Name: IBcat
-> ### Title: Cluster Categorical Data Using the Information Bottleneck
-> ###   Algorithm
-> ### Aliases: IBcat
-> ### Keywords: clustering
-> 
-> ### ** Examples
-> 
-> # Simulated categorical data
+> # Simulated categorical data example
 > set.seed(123)
-> X <- data.frame(
+> data_cat <- data.frame(
 +   Var1 = as.factor(sample(letters[1:3], 200, replace = TRUE)),  # Nominal variable
 +   Var2 = as.factor(sample(letters[4:6], 200, replace = TRUE)),  # Nominal variable
 +   Var3 = factor(sample(c("low", "medium", "high"), 200, replace = TRUE),
 +                 levels = c("low", "medium", "high"), ordered = TRUE)  # Ordinal variable
 + )
 > 
-> # Run IBcat with automatic lambda selection and multiple initializations
-> result <- IBcat(X = X, ncl = 3, beta = 15, lambda = -1, nstart = 10)
+> # Perform fuzzy clustering on categorical data with standard IB
+> result_cat <- IBmix(X = data_cat, ncl = 3, beta = 15, lambda = -1, nstart = 10)
   |                                                                              |                                                                      |   0%  |                                                                              |=======                                                               |  10%  |                                                                              |==============                                                        |  20%  |                                                                              |=====================                                                 |  30%  |                                                                              |============================                                          |  40%  |                                                                              |===================================                                   |  50%  |                                                                              |==========================================                            |  60%  |                                                                              |=================================================                     |  70%  |                                                                              |========================================================              |  80%  |                                                                              |===============================================================       |  90%  |                                                                              |======================================================================| 100%
 > 
 > # Print clustering results
-> print(result$Cluster)       # Cluster membership matrix
+> print(result_cat$Cluster)       # Cluster membership matrix
           [,1]      [,2]      [,3]      [,4]      [,5]      [,6]      [,7]
 [1,] 0.1988566 0.1792602 0.2432389 0.1757971 0.2782031 0.7956605 0.7365631
 [2,] 0.6110928 0.1609833 0.5086306 0.3756755 0.4409193 0.1295506 0.1753578
@@ -736,170 +803,166 @@ Type 'q()' to quit R.
 [1,] 0.2432389 0.15387423 0.1856250 0.1757971
 [2,] 0.5086306 0.74743584 0.5275262 0.3756755
 [3,] 0.2481306 0.09868993 0.2868488 0.4485274
-> print(result$InfoXT)       # Mutual information between X and T
+> print(result_cat$InfoXT)        # Mutual information between X and T
 [1] 0.4208832
-> print(result$MutualInfo)    # Mutual information between Y and T
+> print(result_cat$MutualInfo)    # Mutual information between Y and T
 [1] 0.02991036
 > 
-> 
-> 
-> cleanEx()
-> nameEx("IBcont")
-> ### * IBcont
-> 
-> flush(stderr()); flush(stdout())
-> 
-> ### Name: IBcont
-> ### Title: Cluster Continuous Data Using the Information Bottleneck
-> ###   Algorithm
-> ### Aliases: IBcont
-> ### Keywords: clustering
-> 
-> ### ** Examples
-> 
-> # Generate simulated continuous data
+> # Simulated continuous data example
 > set.seed(123)
-> X <- matrix(rnorm(200), ncol = 5)  # 200 observations, 5 features
+> # Continuous data with 200 observations, 5 features
+> data_cont <- as.data.frame(matrix(rnorm(1000), ncol = 5))
 > 
-> # Run IBcont with automatic bandwidth selection and multiple initializations
-> result <- IBcont(X = X, ncl = 3, beta = 50, s = -1, nstart = 10)
+> # Perform fuzzy clustering on continuous data with standard IB
+> result_cont <- IBmix(X = data_cont, ncl = 3, beta = 50, s = -1, nstart = 10)
   |                                                                              |                                                                      |   0%  |                                                                              |=======                                                               |  10%  |                                                                              |==============                                                        |  20%  |                                                                              |=====================                                                 |  30%  |                                                                              |============================                                          |  40%  |                                                                              |===================================                                   |  50%  |                                                                              |==========================================                            |  60%  |                                                                              |=================================================                     |  70%  |                                                                              |========================================================              |  80%  |                                                                              |===============================================================       |  90%  |                                                                              |======================================================================| 100%
 > 
 > # Print clustering results
-> print(result$Cluster)       # Cluster membership matrix
-          [,1]      [,2]      [,3]      [,4]      [,5]      [,6]      [,7]
-[1,] 0.3551825 0.3551835 0.3551837 0.3551795 0.3551817 0.3551831 0.3551826
-[2,] 0.3300085 0.3300094 0.3300095 0.3300059 0.3300078 0.3300090 0.3300085
-[3,] 0.3148089 0.3148071 0.3148067 0.3148146 0.3148106 0.3148078 0.3148089
-          [,8]      [,9]     [,10]     [,11]     [,12]     [,13]     [,14]
-[1,] 0.3551833 0.3551823 0.3551827 0.3551822 0.3551825 0.3551827 0.3551808
-[2,] 0.3300091 0.3300083 0.3300087 0.3300082 0.3300085 0.3300086 0.3300070
-[3,] 0.3148076 0.3148093 0.3148086 0.3148096 0.3148090 0.3148087 0.3148122
-         [,15]     [,16]     [,17]     [,18]     [,19]     [,20]     [,21]
-[1,] 0.3551839 0.3551818 0.3551840 0.3551823 0.3551818 0.3551831 0.3551828
-[2,] 0.3300097 0.3300079 0.3300098 0.3300084 0.3300079 0.3300090 0.3300087
-[3,] 0.3148064 0.3148104 0.3148062 0.3148093 0.3148104 0.3148078 0.3148085
-         [,22]     [,23]     [,24]     [,25]     [,26]     [,27]     [,28]
-[1,] 0.3551824 0.3551835 0.3551840 0.3551837 0.3551829 0.3551821 0.3551822
-[2,] 0.3300084 0.3300094 0.3300098 0.3300095 0.3300089 0.3300081 0.3300083
-[3,] 0.3148091 0.3148071 0.3148062 0.3148067 0.3148082 0.3148098 0.3148095
-         [,29]     [,30]     [,31]     [,32]     [,33]     [,34]     [,35]
-[1,] 0.3551813 0.3551821 0.3551825 0.3551838 0.3551818 0.3551836 0.3551835
-[2,] 0.3300075 0.3300081 0.3300085 0.3300096 0.3300079 0.3300094 0.3300094
-[3,] 0.3148112 0.3148098 0.3148090 0.3148066 0.3148104 0.3148070 0.3148071
-         [,36]     [,37]     [,38]     [,39]     [,40]
-[1,] 0.3551810 0.3551823 0.3551838 0.3551825 0.3551833
-[2,] 0.3300072 0.3300083 0.3300096 0.3300085 0.3300092
-[3,] 0.3148117 0.3148094 0.3148066 0.3148090 0.3148075
-> print(result$InfoXT)       # Mutual information between X and T
-[1] 1.086042e-11
-> print(result$MutualInfo)    # Mutual information between Y and T
-[1] 2.424727e-13
-> 
-> 
-> 
-> cleanEx()
-> nameEx("IBmix")
-> ### * IBmix
-> 
-> flush(stderr()); flush(stdout())
-> 
-> ### Name: IBmix
-> ### Title: Information Bottleneck Clustering for Mixed-Type Data
-> ### Aliases: IBmix
-> ### Keywords: clustering
-> 
-> ### ** Examples
-> 
-> # Example dataset with categorical, ordinal, and continuous variables
-> set.seed(123)
-> data <- data.frame(
-+   cat_var = factor(sample(letters[1:3], 100, replace = TRUE)),      # Nominal categorical variable
-+   ord_var = factor(sample(c("low", "medium", "high"), 100, replace = TRUE),
-+                    levels = c("low", "medium", "high"),
-+                    ordered = TRUE),                                # Ordinal variable
-+   cont_var1 = rnorm(100),                                          # Continuous variable 1
-+   cont_var2 = runif(100)                                           # Continuous variable 2
-+ )
-> 
-> # Perform Mixed-Type Fuzzy Clustering
-> result <- IBmix(X = data, ncl = 3, beta = 2, catcols = 1:2, contcols = 3:4, nstart = 10)
-  |                                                                              |                                                                      |   0%  |                                                                              |=======                                                               |  10%  |                                                                              |==============                                                        |  20%  |                                                                              |=====================                                                 |  30%  |                                                                              |============================                                          |  40%  |                                                                              |===================================                                   |  50%  |                                                                              |==========================================                            |  60%  |                                                                              |=================================================                     |  70%  |                                                                              |========================================================              |  80%  |                                                                              |===============================================================       |  90%  |                                                                              |======================================================================| 100%
-> 
-> # Print clustering results
-> print(result$Cluster)       # Cluster membership matrix
-            [,1]         [,2]        [,3]         [,4]        [,5]         [,6]
-[1,] 0.711628372 0.9727876964 0.216262914 7.440675e-01 0.979648922 0.0611440133
-[2,] 0.279926110 0.0270344890 0.781700505 2.559295e-01 0.015436587 0.9386042976
-[3,] 0.008445518 0.0001778146 0.002036581 2.968175e-06 0.004914491 0.0002516892
-            [,7]        [,8]         [,9]      [,10]       [,11]        [,12]
-[1,] 0.954042957 0.002678608 9.482810e-01 0.03700524 0.672579317 0.0383216580
-[2,] 0.043069656 0.029752398 5.171667e-02 0.75129484 0.326318265 0.9614643338
-[3,] 0.002887386 0.967568993 2.341047e-06 0.21169992 0.001102418 0.0002140082
-            [,13]        [,14]       [,15]        [,16]       [,17]       [,18]
-[1,] 0.0994953384 4.193605e-01 0.142809140 9.632722e-01 0.979614808 0.004011268
-[2,] 0.9002537252 5.805829e-01 0.855359266 3.672678e-02 0.019294748 0.020423125
-[3,] 0.0002509363 5.659355e-05 0.001831594 9.934343e-07 0.001090444 0.975565607
-            [,19]      [,20]       [,21]      [,22]       [,23]        [,24]
-[1,] 8.736797e-01 0.04023242 0.940055345 0.13654086 0.014154161 0.9664403781
-[2,] 1.263050e-01 0.69573483 0.057145165 0.82695864 0.984837308 0.0333986050
-[3,] 1.529973e-05 0.26403275 0.002799489 0.03650051 0.001008532 0.0001610169
-            [,25]      [,26]        [,27]     [,28]       [,29]       [,30]
-[1,] 9.676742e-01 0.16319442 0.6147338868 0.0308227 0.012410617 0.991538602
-[2,] 3.226682e-02 0.75591253 0.3844025211 0.4892472 0.980775124 0.006971681
-[3,] 5.902402e-05 0.08089304 0.0008635921 0.4799301 0.006814258 0.001489717
-            [,31]        [,32]        [,33]       [,34]        [,35]
-[1,] 0.4608249813 0.0579846566 1.281181e-03 0.013596018 0.9555360564
-[2,] 0.5388895772 0.9415782511 5.053353e-07 0.980158010 0.0437705228
-[3,] 0.0002854414 0.0004370923 9.987183e-01 0.006245973 0.0006934208
-            [,36]       [,37]      [,38]       [,39]        [,40]        [,41]
-[1,] 0.9896544262 0.136067442 0.04377262 0.863005500 0.7842693081 0.8973830916
-[2,] 0.0098039511 0.861046296 0.84473770 0.135008943 0.2151519113 0.1018920596
-[3,] 0.0005416227 0.002886262 0.11148968 0.001985557 0.0005787806 0.0007248488
-            [,42]       [,43]        [,44]        [,45]       [,46]      [,47]
-[1,] 0.9813105746 0.516833061 9.159959e-01 0.2386587416 0.502487482 0.01675415
-[2,] 0.0185796018 0.009932386 8.396384e-02 0.7609920196 0.493744644 0.91185532
-[3,] 0.0001098235 0.473234553 4.022919e-05 0.0003492388 0.003767874 0.07139053
-           [,48]        [,49]        [,50]      [,51]        [,52]      [,53]
-[1,] 0.896019222 0.5555042810 9.449665e-01 0.01389208 0.6829283909 0.05155040
-[2,] 0.101416834 0.4436721497 5.502530e-02 0.33009714 0.3163659282 0.94737706
-[3,] 0.002563943 0.0008235694 8.157071e-06 0.65601078 0.0007056809 0.00107254
-           [,54]       [,55]      [,56]        [,57]      [,58]       [,59]
-[1,] 0.940528345 0.611282800 0.03603139 0.9783625475 0.02939221 0.836923815
-[2,] 0.059361940 0.386962188 0.50068400 0.0215052883 0.72683093 0.162885493
-[3,] 0.000109715 0.001755013 0.46328462 0.0001321642 0.24377687 0.000190692
-         [,60]        [,61]        [,62]        [,63]        [,64]       [,65]
-[1,] 0.8498536 0.8426929386 0.9872270117 0.3630613820 0.0753949584 0.001331116
-[2,] 0.1483844 0.1570205807 0.0126698317 0.6364036748 0.9242291834 0.023139856
-[3,] 0.0017620 0.0002864807 0.0001031566 0.0005349432 0.0003758582 0.975529028
-            [,66]        [,67]      [,68]        [,69]       [,70]      [,71]
-[1,] 0.9920790754 0.0089872635 0.82596044 0.0142445810 0.004916198 0.78495453
-[2,] 0.0076235800 0.9904736616 0.17385314 0.9850853531 0.015803914 0.11793729
-[3,] 0.0002973446 0.0005390748 0.00018642 0.0006700659 0.979279888 0.09710819
-           [,72]        [,73]       [,74]        [,75]       [,76]       [,77]
-[1,] 0.040745836 0.9912644294 0.066515324 0.7741542526 0.031471397 0.363323679
-[2,] 0.952647417 0.0084578805 0.928810495 0.2254631616 0.967081776 0.635594697
-[3,] 0.006606746 0.0002776901 0.004674181 0.0003825857 0.001446826 0.001081624
-          [,78]      [,79]        [,80]      [,81]       [,82]       [,83]
-[1,] 0.94548440 0.04962867 0.9758087896 0.04472345 0.975092408 0.046270026
-[2,] 0.01493327 0.93434228 0.0240449575 0.90760439 0.017227803 0.950580962
-[3,] 0.03958234 0.01602904 0.0001462529 0.04767216 0.007679789 0.003149011
-           [,84]       [,85]       [,86]       [,87]        [,88]        [,89]
-[1,] 0.011044450 0.986282398 0.026632155 0.046776861 6.446398e-01 7.402879e-01
-[2,] 0.987488366 0.003681923 0.967873048 0.951473623 3.552761e-01 2.596738e-01
-[3,] 0.001467184 0.010035679 0.005494797 0.001749515 8.413653e-05 3.833448e-05
-            [,90]      [,91]      [,92]      [,93]       [,94]      [,95]
-[1,] 9.334359e-01 0.40298672 0.01133621 0.49657117 0.259306726 0.15916736
-[2,] 6.650316e-02 0.55089791 0.35207887 0.46667335 0.737713033 0.82581203
-[3,] 6.096467e-05 0.04611537 0.63658492 0.03675548 0.002980241 0.01502061
-            [,96]       [,97]        [,98]        [,99]      [,100]
-[1,] 0.2958372194 0.390075580 0.9923884729 9.651589e-01 0.001250998
-[2,] 0.7033108517 0.609159561 0.0070902357 3.483664e-02 0.029239936
-[3,] 0.0008519289 0.000764859 0.0005212913 4.423660e-06 0.969509066
-> print(result$InfoXT)       # Mutual information between X and T
-[1] 0.8411178
-> print(result$MutualInfo)    # Mutual information between Y and T
-[1] 0.5291988
+> print(result_cont$Cluster)       # Cluster membership matrix
+             [,1]        [,2]      [,3]       [,4]         [,5]      [,6]
+[1,] 2.797801e-03 0.047278901 0.3757488 0.20447975 5.556579e-01 0.2386198
+[2,] 6.826287e-05 0.004464703 0.1411000 0.00815925 9.754062e-05 0.5899085
+[3,] 9.971339e-01 0.948256397 0.4831512 0.78736100 4.442446e-01 0.1714716
+           [,7]         [,8]         [,9]        [,10]       [,11]       [,12]
+[1,] 0.86286025 2.880276e-01 0.0135950504 0.6739783132 0.978485689 0.941952760
+[2,] 0.00248785 8.276924e-06 0.0005198102 0.0002881445 0.007304323 0.003928301
+[3,] 0.13465190 7.119641e-01 0.9858851395 0.3257335423 0.014209988 0.054118939
+            [,13]        [,14]        [,15]        [,16]     [,17]        [,18]
+[1,] 0.0574959384 0.6082637340 3.982687e-01 1.309337e-06 0.8095207 3.229806e-01
+[2,] 0.0003337985 0.0005766323 2.214245e-05 9.999645e-01 0.0026889 8.420035e-07
+[3,] 0.9421702632 0.3911596337 6.017091e-01 3.422681e-05 0.1877904 6.770186e-01
+            [,19]        [,20]        [,21]        [,22]        [,23]
+[1,] 0.9940416573 7.858296e-01 9.896915e-01 0.0854385427 3.254037e-02
+[2,] 0.0003469226 1.157397e-05 8.829200e-07 0.0001934264 1.421436e-05
+[3,] 0.0056114202 2.141588e-01 1.030761e-02 0.9143680309 9.674454e-01
+            [,24]        [,25]        [,26]        [,27]       [,28]
+[1,] 1.259649e-01 0.6090538311 1.214616e-01 9.818673e-01 0.988103140
+[2,] 1.598667e-05 0.0005347073 2.158370e-06 2.838356e-05 0.000330407
+[3,] 8.740191e-01 0.3904114617 8.785362e-01 1.810434e-02 0.011566453
+            [,29]       [,30]      [,31]        [,32]       [,33]       [,34]
+[1,] 8.305795e-01 0.725096392 0.01223188 0.9225469847 0.246651518 0.215641152
+[2,] 2.081572e-05 0.006068028 0.02236110 0.0006968793 0.004273283 0.009064636
+[3,] 1.693997e-01 0.268835580 0.96540702 0.0767561360 0.749075199 0.775294213
+           [,35]      [,36]        [,37]        [,38]       [,39]        [,40]
+[1,] 0.934898896 0.92854362 0.9654495587 4.984707e-01 0.028681025 8.935218e-01
+[2,] 0.009421306 0.02559635 0.0004442008 5.715621e-05 0.001872706 1.297607e-05
+[3,] 0.055679799 0.04586002 0.0341062404 5.014721e-01 0.969446269 1.064652e-01
+            [,41]        [,42]        [,43]      [,44]      [,45]        [,46]
+[1,] 0.7759758901 6.534010e-02 5.765692e-02 0.86601728 0.43439735 6.838045e-03
+[2,] 0.0004871599 2.783993e-05 1.421543e-05 0.05123603 0.08791293 1.161746e-05
+[3,] 0.2235369500 9.346321e-01 9.423289e-01 0.08274668 0.47768972 9.931503e-01
+            [,47]        [,48]      [,49]       [,50]        [,51]        [,52]
+[1,] 0.8357127356 8.433505e-01 0.05865859 0.035161444 0.9471742718 8.523447e-01
+[2,] 0.0001754261 7.687965e-06 0.01399782 0.001278023 0.0004342505 4.148691e-05
+[3,] 0.1641118383 1.566418e-01 0.92734359 0.963560533 0.0523914777 1.476138e-01
+            [,53]      [,54]        [,55]      [,56]        [,57]       [,58]
+[1,] 2.744367e-01 0.94298665 3.073265e-03 0.02364685 2.030151e-01 0.198628283
+[2,] 9.239907e-05 0.03846850 3.951231e-05 0.95331354 9.891814e-07 0.008123819
+[3,] 7.254709e-01 0.01854484 9.968872e-01 0.02303961 7.969839e-01 0.793247899
+            [,59]       [,60]        [,61]        [,62]        [,63]
+[1,] 0.3707756587 0.561829286 0.4798963143 2.164872e-01 4.702913e-01
+[2,] 0.0002572593 0.000223136 0.0001280539 2.632192e-05 1.333033e-05
+[3,] 0.6289670821 0.437947578 0.5199756318 7.834865e-01 5.296954e-01
+            [,64]      [,65]        [,66]        [,67]        [,68]       [,69]
+[1,] 0.0677316965 0.01199122 0.0062461399 0.9538914160 9.593294e-01 0.781513905
+[2,] 0.0001442274 0.01542007 0.0002612194 0.0002555937 2.950829e-06 0.002873576
+[3,] 0.9321240761 0.97258871 0.9934926407 0.0458529903 4.066767e-02 0.215612519
+          [,70]        [,71]        [,72]     [,73]        [,74]        [,75]
+[1,] 0.29369120 8.336271e-01 2.230114e-02 0.2435565 7.205244e-01 1.353260e-02
+[2,] 0.02888742 3.126227e-05 1.708302e-06 0.1344668 3.158478e-05 6.554153e-05
+[3,] 0.67742137 1.663416e-01 9.776971e-01 0.6219767 2.794440e-01 9.864019e-01
+          [,76]        [,77]        [,78]       [,79]       [,80]        [,81]
+[1,] 0.60829305 6.886330e-01 6.251315e-02 0.201864070 0.550247213 8.625354e-01
+[2,] 0.05595601 8.724184e-05 6.186696e-05 0.002268848 0.001434614 3.734658e-05
+[3,] 0.33575094 3.112797e-01 9.374250e-01 0.795867082 0.448318173 1.374273e-01
+         [,82]        [,83]       [,84]        [,85]       [,86]       [,87]
+[1,] 0.3411437 0.7163066156 0.526997573 0.5717690220 0.564337627 0.912836792
+[2,] 0.0011033 0.0001029765 0.008120426 0.0004343694 0.001098052 0.005827683
+[3,] 0.6577530 0.2835904079 0.464882001 0.4277966086 0.434564322 0.081335525
+          [,88]        [,89]     [,90]      [,91]        [,92]        [,93]
+[1,] 0.04554384 9.360377e-01 0.4398145 0.35653146 0.1088509420 0.3508822819
+[2,] 0.01179573 1.204248e-05 0.4336383 0.08897704 0.0003634375 0.0002319175
+[3,] 0.94266044 6.395030e-02 0.1265472 0.55449151 0.8907856205 0.6488858006
+            [,94]       [,95]        [,96]      [,97]       [,98]        [,99]
+[1,] 0.1023381655 0.002719137 4.160762e-02 0.01184168 0.974119854 0.2954288220
+[2,] 0.0003368025 0.946481361 2.059716e-05 0.90328514 0.003665842 0.0001143986
+[3,] 0.8973250320 0.050799502 9.583718e-01 0.08487318 0.022214305 0.7044567793
+           [,100]       [,101]      [,102]       [,103]       [,104]
+[1,] 0.1549887664 0.8725333727 0.933538314 9.220065e-01 4.909305e-01
+[2,] 0.0003426646 0.0001285198 0.008388527 2.321385e-05 1.666799e-05
+[3,] 0.8446685690 0.1273381075 0.058073159 7.797028e-02 5.090529e-01
+           [,105]      [,106]       [,107]       [,108]       [,109]     [,110]
+[1,] 0.1626590344 0.338541365 6.829819e-01 0.0516189128 0.0422048773 0.01517146
+[2,] 0.0008803326 0.000495708 1.482938e-05 0.0002273638 0.0002563325 0.02033386
+[3,] 0.8364606330 0.660962927 3.170032e-01 0.9481537234 0.9575387901 0.96449468
+           [,111]     [,112]       [,113]       [,114]       [,115]     [,116]
+[1,] 9.309082e-04 0.65194001 9.335691e-01 9.622735e-01 0.1632307633 0.01741748
+[2,] 1.109467e-05 0.01087374 9.581828e-08 8.221195e-05 0.0008199044 0.00085331
+[3,] 9.990580e-01 0.33718626 6.643079e-02 3.764429e-02 0.8359493324 0.98172921
+           [,117]       [,118]       [,119]       [,120]       [,121]
+[1,] 0.0775286220 9.889770e-01 0.0039245577 6.851860e-03 0.8512019704
+[2,] 0.0002000169 3.764037e-06 0.0001626232 1.307809e-05 0.0007672072
+[3,] 0.9222713611 1.101926e-02 0.9959128191 9.931351e-01 0.1480308224
+          [,122]       [,123]      [,124]     [,125]       [,126]      [,127]
+[1,] 0.174320213 6.688903e-01 0.264624564 0.87339095 3.837491e-02 0.692483281
+[2,] 0.001469184 4.039381e-05 0.006325465 0.01466321 2.845154e-05 0.000111162
+[3,] 0.824210603 3.310693e-01 0.729049971 0.11194584 9.615966e-01 0.307405557
+           [,128]      [,129]       [,130]      [,131]       [,132]    [,133]
+[1,] 0.1738929816 0.003812628 0.1120359378 0.110581723 0.9265747074 0.8005728
+[2,] 0.0009584297 0.000025221 0.0002657648 0.009824766 0.0002487097 0.0253338
+[3,] 0.8251485886 0.996162151 0.8876982974 0.879593510 0.0731765829 0.1740934
+           [,134]       [,135]       [,136]       [,137]      [,138]     [,139]
+[1,] 1.863034e-02 4.270809e-01 0.9931048227 9.353362e-01 0.870300974 0.08700775
+[2,] 5.792479e-05 1.376304e-07 0.0000494158 7.222678e-08 0.002333346 0.74852469
+[3,] 9.813117e-01 5.729189e-01 0.0068457615 6.466375e-02 0.127365680 0.16446756
+           [,140]      [,141]       [,142]       [,143]       [,144]
+[1,] 2.605529e-02 0.052834571 0.0520013662 2.246973e-02 1.139439e-01
+[2,] 1.284208e-06 0.003707477 0.0002837938 1.995078e-07 1.406131e-05
+[3,] 9.739434e-01 0.943457952 0.9477148400 9.775301e-01 8.860420e-01
+           [,145]       [,146]       [,147]      [,148]       [,149]
+[1,] 0.5054300155 9.945444e-01 1.978101e-02 0.422006120 0.9694401339
+[2,] 0.0000011567 7.066562e-06 7.152297e-07 0.001359787 0.0001950471
+[3,] 0.4945688278 5.448547e-03 9.802183e-01 0.576634092 0.0303648191
+           [,150]      [,151]       [,152]       [,153]       [,154]
+[1,] 0.4548279815 0.141962882 0.9876773308 0.7582174012 2.103757e-01
+[2,] 0.0000167416 0.001172834 0.0004706922 0.0001093761 1.707754e-05
+[3,] 0.5451552769 0.856864284 0.0118519770 0.2416732227 7.896072e-01
+           [,155]      [,156]     [,157]       [,158]       [,159]      [,160]
+[1,] 9.256355e-01 0.415493863 0.15664137 0.2533292462 0.9994812554 0.001233151
+[2,] 8.433172e-06 0.004276477 0.00165901 0.0004991612 0.0002927140 0.001362145
+[3,] 7.435603e-02 0.580229660 0.84169962 0.7461715925 0.0002260306 0.997404704
+         [,161]       [,162]       [,163]       [,164]       [,165]
+[1,] 0.22098604 7.031973e-03 3.788902e-02 0.0031776346 0.0315215004
+[2,] 0.02005437 2.366419e-06 2.186001e-05 0.9966691720 0.0007078642
+[3,] 0.75895959 9.929657e-01 9.620891e-01 0.0001531933 0.9677706354
+           [,166]       [,167]       [,168]     [,169]       [,170]      [,171]
+[1,] 0.3935536094 0.7450497519 9.806668e-01 0.21105592 0.5866781131 0.063585712
+[2,] 0.0003850055 0.0007007851 7.094203e-06 0.01955003 0.0002098263 0.009041948
+[3,] 0.6060613851 0.2542494629 1.932612e-02 0.76939405 0.4131120606 0.927372340
+           [,172]      [,173]      [,174]       [,175]       [,176]
+[1,] 0.9879989190 0.778966806 0.105693187 3.107832e-02 7.435374e-01
+[2,] 0.0003541176 0.000516732 0.888304714 6.578064e-05 1.948876e-07
+[3,] 0.0116469634 0.220516462 0.006002099 9.688559e-01 2.564624e-01
+           [,177]     [,178]     [,179]       [,180]       [,181]     [,182]
+[1,] 9.597549e-01 0.48645984 0.22326031 9.405147e-01 8.855309e-03 0.67080832
+[2,] 3.174964e-05 0.00259884 0.01180125 1.107704e-05 3.422263e-06 0.01710873
+[3,] 4.021335e-02 0.51094132 0.76493844 5.947422e-02 9.911413e-01 0.31208295
+          [,183]       [,184]     [,185]      [,186]     [,187]      [,188]
+[1,] 0.187088304 9.635143e-01 0.05053286 0.160104936 0.37572484 0.865221789
+[2,] 0.001350809 8.909504e-06 0.00579989 0.004676232 0.00915844 0.004692784
+[3,] 0.811560887 3.647684e-02 0.94366725 0.835218831 0.61511672 0.130085427
+          [,189]       [,190]     [,191]       [,192]       [,193]       [,194]
+[1,] 0.986929103 0.0218739217 0.07455542 9.975285e-01 0.0959910179 5.978524e-01
+[2,] 0.003533155 0.0009549121 0.01696231 2.427147e-06 0.0001917204 1.748805e-05
+[3,] 0.009537742 0.9771711662 0.90848227 2.469048e-03 0.9038172616 4.021301e-01
+           [,195]     [,196]      [,197]      [,198]       [,199]       [,200]
+[1,] 5.500339e-01 0.01202084 0.452981410 0.072952135 9.592542e-01 7.626239e-01
+[2,] 3.745962e-06 0.75712046 0.001159724 0.000770242 1.199483e-06 3.511084e-07
+[3,] 4.499623e-01 0.23085870 0.545858867 0.926277623 4.074456e-02 2.373758e-01
+> print(result_cont$InfoXT)        # Mutual information between X and T
+[1] 0.6614656
+> print(result_cont$MutualInfo)    # Mutual information between Y and T
+[1] 0.02026319
 > 
 > 
 > 
@@ -908,7 +971,7 @@ Type 'q()' to quit R.
 > cleanEx()
 > options(digits = 7L)
 > base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
-Time elapsed:  16.83 0.5 26.44 NA NA 
+Time elapsed:  26.61 0.59 44.56 NA NA 
 > grDevices::dev.off()
 null device 
           1 

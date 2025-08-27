@@ -13,8 +13,8 @@ Authors@R: c(person(given = "Efthymios",
                     role = c("aut", "cre"),
                     email = "amarkos@gmail.com"))
 Description: Implements multiple variants of the Information Bottleneck ('IB') method 
-    for clustering datasets containing mixed-type variables (nominal, ordinal, and 
-    continuous). The package provides deterministic, agglomerative, generalized, 
+    for clustering datasets containing continuous, categorical (nominal/ordinal) and mixed-type variables.
+    The package provides deterministic, agglomerative, generalized, 
     and standard 'IB' clustering algorithms that preserve relevant information while 
     forming interpretable clusters. The Deterministic Information Bottleneck is described in 
     Costa et al. (2024) <doi:10.48550/arXiv.2407.03389>. The standard 'IB' method 

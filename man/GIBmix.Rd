@@ -3,14 +3,14 @@
 \title{Generalised Information Bottleneck Clustering for Mixed-Type Data}
 \description{
 The \code{GIBmix} function implements the Generalised Information Bottleneck (GIB) algorithm
-for clustering datasets containing mixed-type variables, including categorical (nominal and ordinal)
-and continuous variables. This method optimizes an information-theoretic objective to preserve
+for clustering datasets containing continuous, categorical (nominal and ordinal), and mixed-type variables.
+This method optimizes an information-theoretic objective to preserve
 relevant information in the cluster assignments while achieving effective data compression
 \insertCite{strouse_dib_2017}{IBclust}.
 }
 \usage{
-GIBmix(X, ncl, beta, alpha, catcols, contcols, randinit = NULL,
-       lambda = -1, s = -1, scale = TRUE,
+GIBmix(X, ncl, beta, alpha, randinit = NULL,
+       s = -1, lambda = -1, scale = TRUE,
        maxiter = 100, nstart = 100,
        contkernel = "gaussian",
        nomkernel = "aitchisonaitken", ordkernel = "liracine",
@@ -18,39 +18,33 @@ GIBmix(X, ncl, beta, alpha, catcols, contcols, randinit = NULL,
 }
 \arguments{
 \item{X}{A data frame containing the input data to be clustered. It should include categorical variables
-(\code{factor} for nominal and \code{Ord.factor} for ordinal) and continuous variables (\code{numeric}).}
+(\code{factor} for nominal and \code{ordered} for ordinal) and continuous variables (\code{numeric}).}
 
 \item{ncl}{An integer specifying the number of clusters.}
 
-\item{beta}{Regularisation strength.}
+\item{beta}{Regularisation strength characterizing the tradeoff between compression and relevance. Must be non-negative.}
 
 \item{alpha}{Strength of conditional entropy term. Must be in the range \eqn{[0, 1]}. Setting \code{alpha = 0} calls the \code{DIBmix} function and ignores the value of \code{beta}, while \code{alpha = 1} calls \code{IBmix} instead.}
 
-\item{catcols}{A vector indicating the indices of the categorical variables in \code{X}.}
-
-\item{contcols}{A vector indicating the indices of the continuous variables in \code{X}.}
-
 \item{randinit}{An optional vector specifying the initial cluster assignments. If \code{NULL}, cluster assignments are initialized randomly.}
 
-\item{lambda}{A numeric value or vector specifying the bandwidth parameter for categorical variables. The default value is \eqn{-1}, which enables automatic determination of the optimal bandwidth. For nominal variables and \code{nomkernel = 'aitchisonaitken'}, the maximum allowable value of \code{lambda} is \eqn{(l - 1)/l}, where \eqn{l} represents the number of categories, whereas for \code{nomkernel = 'liracine'} the maximum allowable value is \eqn{1}. For ordinal variables, the maximum allowable value of \code{lambda} is \eqn{1}, regardless of what \code{ordkernel} is being used.}
+\item{s}{A numeric value or vector specifying the bandwidth parameter(s) for continuous variables. The values must be greater than \eqn{0}. The default value is \eqn{-1}, which enables the automatic selection of optimal bandwidth(s). Argument is ignored when no variables are continuous.}
 
-\item{s}{
-A numeric value or vector specifying the bandwidth parameter(s) for continuous variables. The values must be greater than \eqn{0}. The default value is \eqn{-1}, which enables the automatic selection of optimal bandwidth(s).
-}
+\item{lambda}{A numeric value or vector specifying the bandwidth parameter for categorical variables. The default value is \eqn{-1}, which enables automatic determination of the optimal bandwidth. For nominal variables and \code{nomkernel = 'aitchisonaitken'}, the maximum allowable value of \code{lambda} is \eqn{(l - 1)/l}, where \eqn{l} represents the number of categories, whereas for \code{nomkernel = 'liracine'} the maximum allowable value is \eqn{1}. For ordinal variables, the maximum allowable value of \code{lambda} is \eqn{1}, regardless of what \code{ordkernel} is being used. Argument is ignored when all variables are continuous.}
 
-\item{scale}{A logical value indicating whether the continuous variables should be scaled to have unit variance before clustering. Defaults to \code{TRUE}.}
+\item{scale}{A logical value indicating whether the continuous variables should be scaled to have unit variance before clustering. Defaults to \code{TRUE}. Argument is ignored when all variables are categorical.}
 
 \item{maxiter}{The maximum number of iterations allowed for the clustering algorithm. Defaults to \eqn{100}.}
 
 \item{nstart}{The number of random initializations to run. The best clustering solution is returned. Defaults to \eqn{100}.}
 
-\item{contkernel}{Kernel used for continuous variables. Can be one of \code{gaussian} (default) or \code{epanechnikov}.}
+\item{contkernel}{Kernel used for continuous variables. Can be one of \code{gaussian} (default) or \code{epanechnikov}. Argument is ignored when no variables are continuous.}
 
-\item{nomkernel}{Kernel used for nominal (unordered categorical) variables. Can be one of \code{aitchisonaitken} (default) or \code{liracine}.}
+\item{nomkernel}{Kernel used for nominal (unordered categorical) variables. Can be one of \code{aitchisonaitken} (default) or \code{liracine}. Argument is ignored when no variables are nominal.}
 
-\item{ordkernel}{Kernel used for ordinal (ordered categorical) variables. Can be one of \code{liracine} (default) or \code{wangvanryzin}.}
+\item{ordkernel}{Kernel used for ordinal (ordered categorical) variables. Can be one of \code{liracine} (default) or \code{wangvanryzin}. Argument is ignored when no variables are ordinal.}
 
-\item{cat_first}{A logical value indicating whether bandwidth selection is prioritised for the categorical variables, instead of the continuous. Defaults to \code{FALSE}. Set to \code{TRUE} if you suspect that the continuous variables are not informative of the cluster structure. Can only be \code{TRUE} when all bandwidths are selected automatically (i.e. \code{s = -1}, \code{lambda = -1}).}
+\item{cat_first}{A logical value indicating whether bandwidth selection is prioritised for the categorical variables, instead of the continuous. Defaults to \code{FALSE}. Set to \code{TRUE} if you suspect that the continuous variables are not informative of the cluster structure. Can only be \code{TRUE} when data is of mixed-type and all bandwidths are selected automatically (i.e. \code{s = -1}, \code{lambda = -1}).}
 
 \item{verbose}{Logical. Defaults to \code{FALSE} to suppress progress messages. Change to \code{TRUE} to print.}
 }
@@ -64,8 +58,8 @@ A list containing the following elements:
   \item{InfoXT}{A numeric value representing the mutual information, \eqn{I(X;T)}, between the original observations weights (\eqn{X}) and the cluster assignments (\eqn{T}).}
   \item{beta}{A numeric value of the regularisation strength beta used.}
   \item{alpha}{A numeric value of the strength of conditional entropy used.}
-  \item{s}{A numeric vector of bandwidth parameters used for the continuous variables.}
-  \item{lambda}{A numeric vector of bandwidth parameters used for the categorical variables.}
+  \item{s}{A numeric vector of bandwidth parameters used for the continuous variables. A value of \eqn{-1} is returned if all variables are categorical.}
+  \item{lambda}{A numeric vector of bandwidth parameters used for the categorical variables. A value of \eqn{-1} is returned if all variables are continuous.}
   \item{ht}{A numeric vector tracking the entropy value of the cluster assignments across iterations.}
   \item{hy_t}{A numeric vector tracking the conditional entropy values between the cluster assignments and observations weights across iterations.}
   \item{iyt}{A numeric vector tracking the mutual information values between original labels and cluster assignments across iterations.}
@@ -126,14 +120,14 @@ For ordinal (ordered categorical) variables:
 \end{cases}, \quad 0 \leq \nu \leq 1.}
 }
 
-The bandwidth parameters \eqn{s}, \eqn{\lambda}, and \eqn{\nu} control the smoothness of the density estimate and are automatically determined by the algorithm if not provided by the user. \eqn{\ell} is the number of levels of the categorical variable. For ordinal variables, the lambda parameter of the function is used to define \eqn{\nu}.
+The bandwidth parameters \eqn{s}, \eqn{\lambda}, and \eqn{\nu} control the smoothness of the density estimate and are automatically determined by the algorithm if not provided by the user using the approach in \insertCite{costa_dib_2025;textual}{IBclust}. \eqn{\ell} is the number of levels of the categorical variable. For ordinal variables, the lambda parameter of the function is used to define \eqn{\nu}.
 }
 
 
 \examples{
 # Example dataset with categorical, ordinal, and continuous variables
 set.seed(123)
-data <- data.frame(
+data_mix <- data.frame(
   cat_var = factor(sample(letters[1:3], 100, replace = TRUE)),      # Nominal categorical variable
   ord_var = factor(sample(c("low", "medium", "high"), 100, replace = TRUE),
                    levels = c("low", "medium", "high"),
@@ -143,18 +137,47 @@ data <- data.frame(
 )
 
 # Perform Mixed-Type Fuzzy Clustering with Generalised IB
-result <- GIBmix(X = data, ncl = 3, beta = 2, alpha = 0.5, 
-catcols = 1:2, contcols = 3:4, nstart = 20)
+result_mix <- GIBmix(X = data_mix, ncl = 3, beta = 2, alpha = 0.5, nstart = 20)
 
 # Print clustering results
-print(result$Cluster)       # Cluster membership matrix
-print(result$Entropy)       # Entropy of final clustering
-print(result$CondEntropy)   # Conditional entropy of final clustering
-print(result$MutualInfo)    # Mutual information between Y and T
+print(result_mix$Cluster)       # Cluster membership matrix
+print(result_mix$Entropy)       # Entropy of final clustering
+print(result_mix$CondEntropy)   # Conditional entropy of final clustering
+print(result_mix$MutualInfo)    # Mutual information between Y and T
+
+# Simulated categorical data example
+set.seed(123)
+data_cat <- data.frame(
+  Var1 = as.factor(sample(letters[1:3], 200, replace = TRUE)),  # Nominal variable
+  Var2 = as.factor(sample(letters[4:6], 200, replace = TRUE)),  # Nominal variable
+  Var3 = factor(sample(c("low", "medium", "high"), 200, replace = TRUE),
+                levels = c("low", "medium", "high"), ordered = TRUE)  # Ordinal variable
+)
+
+# Perform Fuzzy Clustering on categorical data with Generalised IB
+result_cat <- GIBmix(X = data_cat, ncl = 2, beta = 25, alpha = 0.75, lambda = -1, nstart = 10)
+
+# Print clustering results
+print(result_cat$Cluster)       # Cluster membership matrix
+print(result_cat$Entropy)       # Entropy of final clustering
+print(result_cat$CondEntropy)   # Conditional entropy of final clustering
+print(result_cat$MutualInfo)    # Mutual information between Y and T
+
+# Simulated continuous data example
+set.seed(123)
+# Continuous data with 200 observations, 5 features
+data_cont <- as.data.frame(matrix(rnorm(1000), ncol = 5))
+
+# Perform Fuzzy Clustering on continuous data with Generalised IB
+result_cont <- GIBmix(X = data_cont, ncl = 2, beta = 50, alpha = 0.75, s = -1, nstart = 10)
+
+# Print clustering results
+print(result_cont$Cluster)       # Cluster membership matrix
+print(result_cont$Entropy)       # Entropy of final clustering
+print(result_cont$CondEntropy)   # Conditional entropy of final clustering
+print(result_cont$MutualInfo)    # Mutual information between Y and T
 }
-\seealso{
-\code{\link{GIBcat}}, \code{\link{GIBcont}}
-}
+
 \author{
 Efthymios Costa, Ioanna Papatsouma, Angelos Markos
 }

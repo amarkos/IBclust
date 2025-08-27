@@ -36,8 +36,9 @@ IBmix_iterate <- function(X, ncl, beta, randinit,
   best_clust$MutualInfo <- Inf
   best_clust$InfoXT <- Inf
   best_clust$beta <- beta
-  best_clust$s <- bws_vec[contcols]
-  best_clust$lambda <- bws_vec[catcols]
+  best_clust$alpha <- 1
+  best_clust$s <- if (length(contcols) == 0) -1 else as.vector(bws_vec[contcols])
+  best_clust$lambda <- if (length(catcols) == 0) -1 else as.vector(bws_vec[catcols])
   best_clust$ixt <- c()
   best_clust$iyt <- c()
   best_clust$losses <- c()
@@ -56,18 +57,12 @@ IBmix_iterate <- function(X, ncl, beta, randinit,
     pb <- txtProgressBar(style = 3, min = 0, max = runs)
     for (i in c(1:runs)){
       setTxtProgressBar(pb, i)
-      #set.seed(i)
-      # 2. Initialize qt_x (randomly)
       qt_x_init <- matrix(0, nrow = ncl, ncol = nrow(X))
       if (is.null(randinit)){
         rand_init <- sample(rep(1:ncl, each = ceiling(nrow(X) / ncl)), size = nrow(X))
       } else {
         rand_init <- randinit
       }
-      #if (length(unique(table(rand_init))) == 1){
-      #  level1 <- which(rand_init == 1)[1]
-      #  rand_init[level1] <- 2
-      #}
       for (j in 1:ncl) {
         qt_x_init[j, rand_init == j] <- 1
       }
@@ -93,57 +88,26 @@ IBmix_iterate <- function(X, ncl, beta, randinit,
         # Store old qt_x for comparison
         old_qt_x <- qt_x
         
-        # Store old Lval for comparison
-        #Lval_old <- Lval
-        
         # Perform the clustering step
         qt_list <- qt_step(X, qt_x, tol, FALSE)
         qt <- qt_list$qt
         qt_x <- qt_list$qt_x
         qy_t <- qy_t_step_cpp(py_x, qt_x, qt, px)
         qt_x <- qt_x_step_gib_cpp(n_rows = nrow(X), T = qt_list$T, beta = beta, alpha = 1, py_x, qy_t, as.numeric(qt))
-        #if (sum(qt_x) == 0){
-        #  Lval <- -Inf
-        #  change_in_qt_x <- 0
-        #  message('Bad seed.')
-        #  next
-        #}
         
         if (nrow(qt_x)!=ncl){
           Lval <- -Inf
           change_in_qt_x <- 0
           next
-          #ncl_temp <- nrow(qt_x)
-          #change_in_qt_x <- Inf
         } else {
           # Calculate metrics or any other necessary step
-          #Lval <- calc_metrics(beta = beta, qt, qy_t, hy, quiet = TRUE)[[1]]
           change_in_qt_x <- sum(abs(qt_x - old_qt_x))
         }
-        #Lval <- calc_metrics(beta = beta, qt, qy_t, hy, quiet = TRUE)[[1]]
         metrics <- calc_metrics(beta = beta, qt, qy_t, hy, px, qt_x, quiet = TRUE)
         Lval <- metrics[[4]] - beta * metrics[[3]]
-        ### STOP BASED ON LVAL
-        #if (Lval < Lval_old){
-        #  qt_x <- old_qt_x
-        #  beta_vec <- beta_vec[-length(beta_vec)]
-        #  qt_list <- qt_step(X, qt_x, tol, FALSE)
-        #  qt <- qt_list$qt
-        #  qt_x <- qt_list$qt_x
-        #  qy_t <- qy_t_step_cpp(py_x, qt_x, qt, px)
-        #  break
-        #}
-        #cat('I(Y;T) =', Lval, '\n')
-        #result_vector <- apply(qt_x, 2, function(col) which(col == 1))
-        #return(result_vector)
       }
       
-      # Optional: Print the change to monitor progress
-      # cat("Iteration:", iterations, "- Change in qt_x:", change_in_qt_x, "\n")
-      # Removed conditions: & nrow(qt_x)==ncl & !all(apply(qt_x, 2, function(col) which(col == 1)) == rand_init)
-      #if (Lval < best_clust[[1]]){
       if (Lval < Loss & nrow(qt_x)==ncl){
-        #   best_clust[[1]] <- Lval
         Loss <- Lval
         best_clust[[1]] <- qt_x
         metrics <- calc_metrics(beta = beta, qt, qy_t, hy, px, qt_x, quiet = TRUE)

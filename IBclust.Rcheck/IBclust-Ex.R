@@ -7,63 +7,6 @@ library('IBclust')
 base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
 base::assign(".old_wd", base::getwd(), pos = 'CheckExEnv')
 cleanEx()
-nameEx("AIBcat")
-### * AIBcat
-
-flush(stderr()); flush(stdout())
-
-### Name: AIBcat
-### Title: Cluster Categorical Data Using the Agglomerative Information
-###   Bottleneck Algorithm
-### Aliases: AIBcat
-### Keywords: clustering
-
-### ** Examples
-
-# Simulated categorical data
-set.seed(123)
-X <- data.frame(
-  Var1 = as.factor(sample(letters[1:3], 200, replace = TRUE)),  # Nominal variable
-  Var2 = as.factor(sample(letters[4:6], 200, replace = TRUE)),  # Nominal variable
-  Var3 = factor(sample(c("low", "medium", "high"), 200, replace = TRUE),
-                levels = c("low", "medium", "high"), ordered = TRUE)  # Ordinal variable
-)
-
-# Run AIBcat with automatic lambda selection 
-result <- AIBcat(X = X, lambda = -1)
-
-# Print clustering results
-plot(result$dendrogram, xlab = "", sub = "")  # Plot dendrogram
-
-
-
-cleanEx()
-nameEx("AIBcont")
-### * AIBcont
-
-flush(stderr()); flush(stdout())
-
-### Name: AIBcont
-### Title: Cluster Continuous Data Using the Agglomerative Information
-###   Bottleneck Algorithm
-### Aliases: AIBcont
-### Keywords: clustering
-
-### ** Examples
-
-# Generate simulated continuous data
-set.seed(123)
-X <- matrix(rnorm(1000), ncol = 5)  # 200 observations, 5 features
-
-# Run AIBcont with automatic bandwidth selection 
-result <- AIBcont(X = X, s = -1, scale = TRUE)
-
-# Print clustering results
-plot(result$dendrogram, xlab = "", sub = "")  # Plot dendrogram
-
-
-
-cleanEx()
 nameEx("AIBmix")
 ### * AIBmix
 
@@ -79,7 +22,7 @@ flush(stderr()); flush(stdout())
 
 # Example dataset with categorical, ordinal, and continuous variables
 set.seed(123)
-data <- data.frame(
+data_mix <- data.frame(
   cat_var = factor(sample(letters[1:3], 100, replace = TRUE)),      # Nominal categorical variable
   ord_var = factor(sample(c("low", "medium", "high"), 100, replace = TRUE),
                    levels = c("low", "medium", "high"),
@@ -89,71 +32,37 @@ data <- data.frame(
 )
 
 # Perform Mixed-Type Hierarchical Clustering with Agglomerative IB
-result <- AIBmix(X = data, catcols = 1:2, contcols = 3:4, lambda = -1, s = -1, scale = TRUE)
+result_mix <- AIBmix(X = data_mix, lambda = -1, s = -1, scale = TRUE)
 
 # Print clustering results
-plot(result$dendrogram, xlab = "", sub = "")  # Plot dendrogram
+plot(result_mix$dendrogram, xlab = "", sub = "")  # Plot dendrogram
 
-
-
-cleanEx()
-nameEx("DIBcat")
-### * DIBcat
-
-flush(stderr()); flush(stdout())
-
-### Name: DIBcat
-### Title: Cluster Categorical Data Using the Deterministic Information
-###   Bottleneck Algorithm
-### Aliases: DIBcat
-### Keywords: clustering
-
-### ** Examples
-
-# Simulated categorical data
+# Simulated categorical data example
 set.seed(123)
-X <- data.frame(
+data_cat <- data.frame(
   Var1 = as.factor(sample(letters[1:3], 200, replace = TRUE)),  # Nominal variable
   Var2 = as.factor(sample(letters[4:6], 200, replace = TRUE)),  # Nominal variable
   Var3 = factor(sample(c("low", "medium", "high"), 200, replace = TRUE),
                 levels = c("low", "medium", "high"), ordered = TRUE)  # Ordinal variable
 )
 
-# Run DIBcat with automatic lambda selection and multiple initializations
-result <- DIBcat(X = X, ncl = 3, lambda = -1, nstart = 10)
+# Run AIBmix with automatic lambda selection 
+result_cat <- AIBmix(X = data_cat, lambda = -1)
 
 # Print clustering results
-print(result$Cluster)       # Cluster assignments
-print(result$Entropy)       # Final entropy
-print(result$MutualInfo)    # Mutual information
+plot(result_cat$dendrogram, xlab = "", sub = "")  # Plot dendrogram
 
-
-
-cleanEx()
-nameEx("DIBcont")
-### * DIBcont
-
-flush(stderr()); flush(stdout())
-
-### Name: DIBcont
-### Title: Cluster Continuous Data Using the Deterministic Information
-###   Bottleneck Algorithm
-### Aliases: DIBcont
-### Keywords: clustering
-
-### ** Examples
-
-# Generate simulated continuous data
+# Simulated continuous data example
 set.seed(123)
-X <- matrix(rnorm(200), ncol = 5)  # 200 observations, 5 features
+# Continuous data with 200 observations, 5 features
+data_cont <- as.data.frame(matrix(rnorm(1000), ncol = 5))
 
-# Run DIBcont with automatic bandwidth selection and multiple initializations
-result <- DIBcont(X = X, ncl = 3, s = -1, nstart = 10)
+# Run AIBmix with automatic bandwidth selection 
+result_cont <- AIBmix(X = data_cont, s = -1, scale = TRUE)
 
 # Print clustering results
-print(result$Cluster)       # Cluster assignments
-print(result$Entropy)       # Final entropy
-print(result$MutualInfo)    # Mutual information
+plot(result_cont$dendrogram, xlab = "", sub = "")  # Plot dendrogram
+
 
 
 
@@ -175,7 +84,7 @@ flush(stderr()); flush(stdout())
 set.seed(123)
 
 # Create a more realistic dataset with mixed variable types
-data <- data.frame(
+data_mix <- data.frame(
   # Categorical variables
   education = factor(sample(c("High School", "Bachelor", "Master", "PhD"), 150, 
                            replace = TRUE, prob = c(0.4, 0.3, 0.2, 0.1))),
@@ -193,30 +102,23 @@ data <- data.frame(
 )
 
 # Perform Mixed-Type Clustering
-result <- DIBmix(X = data, ncl = 3, 
-                catcols = c(1, 2, 3),    # education, employment, satisfaction
-                contcols = c(4, 5, 6),   # income, age, experience
-                nstart = 50)
+result_mix <- DIBmix(X = data_mix, ncl = 3, nstart = 50)
 
 # View results
-print(paste("Number of clusters found:", length(unique(result$Cluster))))
-print(paste("Mutual Information:", round(result$MutualInfo, 3)))
-table(result$Cluster)
+print(paste("Number of clusters found:", length(unique(result_mix$Cluster))))
+print(paste("Mutual Information:", round(result_mix$MutualInfo, 3)))
+table(result_mix$Cluster)
 
 # Example 2: Comparing cat_first parameter
 # When categorical variables are more informative
-result_cat_first <- DIBmix(X = data, ncl = 3,
-                          catcols = c(1, 2, 3), 
-                          contcols = c(4, 5, 6),
-                          cat_first = TRUE,  # Prioritize categorical variables
-                          nstart = 50)
+result_cat_first <- DIBmix(X = data_mix, ncl = 3,
+                           cat_first = TRUE,  # Prioritize categorical variables
+                           nstart = 50)
 
 # When continuous variables are more informative (default)
-result_cont_first <- DIBmix(X = data, ncl = 3,
-                           catcols = c(1, 2, 3), 
-                           contcols = c(4, 5, 6),
-                           cat_first = FALSE,
-                           nstart = 50)
+result_cont_first <- DIBmix(X = data_mix, ncl = 3,
+                            cat_first = FALSE,
+                            nstart = 50)
 
 # Compare clustering performance
 if (requireNamespace("mclust", quietly = TRUE)){  # For adjustedRandIndex
@@ -225,68 +127,34 @@ if (requireNamespace("mclust", quietly = TRUE)){  # For adjustedRandIndex
                     result_cont_first$Cluster), 3)))
   }
 
-
-
-cleanEx()
-nameEx("GIBcat")
-### * GIBcat
-
-flush(stderr()); flush(stdout())
-
-### Name: GIBcat
-### Title: Cluster Categorical Data Using the Generalised Information
-###   Bottleneck Algorithm
-### Aliases: GIBcat
-### Keywords: clustering
-
-### ** Examples
-
-# Simulated categorical data
-set.seed(123)
-X <- data.frame(
+# Simulated categorical data example
+data_cat <- data.frame(
   Var1 = as.factor(sample(letters[1:3], 200, replace = TRUE)),  # Nominal variable
   Var2 = as.factor(sample(letters[4:6], 200, replace = TRUE)),  # Nominal variable
   Var3 = factor(sample(c("low", "medium", "high"), 200, replace = TRUE),
                 levels = c("low", "medium", "high"), ordered = TRUE)  # Ordinal variable
 )
 
-# Run GIBcat with automatic lambda selection and multiple initializations
-result <- GIBcat(X = X, ncl = 2, beta = 25, alpha = 0.75, lambda = -1, nstart = 10)
+# Perform hard clustering on categorical data with Deterministic IB
+result_cat <- DIBmix(X = data_cat, ncl = 3, lambda = -1, nstart = 10)
 
 # Print clustering results
-print(result$Cluster)       # Cluster membership matrix
-print(result$Entropy)       # Entropy of final clustering
-print(result$CondEntropy)   # Conditional entropy of final clustering
-print(result$MutualInfo)    # Mutual information between Y and T
+print(result_cat$Cluster)       # Cluster assignments
+print(result_cat$Entropy)       # Final entropy
+print(result_cat$MutualInfo)    # Mutual information
 
-
-
-cleanEx()
-nameEx("GIBcont")
-### * GIBcont
-
-flush(stderr()); flush(stdout())
-
-### Name: GIBcont
-### Title: Cluster Continuous Data Using the Generalised Information
-###   Bottleneck Algorithm
-### Aliases: GIBcont
-### Keywords: clustering
-
-### ** Examples
-
-# Generate simulated continuous data
+# Simulated continuous data example
 set.seed(123)
-X <- matrix(rnorm(200), ncol = 5)  # 200 observations, 5 features
+# Continuous data with 200 observations, 5 features
+data_cont <- as.data.frame(matrix(rnorm(1000), ncol = 5))
 
-# Run GIBcont with automatic bandwidth selection and multiple initializations
-result <- GIBcont(X = X, ncl = 2, beta = 50, alpha = 0.75, s = -1, nstart = 10)
+# Perform hard clustering on continuous data with Deterministic IB
+result_cont <- DIBmix(X = data_cont, ncl = 3, s = -1, nstart = 10)
 
 # Print clustering results
-print(result$Cluster)       # Cluster membership matrix
-print(result$Entropy)       # Entropy of final clustering
-print(result$CondEntropy)   # Conditional entropy of final clustering
-print(result$MutualInfo)    # Mutual information between Y and T
+print(result_cont$Cluster)       # Cluster assignments
+print(result_cont$Entropy)       # Final entropy
+print(result_cont$MutualInfo)    # Mutual information
 
 
 
@@ -306,7 +174,7 @@ flush(stderr()); flush(stdout())
 
 # Example dataset with categorical, ordinal, and continuous variables
 set.seed(123)
-data <- data.frame(
+data_mix <- data.frame(
   cat_var = factor(sample(letters[1:3], 100, replace = TRUE)),      # Nominal categorical variable
   ord_var = factor(sample(c("low", "medium", "high"), 100, replace = TRUE),
                    levels = c("low", "medium", "high"),
@@ -316,75 +184,45 @@ data <- data.frame(
 )
 
 # Perform Mixed-Type Fuzzy Clustering with Generalised IB
-result <- GIBmix(X = data, ncl = 3, beta = 2, alpha = 0.5, 
-catcols = 1:2, contcols = 3:4, nstart = 20)
+result_mix <- GIBmix(X = data_mix, ncl = 3, beta = 2, alpha = 0.5, nstart = 20)
 
 # Print clustering results
-print(result$Cluster)       # Cluster membership matrix
-print(result$Entropy)       # Entropy of final clustering
-print(result$CondEntropy)   # Conditional entropy of final clustering
-print(result$MutualInfo)    # Mutual information between Y and T
+print(result_mix$Cluster)       # Cluster membership matrix
+print(result_mix$Entropy)       # Entropy of final clustering
+print(result_mix$CondEntropy)   # Conditional entropy of final clustering
+print(result_mix$MutualInfo)    # Mutual information between Y and T
 
-
-
-cleanEx()
-nameEx("IBcat")
-### * IBcat
-
-flush(stderr()); flush(stdout())
-
-### Name: IBcat
-### Title: Cluster Categorical Data Using the Information Bottleneck
-###   Algorithm
-### Aliases: IBcat
-### Keywords: clustering
-
-### ** Examples
-
-# Simulated categorical data
+# Simulated categorical data example
 set.seed(123)
-X <- data.frame(
+data_cat <- data.frame(
   Var1 = as.factor(sample(letters[1:3], 200, replace = TRUE)),  # Nominal variable
   Var2 = as.factor(sample(letters[4:6], 200, replace = TRUE)),  # Nominal variable
   Var3 = factor(sample(c("low", "medium", "high"), 200, replace = TRUE),
                 levels = c("low", "medium", "high"), ordered = TRUE)  # Ordinal variable
 )
 
-# Run IBcat with automatic lambda selection and multiple initializations
-result <- IBcat(X = X, ncl = 3, beta = 15, lambda = -1, nstart = 10)
+# Perform Fuzzy Clustering on categorical data with Generalised IB
+result_cat <- GIBmix(X = data_cat, ncl = 2, beta = 25, alpha = 0.75, lambda = -1, nstart = 10)
 
 # Print clustering results
-print(result$Cluster)       # Cluster membership matrix
-print(result$InfoXT)       # Mutual information between X and T
-print(result$MutualInfo)    # Mutual information between Y and T
+print(result_cat$Cluster)       # Cluster membership matrix
+print(result_cat$Entropy)       # Entropy of final clustering
+print(result_cat$CondEntropy)   # Conditional entropy of final clustering
+print(result_cat$MutualInfo)    # Mutual information between Y and T
 
-
-
-cleanEx()
-nameEx("IBcont")
-### * IBcont
-
-flush(stderr()); flush(stdout())
-
-### Name: IBcont
-### Title: Cluster Continuous Data Using the Information Bottleneck
-###   Algorithm
-### Aliases: IBcont
-### Keywords: clustering
-
-### ** Examples
-
-# Generate simulated continuous data
+# Simulated continuous data example
 set.seed(123)
-X <- matrix(rnorm(200), ncol = 5)  # 200 observations, 5 features
+# Continuous data with 200 observations, 5 features
+data_cont <- as.data.frame(matrix(rnorm(1000), ncol = 5))
 
-# Run IBcont with automatic bandwidth selection and multiple initializations
-result <- IBcont(X = X, ncl = 3, beta = 50, s = -1, nstart = 10)
+# Perform Fuzzy Clustering on continuous data with Generalised IB
+result_cont <- GIBmix(X = data_cont, ncl = 2, beta = 50, alpha = 0.75, s = -1, nstart = 10)
 
 # Print clustering results
-print(result$Cluster)       # Cluster membership matrix
-print(result$InfoXT)       # Mutual information between X and T
-print(result$MutualInfo)    # Mutual information between Y and T
+print(result_cont$Cluster)       # Cluster membership matrix
+print(result_cont$Entropy)       # Entropy of final clustering
+print(result_cont$CondEntropy)   # Conditional entropy of final clustering
+print(result_cont$MutualInfo)    # Mutual information between Y and T
 
 
 
@@ -403,7 +241,7 @@ flush(stderr()); flush(stdout())
 
 # Example dataset with categorical, ordinal, and continuous variables
 set.seed(123)
-data <- data.frame(
+data_mix <- data.frame(
   cat_var = factor(sample(letters[1:3], 100, replace = TRUE)),      # Nominal categorical variable
   ord_var = factor(sample(c("low", "medium", "high"), 100, replace = TRUE),
                    levels = c("low", "medium", "high"),
@@ -413,12 +251,42 @@ data <- data.frame(
 )
 
 # Perform Mixed-Type Fuzzy Clustering
-result <- IBmix(X = data, ncl = 3, beta = 2, catcols = 1:2, contcols = 3:4, nstart = 10)
+result_mix <- IBmix(X = data_mix, ncl = 3, beta = 2, nstart = 10)
 
 # Print clustering results
-print(result$Cluster)       # Cluster membership matrix
-print(result$InfoXT)       # Mutual information between X and T
-print(result$MutualInfo)    # Mutual information between Y and T
+print(result_mix$Cluster)       # Cluster membership matrix
+print(result_mix$InfoXT)        # Mutual information between X and T
+print(result_mix$MutualInfo)    # Mutual information between Y and T
+
+# Simulated categorical data example
+set.seed(123)
+data_cat <- data.frame(
+  Var1 = as.factor(sample(letters[1:3], 200, replace = TRUE)),  # Nominal variable
+  Var2 = as.factor(sample(letters[4:6], 200, replace = TRUE)),  # Nominal variable
+  Var3 = factor(sample(c("low", "medium", "high"), 200, replace = TRUE),
+                levels = c("low", "medium", "high"), ordered = TRUE)  # Ordinal variable
+)
+
+# Perform fuzzy clustering on categorical data with standard IB
+result_cat <- IBmix(X = data_cat, ncl = 3, beta = 15, lambda = -1, nstart = 10)
+
+# Print clustering results
+print(result_cat$Cluster)       # Cluster membership matrix
+print(result_cat$InfoXT)        # Mutual information between X and T
+print(result_cat$MutualInfo)    # Mutual information between Y and T
+
+# Simulated continuous data example
+set.seed(123)
+# Continuous data with 200 observations, 5 features
+data_cont <- as.data.frame(matrix(rnorm(1000), ncol = 5))
+
+# Perform fuzzy clustering on continuous data with standard IB
+result_cont <- IBmix(X = data_cont, ncl = 3, beta = 50, s = -1, nstart = 10)
+
+# Print clustering results
+print(result_cont$Cluster)       # Cluster membership matrix
+print(result_cont$InfoXT)        # Mutual information between X and T
+print(result_cont$MutualInfo)    # Mutual information between Y and T
 
 
 

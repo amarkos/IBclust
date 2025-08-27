@@ -13,8 +13,8 @@ Authors@R: c(person(given = "Efthymios",
                     role = c("aut", "cre"),
                     email = "amarkos@gmail.com"))
 Description: Implements multiple variants of the Information Bottleneck ('IB') method 
-    for clustering datasets containing mixed-type variables (nominal, ordinal, and 
-    continuous). The package provides deterministic, agglomerative, generalized, 
+    for clustering datasets containing continuous, categorical (nominal/ordinal) and mixed-type variables.
+    The package provides deterministic, agglomerative, generalized, 
     and standard 'IB' clustering algorithms that preserve relevant information while 
     forming interpretable clusters. The Deterministic Information Bottleneck is described in 
     Costa et al. (2024) <doi:10.48550/arXiv.2407.03389>. The standard 'IB' method 
@@ -30,10 +30,10 @@ LinkingTo: Rcpp, RcppArmadillo, RcppEigen
 RoxygenNote: 7.3.2
 RdMacros: Rdpack
 NeedsCompilation: yes
-Packaged: 2025-08-14 08:58:47 UTC; ec1917
+Packaged: 2025-08-27 15:15:04 UTC; ec1917
 Author: Efthymios Costa [aut],
   Ioanna Papatsouma [aut],
   Angelos Markos [aut, cre]
 Maintainer: Angelos Markos <amarkos@gmail.com>
-Built: R 4.4.2; x86_64-w64-mingw32; 2025-08-14 08:59:14 UTC; windows
+Built: R 4.4.2; x86_64-w64-mingw32; 2025-08-27 15:15:20 UTC; windows
 Archs: x64

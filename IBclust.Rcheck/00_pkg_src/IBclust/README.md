@@ -35,10 +35,10 @@ print(result_mix$Entropy)
 print(result_mix$MutualInfo)
 
 # Example Continuous Data
-X_cont <- matrix(rnorm(1000), ncol = 5)  # 200 observations, 5 features
+X_cont <- as.data.frame(matrix(rnorm(1000), ncol = 5))  # 200 observations, 5 features
 
 # Perform Continuous Data Clustering 
-result_cont <- DIBcont(X = X_cont, ncl = 3, s = -1, nstart = 50)
+result_cont <- DIBmix(X = X_cont, ncl = 3, s = -1, nstart = 50)
 cat("Continuous Clustering Results:\n")
 print(result_cont$Cluster)
 print(result_cont$Entropy)
@@ -53,7 +53,7 @@ X_cat <- data.frame(
 )
 
 # Perform Categorical Data Clustering
-result_cat <- DIBcat(X = X_cat, ncl = 3, lambda = -1, nstart = 50)
+result_cat <- DIBmix(X = X_cat, ncl = 3, lambda = -1, nstart = 50)
 cat("Categorical Clustering Results:\n")
 print(result_cat$Cluster)
 print(result_cat$Entropy)

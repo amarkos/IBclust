@@ -26,9 +26,6 @@
 GIBmix_iterate <- function(X, ncl, beta, alpha, randinit,
                            tol, py_x, hy, px, maxiter, bws_vec,
                            contcols, catcols, runs, verbose = FALSE){
-  # Source the C++ code
-  #  sourceCpp("src/qt_x_step.cpp")
-  
   best_clust <- list()
   Loss <- Inf
   best_clust$Cluster <- rep(NA, nrow(X))
@@ -38,8 +35,8 @@ GIBmix_iterate <- function(X, ncl, beta, alpha, randinit,
   best_clust$InfoXT <- Inf
   best_clust$beta <- beta
   best_clust$alpha <- alpha
-  best_clust$s <- bws_vec[contcols]
-  best_clust$lambda <- bws_vec[catcols]
+  best_clust$s <- if (length(contcols) == 0) -1 else as.vector(bws_vec[contcols])
+  best_clust$lambda <- if (length(catcols) == 0) -1 else as.vector(bws_vec[catcols])
   best_clust$ht <- c()
   best_clust$hy_t <- c()
   best_clust$iyt <- c()
@@ -69,10 +66,6 @@ GIBmix_iterate <- function(X, ncl, beta, alpha, randinit,
       } else {
         rand_init <- randinit
       }
-      #if (length(unique(table(rand_init))) == 1){
-      #  level1 <- which(rand_init == 1)[1]
-      #  rand_init[level1] <- 2
-      #}
       for (j in 1:ncl) {
         qt_x_init[j, rand_init == j] <- 1
       }
@@ -84,7 +77,6 @@ GIBmix_iterate <- function(X, ncl, beta, alpha, randinit,
       qt_x <- qt_x_step_gib_cpp(n_rows = nrow(X), T = qt_list$T, beta = beta, alpha = alpha, py_x, qy_t, as.numeric(qt))
       metrics <- calc_metrics(beta = beta, qt, qy_t, hy, px, qt_x, quiet = TRUE)
       Lval <- metrics[[1]] - alpha * metrics[[2]] - beta * metrics[[3]]
-      #cat('I(Y;T) =', Lval, '\n')
       # Initialize variables for convergence checking
       convergence_threshold <- 1e-5  # Set a small threshold for convergence
       max_iterations <- maxiter  # Prevent infinite loops
@@ -98,57 +90,26 @@ GIBmix_iterate <- function(X, ncl, beta, alpha, randinit,
         # Store old qt_x for comparison
         old_qt_x <- qt_x
         
-        # Store old Lval for comparison
-        #Lval_old <- Lval
-        
         # Perform the clustering step
         qt_list <- qt_step(X, qt_x, tol, FALSE)
         qt <- qt_list$qt
         qt_x <- qt_list$qt_x
         qy_t <- qy_t_step_cpp(py_x, qt_x, qt, px)
         qt_x <- qt_x_step_gib_cpp(n_rows = nrow(X), T = qt_list$T, beta = beta, alpha = alpha, py_x, qy_t, as.numeric(qt))
-        #if (sum(qt_x) == 0){
-        #  Lval <- -Inf
-        #  change_in_qt_x <- 0
-        #  message('Bad seed.')
-        #  next
-        #}
         
         if (nrow(qt_x)!=ncl){
           Lval <- -Inf
           change_in_qt_x <- 0
           next
-          #ncl_temp <- nrow(qt_x)
-          #change_in_qt_x <- Inf
         } else {
           # Calculate metrics or any other necessary step
-          #Lval <- calc_metrics(beta = beta, qt, qy_t, hy, quiet = TRUE)[[1]]
           change_in_qt_x <- sum(abs(qt_x - old_qt_x))
         }
-        #Lval <- calc_metrics(beta = beta, qt, qy_t, hy, quiet = TRUE)[[1]]
         metrics <- calc_metrics(beta = beta, qt, qy_t, hy, px, qt_x, quiet = TRUE)
         Lval <- metrics[[1]] - alpha * metrics[[2]] - beta * metrics[[3]]
-        ### STOP BASED ON LVAL
-        #if (Lval < Lval_old){
-        #  qt_x <- old_qt_x
-        #  beta_vec <- beta_vec[-length(beta_vec)]
-        #  qt_list <- qt_step(X, qt_x, tol, FALSE)
-        #  qt <- qt_list$qt
-        #  qt_x <- qt_list$qt_x
-        #  qy_t <- qy_t_step_cpp(py_x, qt_x, qt, px)
-        #  break
-        #}
-        #cat('I(Y;T) =', Lval, '\n')
-        #result_vector <- apply(qt_x, 2, function(col) which(col == 1))
-        #return(result_vector)
       }
       
-      # Optional: Print the change to monitor progress
-      # cat("Iteration:", iterations, "- Change in qt_x:", change_in_qt_x, "\n")
-      # Removed conditions: & nrow(qt_x)==ncl & !all(apply(qt_x, 2, function(col) which(col == 1)) == rand_init)
-      #if (Lval < best_clust[[1]]){
       if (Lval < Loss & nrow(qt_x)==ncl){
-        #   best_clust[[1]] <- Lval
         Loss <- Lval
         best_clust[[1]] <- qt_x
         metrics <- calc_metrics(beta = beta, qt, qy_t, hy, px, qt_x, quiet = TRUE)
