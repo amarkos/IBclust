@@ -35,8 +35,9 @@ DIBmix_iterate <- function(X, ncl, randinit,
   best_clust$MutualInfo <- Inf
   best_clust$InfoXT <- Inf
   best_clust$beta <- NA
-  best_clust$s <- bws_vec[contcols]
-  best_clust$lambda <- bws_vec[catcols]
+  best_clust$alpha <- 0
+  best_clust$s <- if (length(contcols) == 0) -1 else as.vector(bws_vec[contcols])
+  best_clust$lambda <- if (length(catcols) == 0) -1 else as.vector(bws_vec[catcols])
   best_clust$ents <- c()
   best_clust$mis <- c()
   if (ncl == 1){
@@ -134,27 +135,9 @@ DIBmix_iterate <- function(X, ncl, randinit,
         #Lval <- calc_metrics(beta = beta, qt, qy_t, hy, quiet = TRUE)[[1]]
         metrics <- calc_metrics(beta = beta, qt, qy_t, hy, px, qt_x, quiet = TRUE)
         Lval <- metrics[[3]]
-        ### STOP BASED ON LVAL
-        #if (Lval < Lval_old){
-        #  qt_x <- old_qt_x
-        #  beta_vec <- beta_vec[-length(beta_vec)]
-        #  qt_list <- qt_step(X, qt_x, tol, FALSE)
-        #  qt <- qt_list$qt
-        #  qt_x <- qt_list$qt_x
-        #  qy_t <- qy_t_step_cpp(py_x, qt_x, qt, px)
-        #  break
-        #}
-        #cat('I(Y;T) =', Lval, '\n')
-        #result_vector <- apply(qt_x, 2, function(col) which(col == 1))
-        #return(result_vector)
       }
 
-      # Optional: Print the change to monitor progress
-      # cat("Iteration:", iterations, "- Change in qt_x:", change_in_qt_x, "\n")
-      # Removed conditions: & nrow(qt_x)==ncl & !all(apply(qt_x, 2, function(col) which(col == 1)) == rand_init)
-      #if (Lval < best_clust[[1]]){
       if (Lval > Loss){
-     #   best_clust[[1]] <- Lval
         Loss <- Lval
         best_clust[[1]] <- apply(qt_x, 2, function(col) which(col == 1))
         metrics <- calc_metrics(beta = beta, qt, qy_t, hy, px, qt_x, quiet = TRUE)
