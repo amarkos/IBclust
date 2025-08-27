@@ -27,8 +27,8 @@ data <- data.frame(
   cont_var2 = runif(100)                                           # Continuous variable 2
 )
 
-# Perform Mixed-Type Clustering using the Deterministic variant
-result_mix <- DIBmix(X = data, ncl = 3, catcols = 1:2, contcols = 3:4)
+# Perform Mixed-Type Clustering using the Deterministic variant and automatic bandwidth selection
+result_mix <- DIBmix(X = data, ncl = 3)
 cat("Mixed-Type Clustering Results:\n")
 print(result_mix$Cluster)
 print(result_mix$Entropy)
