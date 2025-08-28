@@ -4,6 +4,10 @@ S3method(print,gibclust)
 S3method(summary,gibclust)
 S3method(print,summary.gibclust)
 S3method(plot,gibclust)
+S3method(print,aibclust)
+S3method(summary,aibclust)
+S3method(print,summary.aibclust)
+S3method(plot,aibclust)
 
 # Use dynamic libraries for C++ integration
 useDynLib(IBclust, .registration = TRUE)

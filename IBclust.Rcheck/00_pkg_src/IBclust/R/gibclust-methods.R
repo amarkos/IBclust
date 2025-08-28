@@ -298,13 +298,13 @@ plot.gibclust <- function(x, type = c("sizes", "info", "beta"), main = NULL, ...
       plot(idx, logb, type = "l",
            xlab = "Iteration", ylab = expression(log(beta)),
            main = main, ...)
-      points(idx, logb, pch = 16, ...)
+      points(idx, logb, ...)
     } else {
       warning("Non-finite values in log(beta); some points omitted.")
       plot(idx, logb, type = "l",
            xlab = "Iteration", ylab = expression(log(beta)),
            main = main, ...)
-      points(idx, logb, pch = 16, ...)
+      points(idx, logb, ...)
     }
   }
   invisible(x)

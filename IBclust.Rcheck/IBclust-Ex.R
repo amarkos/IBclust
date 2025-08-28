@@ -35,7 +35,8 @@ data_mix <- data.frame(
 result_mix <- AIBmix(X = data_mix, lambda = -1, s = -1, scale = TRUE)
 
 # Print clustering results
-plot(result_mix$dendrogram, xlab = "", sub = "")  # Plot dendrogram
+plot(result_mix, type = "dendrogram", xlab = "", sub = "", cex = 0.5)  # Plot dendrogram
+plot(result_mix, type = "info", col = "black", pch = 16)  # Plot dendrogram
 
 # Simulated categorical data example
 set.seed(123)
@@ -50,7 +51,10 @@ data_cat <- data.frame(
 result_cat <- AIBmix(X = data_cat, lambda = -1)
 
 # Print clustering results
-plot(result_cat$dendrogram, xlab = "", sub = "")  # Plot dendrogram
+plot(result_cat, type = "dendrogram", xlab = "", sub = "", cex = 0.5)  # Plot dendrogram
+
+# Results summary
+summary(result_cat)
 
 # Simulated continuous data example
 set.seed(123)
@@ -60,9 +64,11 @@ data_cont <- as.data.frame(matrix(rnorm(1000), ncol = 5))
 # Run AIBmix with automatic bandwidth selection 
 result_cont <- AIBmix(X = data_cont, s = -1, scale = TRUE)
 
-# Print clustering results
-plot(result_cont$dendrogram, xlab = "", sub = "")  # Plot dendrogram
+# Print concise summary ofoutput
+print(result_cont)
 
+# Print clustering results
+plot(result_cont, type = "dendrogram", xlab = "", sub = "", cex = 0.5)  # Plot dendrogram
 
 
 

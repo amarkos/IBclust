@@ -54,7 +54,8 @@ Type 'q()' to quit R.
 > result_mix <- AIBmix(X = data_mix, lambda = -1, s = -1, scale = TRUE)
 > 
 > # Print clustering results
-> plot(result_mix$dendrogram, xlab = "", sub = "")  # Plot dendrogram
+> plot(result_mix, type = "dendrogram", xlab = "", sub = "", cex = 0.5)  # Plot dendrogram
+> plot(result_mix, type = "info", col = "black", pch = 16)  # Plot dendrogram
 > 
 > # Simulated categorical data example
 > set.seed(123)
@@ -69,7 +70,46 @@ Type 'q()' to quit R.
 > result_cat <- AIBmix(X = data_cat, lambda = -1)
 > 
 > # Print clustering results
-> plot(result_cat$dendrogram, xlab = "", sub = "")  # Plot dendrogram
+> plot(result_cat, type = "dendrogram", xlab = "", sub = "", cex = 0.5)  # Plot dendrogram
+> 
+> # Results summary
+> summary(result_cat)
+Summary of AIBmix clustering
+----------------------------
+Call: AIBmix(X = data_cat, lambda = -1)
+n = 200, merges = 199
+I(X;Y) = 0.213200
+merge cost summary: min=-0.000000, median=0.000000, max=0.051646
+
+Information retained by number of clusters m:
+   m I(T[m];Y)/I(X;Y) I(T[m];Y)
+   2         0.223418  0.047633
+   3         0.375693  0.080098
+   5         0.571532  0.121851
+  10         0.837027  0.178454
+ 200         1.000000  0.213200
+
+Cluster sizes at m=2:
+
+  1   2 
+130  70 
+
+Cluster sizes at m=3:
+
+ 2  3  1 
+80 70 50 
+
+Cluster sizes at m=5:
+
+ 2  3  5  4  1 
+50 46 43 34 27 
+
+(Additional cuts summarised: m=10, m=200)
+
+Continuous variables: 0   Categorical variables: 3
+s = -1
+lambda = 0.5, 0.5, 0.7071
+kernels = cont:gaussian, nom:aitchisonaitken, ord:liracine
 > 
 > # Simulated continuous data example
 > set.seed(123)
@@ -79,9 +119,28 @@ Type 'q()' to quit R.
 > # Run AIBmix with automatic bandwidth selection 
 > result_cont <- AIBmix(X = data_cont, s = -1, scale = TRUE)
 > 
-> # Print clustering results
-> plot(result_cont$dendrogram, xlab = "", sub = "")  # Plot dendrogram
+> # Print concise summary ofoutput
+> print(result_cont)
+Hierarchical clustering with AIBmix
+-----------------------------------
+Call: AIBmix(X = data_cont, s = -1, scale = TRUE)
+Observations: 200
+Merges: 199 steps  |  merge cost range: [0.000005, 0.014689]
+I(X;Y): 0.109389
+Information retained I(T_m;Y)/I(X;Y) at selected m:
+   m info_ret
+   2 0.132979
+   3 0.226932
+   5 0.356274
+  10 0.514307
+ 200 1.000000
+Continuous variables: 5   Categorical variables: 0
+s = 2.3, 2.3, 2.3, 2.3, 2.3
+lambda = -1
+kernels = cont:gaussian, nom:aitchisonaitken, ord:liracine
 > 
+> # Print clustering results
+> plot(result_cont, type = "dendrogram", xlab = "", sub = "", cex = 0.5)  # Plot dendrogram
 > 
 > 
 > 
@@ -1097,7 +1156,7 @@ Convergence tolerance: 1e-05
 > cleanEx()
 > options(digits = 7L)
 > base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
-Time elapsed:  31.36 0.75 39.58 NA NA 
+Time elapsed:  35.89 0.67 46.21 NA NA 
 > grDevices::dev.off()
 null device 
           1 

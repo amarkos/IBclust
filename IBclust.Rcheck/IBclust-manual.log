@@ -1,9 +1,9 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.11.25) (preloaded format=pdflatex 2022.12.4)  28 AUG 2025 18:45
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.11.25) (preloaded format=pdflatex 2022.12.4)  28 AUG 2025 20:12
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**C:/Users/ec1917/AppData/Local/Temp/RtmpGkatOR/Rd2pdf3914706841ee/Rd2.tex
-(C:/Users/ec1917/AppData/Local/Temp/RtmpGkatOR/Rd2pdf3914706841ee/Rd2.tex
+**C:/Users/ec1917/AppData/Local/Temp/Rtmpoj31F8/Rd2pdf50a071dd6afc/Rd2.tex
+(C:/Users/ec1917/AppData/Local/Temp/Rtmpoj31F8/Rd2pdf50a071dd6afc/Rd2.tex
 LaTeX2e <2022-11-01> patch level 1
 L3 programming layer <2022-11-02>
 (C:\Users\ec1917\AppData\Local\Programs\MiKTeX\tex/latex/base\book.cls
@@ -466,110 +466,113 @@ Overfull \hbox (46.26848pt too wide) in paragraph at lines 84--85
 les. Can be one of []\T1/zi4/m/n/10 aitchisonaitken
  []
 
-[2]
-Overfull \hbox (13.6485pt too wide) in paragraph at lines 161--162
+[2] [3]
+Overfull \hbox (11.6832pt too wide) in paragraph at lines 161--162
 []\T1/ptm/m/n/10 A nu-meric vec-tor track-ing the cost in-curred by each merge 
-$\OML/cmm/m/it/10 I\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 Z[]\OT1/cmr/m/n/10 ; \OML/
+$\OML/cmm/m/it/10 I\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 T[]\OT1/cmr/m/n/10 ; \OML/
 cmm/m/it/10 Y\OT1/cmr/m/n/10 ) \OMS/cmsy/m/n/10 ^^@ \OML/cmm/m/it/10 I\OT1/cmr/
-m/n/10 (\OML/cmm/m/it/10 Z[]\OT1/cmr/m/n/10 ; \OML/cmm/m/it/10 Y\OT1/cmr/m/n/10
+m/n/10 (\OML/cmm/m/it/10 T[]\OT1/cmr/m/n/10 ; \OML/cmm/m/it/10 Y\OT1/cmr/m/n/10
  )$\T1/ptm/m/n/10 . 
  []
 
-[3]
-Overfull \hbox (12.02605pt too wide) in paragraph at lines 182--185
+
+Overfull \hbox (12.02605pt too wide) in paragraph at lines 206--209
 []\T1/ptm/m/n/10 Aitchison J, Aitken CG (1976). ``Mul-ti-vari-ate bi-nary dis-c
 rim-i-na-tion by the ker-nel method.'' \T1/ptm/m/it/10 Biometrika\T1/ptm/m/n/10
  ,
  []
 
-
-Overfull \hbox (6.85904pt too wide) in paragraph at lines 206--209
+[4]
+Overfull \hbox (6.85904pt too wide) in paragraph at lines 230--233
 \T1/ptm/m/n/10 Clus-ter-ing Mixed-Type Data.'' [][]doi:10.48550/arXiv.2407.0338
 9[][], arXiv:2407.03389, [][]$\T1/zi4/m/n/10 https : / / arxiv .
  []
 
 LaTeX Font Info:    Font shape `T1/zi4/m/n' will be
-(Font)              scaled to size 9.0pt on input line 213.
+(Font)              scaled to size 9.0pt on input line 237.
 
-Overfull \hbox (20.22874pt too wide) in paragraph at lines 217--217
+Overfull \hbox (20.22874pt too wide) in paragraph at lines 241--241
  []  \T1/zi4/m/n/9 cat_var = factor(sample(letters[1:3], 100, replace = TRUE)),
       # Nominal categorical variable[] 
  []
 
-[4] [5]
-Overfull \hbox (9.0392pt too wide) in paragraph at lines 292--293
+[5]
+Overfull \hbox (9.0392pt too wide) in paragraph at lines 322--323
 \T1/ptm/m/n/10 op-ti-mal band-width. For nom-i-nal vari-ables and []\T1/zi4/m/n
 /10 nomkernel = \TS1/zi4/m/n/10 '\T1/zi4/m/n/10 aitchisonaitken\TS1/zi4/m/n/10 
 '[]\T1/ptm/m/n/10 ,
  []
 
-
-Overfull \hbox (46.26848pt too wide) in paragraph at lines 302--303
+[6]
+Overfull \hbox (46.26848pt too wide) in paragraph at lines 332--333
 []\T1/ptm/m/n/10 Kernel used for nom-i-nal (un-ordered cat-e-gor-i-cal) vari-ab
 les. Can be one of []\T1/zi4/m/n/10 aitchisonaitken
  []
 
-[6] [7]
-Overfull \hbox (6.85904pt too wide) in paragraph at lines 424--427
+[7] [8]
+Overfull \hbox (6.85904pt too wide) in paragraph at lines 454--457
 \T1/ptm/m/n/10 Clus-ter-ing Mixed-Type Data.'' [][]doi:10.48550/arXiv.2407.0338
 9[][], arXiv:2407.03389, [][]$\T1/zi4/m/n/10 https : / / arxiv .
  []
 
 
-Overfull \hbox (12.02605pt too wide) in paragraph at lines 428--431
+Overfull \hbox (12.02605pt too wide) in paragraph at lines 458--461
 []\T1/ptm/m/n/10 Aitchison J, Aitken CG (1976). ``Mul-ti-vari-ate bi-nary dis-c
 rim-i-na-tion by the ker-nel method.'' \T1/ptm/m/it/10 Biometrika\T1/ptm/m/n/10
  ,
  []
 
-[8] [9] [10]
-Overfull \hbox (9.0392pt too wide) in paragraph at lines 578--579
+[9]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [10]
+Overfull \hbox (9.0392pt too wide) in paragraph at lines 608--609
 \T1/ptm/m/n/10 op-ti-mal band-width. For nom-i-nal vari-ables and []\T1/zi4/m/n
 /10 nomkernel = \TS1/zi4/m/n/10 '\T1/zi4/m/n/10 aitchisonaitken\TS1/zi4/m/n/10 
 '[]\T1/ptm/m/n/10 ,
  []
 
-
-Overfull \hbox (46.26848pt too wide) in paragraph at lines 590--591
+[11]
+Overfull \hbox (46.26848pt too wide) in paragraph at lines 620--621
 []\T1/ptm/m/n/10 Kernel used for nom-i-nal (un-ordered cat-e-gor-i-cal) vari-ab
 les. Can be one of []\T1/zi4/m/n/10 aitchisonaitken
  []
 
-[11] [12] [13]
-Overfull \hbox (12.02605pt too wide) in paragraph at lines 718--721
+[12] [13]
+Overfull \hbox (12.02605pt too wide) in paragraph at lines 748--751
 []\T1/ptm/m/n/10 Aitchison J, Aitken CG (1976). ``Mul-ti-vari-ate bi-nary dis-c
 rim-i-na-tion by the ker-nel method.'' \T1/ptm/m/it/10 Biometrika\T1/ptm/m/n/10
  ,
  []
 
 
-Overfull \hbox (20.22874pt too wide) in paragraph at lines 749--749
+Overfull \hbox (20.22874pt too wide) in paragraph at lines 779--779
  []  \T1/zi4/m/n/9 cat_var = factor(sample(letters[1:3], 100, replace = TRUE)),
       # Nominal categorical variable[] 
  []
 
 [14] [15]
-Overfull \hbox (9.0392pt too wide) in paragraph at lines 840--841
+Overfull \hbox (9.0392pt too wide) in paragraph at lines 870--871
 \T1/ptm/m/n/10 op-ti-mal band-width. For nom-i-nal vari-ables and []\T1/zi4/m/n
 /10 nomkernel = \TS1/zi4/m/n/10 '\T1/zi4/m/n/10 aitchisonaitken\TS1/zi4/m/n/10 
 '[]\T1/ptm/m/n/10 ,
  []
 
 
-Overfull \hbox (46.26848pt too wide) in paragraph at lines 852--853
+Overfull \hbox (46.26848pt too wide) in paragraph at lines 882--883
 []\T1/ptm/m/n/10 Kernel used for nom-i-nal (un-ordered cat-e-gor-i-cal) vari-ab
 les. Can be one of []\T1/zi4/m/n/10 aitchisonaitken
  []
 
-[16] [17]
-Overfull \hbox (12.02605pt too wide) in paragraph at lines 978--981
+[16] [17] [18]
+Overfull \hbox (12.02605pt too wide) in paragraph at lines 1008--1011
 []\T1/ptm/m/n/10 Aitchison J, Aitken CG (1976). ``Mul-ti-vari-ate bi-nary dis-c
 rim-i-na-tion by the ker-nel method.'' \T1/ptm/m/it/10 Biometrika\T1/ptm/m/n/10
  ,
  []
 
-[18]
-Overfull \hbox (20.22874pt too wide) in paragraph at lines 1009--1009
+
+Overfull \hbox (20.22874pt too wide) in paragraph at lines 1039--1039
  []  \T1/zi4/m/n/9 cat_var = factor(sample(letters[1:3], 100, replace = TRUE)),
       # Nominal categorical variable[] 
  []
@@ -584,7 +587,7 @@ Package rerunfilecheck Info: File `Rd2.out' has not changed.
 Here is how much of TeX's memory you used:
  10401 strings out of 475281
  162459 string characters out of 2773593
- 504887 words of memory out of 3000000
+ 505887 words of memory out of 3000000
  31633 multiletter control sequences out of 15000+600000
  506703 words of font info for 74 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
@@ -608,7 +611,7 @@ TeX/fonts/type1/urw/times/utmb8a.pfb><C:/Users/ec1917/AppData/Local/Programs/Mi
 KTeX/fonts/type1/urw/times/utmr8a.pfb><C:/Users/ec1917/AppData/Local/Programs/M
 iKTeX/fonts/type1/urw/times/utmr8a.pfb><C:/Users/ec1917/AppData/Local/Programs/
 MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
-Output written on Rd2.pdf (21 pages, 252179 bytes).
+Output written on Rd2.pdf (21 pages, 253546 bytes).
 PDF statistics:
  267 PDF objects out of 1000 (max. 8388607)
  65 named destinations out of 1000 (max. 500000)

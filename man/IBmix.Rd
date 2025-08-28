@@ -72,7 +72,7 @@ An object of class \code{"gibclust"} representing the final clustering result. T
   
 Objects of class \code{"gibclust"} support the following methods:
   \itemize{
-    \item \code{print.gibclust}: Display a concise description of the fitted clustering.
+    \item \code{print.gibclust}: Display a concise description of the cluster assignment.
     \item \code{summary.gibclust}: Show detailed information including cluster sizes, 
           information-theoretic metrics, hyperparameters, and convergence details.
     \item \code{plot.gibclust}: Produce diagnostic plots:

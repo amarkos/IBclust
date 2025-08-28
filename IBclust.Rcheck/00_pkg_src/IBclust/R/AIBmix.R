@@ -56,15 +56,24 @@ AIBmix <- function(X, s = -1, lambda = -1,
   
   # Run AIB for hierarchical clustering
   best_clust <- AIB(pxy)
-  dendrogram <- make_dendrogram(best_clust$merges,
-                                best_clust$merge_costs,
-                                labels = row.names(X))
-  attr(dendrogram, "call") <- NULL
-  best_clust[[length(best_clust)+1]] <- dendrogram
-  names(best_clust)[length(best_clust)] <- "dendrogram"
-  best_clust[[length(best_clust) + 1]] <- if (length(contcols) == 0) -1 else as.vector(bws_vec[contcols])
-  names(best_clust)[length(best_clust)] <- "s"
-  best_clust[[length(best_clust) + 1]] <- if (length(catcols) == 0) -1 else as.vector(bws_vec[catcols])
-  names(best_clust)[length(best_clust)] <- "lambda"
-  return(best_clust)
+  obs_names <- rownames(X)
+  if (is.null(obs_names)) obs_names <- as.character(seq_len(nrow(X)))
+  
+  res <- new_aibclust(
+    merges = best_clust$merges,
+    merge_costs = best_clust$merge_costs,
+    partitions = best_clust$partitions,
+    I_T_Y = best_clust$I_Z_Y,
+    I_X_Y = best_clust$I_X_Y,
+    info_ret = best_clust$info_ret,
+    s = if (length(contcols) == 0) -1 else as.vector(bws_vec[contcols]),
+    lambda = if (length(catcols) == 0) -1 else as.vector(bws_vec[catcols]),
+    call = match.call(),
+    n = nrow(X),
+    contcols = contcols,
+    catcols = catcols,
+    kernels = list(cont = contkernel, nom = nomkernel, ord = ordkernel),
+    obs_names = obs_names
+  )
+  return(res)
 }

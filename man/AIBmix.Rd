@@ -42,16 +42,34 @@ AIBmix(X, s = -1, lambda = -1,
 }
 
 \value{
-A list containing the following elements:
+An object of class \code{"aibclust"} representing the final clustering result. The returned object is a list with the following components:
   \item{merges}{A data frame with 2 columns and \eqn{n} rows, showing which observations are merged at each step.}
-  \item{merge_costs}{A numeric vector tracking the cost incurred by each merge \eqn{I(Z_{m} ; Y) - I(Z_{m-1} ; Y)}.}
+  \item{merge_costs}{A numeric vector tracking the cost incurred by each merge \eqn{I(T_{m} ; Y) - I(T_{m-1} ; Y)}.}
   \item{partitions}{A list containing \eqn{n} sub-lists. Each sub-list includes the cluster partition at each step.}
-  \item{I_Z_Y}{A numeric vector including the mutual information \eqn{I(Z_{m}; Y)} as the number of clusters \eqn{m} increases.}
+  \item{I_T_Y}{A numeric vector including the mutual information \eqn{I(T_{m}; Y)} as the number of clusters \eqn{m} increases.}
   \item{I_X_Y}{A numeric value of the mutual information \eqn{I(X; Y)} between observation indices and location.}
   \item{info_ret}{A numeric vector of length \eqn{n} including the fraction of the original information retained after each merge.}
-  \item{dendrogram}{A dendrogram visualising the cluster hierarchy. The height is determined by the cost of cluster merges.}
   \item{s}{A numeric vector of bandwidth parameters used for the continuous variables. A value of \eqn{-1} is returned if all variables are categorical.}
   \item{lambda}{A numeric vector of bandwidth parameters used for the categorical variables. A value of \eqn{-1} is returned if all variables are continuous.}
+  \item{call}{The matched call.}
+  \item{n}{Number of observations.}
+  \item{contcols}{Indices of continuous columns in \code{X}.}
+  \item{catcols}{Indices of categorical columns in \code{X}.}
+  \item{kernels}{List with names of kernels used for continuous, nominal, and ordinal features.}
+  \item{obs_names}{Names of rows in \code{X}; used for plotting the cluster hierarchy using a dendrogram.}
+
+Objects of class \code{"aibclust"} support the following methods:
+  \itemize{
+    \item \code{print.aibclust}: Display a concise description of the cluster hierarchy.
+    \item \code{summary.aibclust}: Show detailed information including cluster sizes for 2, 3, and 5 clusters, 
+          information-theoretic metrics, and hyperparameters.
+    \item \code{plot.aibclust}: Produce diagnostic plots:
+      \itemize{
+        \item \code{type = "dendrogram"}: dendrogram visualising the hierarchy of partitions obtained.
+        \item \code{type = "info"}: information retention curve; the proportion of information preserved \eqn{I(T_m;Y)/I(X;Y)} by the clustering \eqn{T_m} is plotted against the number of clusters \eqn{m}.
+    }
+  }
+
 }
 
 \details{
@@ -125,7 +143,8 @@ data_mix <- data.frame(
 result_mix <- AIBmix(X = data_mix, lambda = -1, s = -1, scale = TRUE)
 
 # Print clustering results
-plot(result_mix$dendrogram, xlab = "", sub = "")  # Plot dendrogram
+plot(result_mix, type = "dendrogram", xlab = "", sub = "", cex = 0.5)  # Plot dendrogram
+plot(result_mix, type = "info", col = "black", pch = 16)  # Plot dendrogram
 
 # Simulated categorical data example
 set.seed(123)
@@ -140,7 +159,10 @@ data_cat <- data.frame(
 result_cat <- AIBmix(X = data_cat, lambda = -1)
 
 # Print clustering results
-plot(result_cat$dendrogram, xlab = "", sub = "")  # Plot dendrogram
+plot(result_cat, type = "dendrogram", xlab = "", sub = "", cex = 0.5)  # Plot dendrogram
+
+# Results summary
+summary(result_cat)
 
 # Simulated continuous data example
 set.seed(123)
@@ -150,9 +172,11 @@ data_cont <- as.data.frame(matrix(rnorm(1000), ncol = 5))
 # Run AIBmix with automatic bandwidth selection 
 result_cont <- AIBmix(X = data_cont, s = -1, scale = TRUE)
 
-# Print clustering results
-plot(result_cont$dendrogram, xlab = "", sub = "")  # Plot dendrogram
+# Print concise summary ofoutput
+print(result_cont)
 
+# Print clustering results
+plot(result_cont, type = "dendrogram", xlab = "", sub = "", cex = 0.5)  # Plot dendrogram
 }
 
 \author{

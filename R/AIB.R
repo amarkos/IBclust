@@ -3,8 +3,8 @@ AIB <- function(p_xy){
   # initial clusters & active clusters
   clusters <- lapply(1:n_x, function(i) list(
     indices = i,
-    p_z     = p_xy[i,]/sum(p_xy[i,]),
-    prob    = sum(p_xy[i,])
+    p_z = p_xy[i,]/sum(p_xy[i,]),
+    prob = sum(p_xy[i,])
   ))
   active <- rep(TRUE, n_x)
   # precompute full distance matrix with JS divergences
@@ -44,8 +44,8 @@ AIB <- function(p_xy){
     
     clusters[[i_idx]] <- list(
       indices = c(ci$indices, cj$indices),
-      p_z     = p_z_new,
-      prob    = p_new
+      p_z = p_z_new,
+      prob = p_new
     )
     active[j_idx] <- FALSE
     D[j_idx, ] <- D[, j_idx] <- Inf
