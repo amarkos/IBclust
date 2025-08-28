@@ -55,8 +55,6 @@ A list containing the following elements:
   \item{alpha}{A numeric value of the strength of conditional entropy used, controlling fuzziness of the solution. This is by default equal to \eqn{0} for \code{DIBmix}.}
   \item{s}{A numeric vector of bandwidth parameters used for the continuous variables. A value of \eqn{-1} is returned if all variables are categorical.}
   \item{lambda}{A numeric vector of bandwidth parameters used for the categorical variables. A value of \eqn{-1} is returned if all variables are continuous.}
-  \item{ents}{A numeric vector tracking the entropy values across iterations.}
-  \item{mis}{A numeric vector tracking the mutual information values across iterations.}
 }
 
 

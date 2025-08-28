@@ -60,10 +60,6 @@ A list containing the following elements:
   \item{alpha}{A numeric value of the strength of conditional entropy used.}
   \item{s}{A numeric vector of bandwidth parameters used for the continuous variables. A value of \eqn{-1} is returned if all variables are categorical.}
   \item{lambda}{A numeric vector of bandwidth parameters used for the categorical variables. A value of \eqn{-1} is returned if all variables are continuous.}
-  \item{ht}{A numeric vector tracking the entropy value of the cluster assignments across iterations.}
-  \item{hy_t}{A numeric vector tracking the conditional entropy values between the cluster assignments and observations weights across iterations.}
-  \item{iyt}{A numeric vector tracking the mutual information values between original labels and cluster assignments across iterations.}
-  \item{losses}{A numeric vector tracking the final loss values across iterations.}
 }
 
 

@@ -58,9 +58,6 @@ A list containing the following elements:
   \item{alpha}{A numeric value of the strength of conditional entropy used, controlling fuzziness of the solution. This is by default equal to \eqn{1} for \code{IBmix}.}
   \item{s}{A numeric vector of bandwidth parameters used for the continuous variables. A value of \eqn{-1} is returned if all variables are categorical.}
   \item{lambda}{A numeric vector of bandwidth parameters used for the categorical variables. A value of \eqn{-1} is returned if all variables are continuous.}
-  \item{ixt}{A numeric vector tracking the mutual information values between original observation weights and cluster assignments across iterations.}
-  \item{iyt}{A numeric vector tracking the mutual information values between original labels and cluster assignments across iterations.}
-  \item{losses}{A numeric vector tracking the final loss values across iterations.}
 }
 
 
