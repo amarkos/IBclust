@@ -22,7 +22,7 @@
 #' @return A list containing clustering results.
 #'
 #' @keywords internal
-IBmix_iterate <- function(X, ncl, beta, randinit,
+IBmix_iterate <- function(X, ncl, beta, randinit, conv_tol,
                           tol, py_x, hy, px, maxiter, bws_vec,
                           contcols, catcols, runs, verbose = FALSE){
   best_clust <- list()
@@ -36,6 +36,8 @@ IBmix_iterate <- function(X, ncl, beta, randinit,
   best_clust$alpha <- 1
   best_clust$s <- if (length(contcols) == 0) -1 else as.vector(bws_vec[contcols])
   best_clust$lambda <- if (length(catcols) == 0) -1 else as.vector(bws_vec[catcols])
+  best_clust$iters <- NA
+  best_clust$converged <- NA
   if (ncl == 1){
     Loss <- 0
     best_clust$Cluster <- rep(1, nrow(X))
@@ -44,6 +46,8 @@ IBmix_iterate <- function(X, ncl, beta, randinit,
     best_clust$MutualInfo <- 0
     best_clust$InfoXT <- 0
     best_clust$beta <- beta
+    best_clust$iters <- 0
+    best_clust$converged <- FALSE
   } else {
     pb <- txtProgressBar(style = 3, min = 0, max = runs)
     for (i in c(1:runs)){
@@ -66,7 +70,7 @@ IBmix_iterate <- function(X, ncl, beta, randinit,
       metrics <- calc_metrics(beta = beta, qt, qy_t, hy, px, qt_x, quiet = TRUE)
       Lval <- metrics$ixt - beta * metrics$iyt
       # Initialize variables for convergence checking
-      convergence_threshold <- 1e-5  # Set a small threshold for convergence
+      convergence_threshold <- conv_tol  # Set a small threshold for convergence
       max_iterations <- maxiter  # Prevent infinite loops
       iterations <- 0
       change_in_qt_x <- Inf  # Initialize to Inf to ensure the loop starts
@@ -97,6 +101,8 @@ IBmix_iterate <- function(X, ncl, beta, randinit,
         Lval <- metrics$ixt - beta * metrics$iyt
       }
       
+      converged_run <- (change_in_qt_x <= convergence_threshold)
+      
       if (Lval < Loss & nrow(qt_x)==ncl){
         Loss <- Lval
         best_clust$Cluster <- qt_x
@@ -106,6 +112,8 @@ IBmix_iterate <- function(X, ncl, beta, randinit,
         best_clust$MutualInfo <- as.numeric(metrics$iyt)
         best_clust$InfoXT <- as.numeric(metrics$ixt)
         best_clust$beta <- beta
+        best_clust$iters <- iterations
+        best_clust$converged <- converged_run
       }
       if (verbose){
         message('Run ', i, ' complete.\n')

@@ -45,7 +45,7 @@ DIBmix(X, ncl, randinit = NULL,
 \item{verbose}{Logical. Defaults to \code{FALSE} to suppress progress messages. Change to \code{TRUE} to print.}
 }
 \value{
-A list containing the following elements:
+An object of class \code{"gibclust"} representing the final clustering result. The returned object is a list with the following components:
   \item{Cluster}{An integer vector giving the cluster assignments for each data point.}
   \item{Entropy}{A numeric value representing the entropy of the cluster assignments at convergence.}
   \item{CondEntropy}{A numeric value representing the conditional entropy of cluster assignment, given the observation weights \eqn{H(T \mid X)}.}
@@ -55,6 +55,28 @@ A list containing the following elements:
   \item{alpha}{A numeric value of the strength of conditional entropy used, controlling fuzziness of the solution. This is by default equal to \eqn{0} for \code{DIBmix}.}
   \item{s}{A numeric vector of bandwidth parameters used for the continuous variables. A value of \eqn{-1} is returned if all variables are categorical.}
   \item{lambda}{A numeric vector of bandwidth parameters used for the categorical variables. A value of \eqn{-1} is returned if all variables are continuous.}
+  \item{call}{The matched call.}
+  \item{ncl}{Number of clusters.}
+  \item{n}{Number of observations.}
+  \item{iters}{Number of iterations used to obtain the returned solution.}
+  \item{converged}{Logical indicating whether convergence was reached before \code{maxiter}.}
+  \item{conv_tol}{Numeric convergence tolerance; by default \eqn{0} for \code{DIBmix}.}
+  \item{contcols}{Indices of continuous columns in \code{X}.}
+  \item{catcols}{Indices of categorical columns in \code{X}.}
+  \item{kernels}{List with names of kernels used for continuous, nominal, and ordinal features.}
+  
+Objects of class \code{"gibclust"} support the following methods:
+  \itemize{
+    \item \code{print.gibclust}: Display a concise description of the fitted clustering.
+    \item \code{summary.gibclust}: Show detailed information including cluster sizes, 
+          information-theoretic metrics, hyperparameters, and convergence details.
+    \item \code{plot.gibclust}: Produce diagnostic plots:
+      \itemize{
+        \item \code{type = "sizes"}: barplot of cluster sizes or hardened sizes (IB/GIB).
+        \item \code{type = "info"}: barplot of entropy, conditional entropy, and mutual information.
+        \item \code{type = "beta"}: trajectory of \eqn{\log \beta} over iterations (only available for hard clustering outputs obtained using \code{DIBmix}).
+    }
+  }
 }
 
 
@@ -161,6 +183,10 @@ if (requireNamespace("mclust", quietly = TRUE)){  # For adjustedRandIndex
                     result_cont_first$Cluster), 3)))
   }
 
+plot(result_cat_first, type = "sizes") # Bar plot of cluster sizes
+plot(result_cat_first, type = "info")  # Information-theoretic quantities plot
+plot(result_cat_first, type = "beta")  # Plot of evolution of beta
+
 # Simulated categorical data example
 data_cat <- data.frame(
   Var1 = as.factor(sample(letters[1:3], 200, replace = TRUE)),  # Nominal variable
@@ -189,6 +215,10 @@ result_cont <- DIBmix(X = data_cont, ncl = 3, s = -1, nstart = 10)
 print(result_cont$Cluster)       # Cluster assignments
 print(result_cont$Entropy)       # Final entropy
 print(result_cont$MutualInfo)    # Mutual information
+
+# Summary of output
+print(result_cont)
+summary(result_cont)
 }
 
 \author{

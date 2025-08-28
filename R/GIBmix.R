@@ -1,6 +1,7 @@
 GIBmix <- function(X, ncl, beta, alpha, randinit = NULL,
                    s = -1, lambda = -1, scale = TRUE,
-                   maxiter = 100, nstart = 100, contkernel = "gaussian",
+                   maxiter = 100, nstart = 100,
+                   conv_tol = 1e-5, contkernel = "gaussian",
                    nomkernel = "aitchisonaitken", ordkernel = "liracine",
                    cat_first = FALSE, verbose = FALSE) {
   
@@ -16,6 +17,9 @@ GIBmix <- function(X, ncl, beta, alpha, randinit = NULL,
   }
   if (!is.numeric(maxiter) || maxiter <= 0 || maxiter != round(maxiter)) {
     stop("'maxiter' must be a positive integer.")
+  }
+  if (!is.numeric(conv_tol) || conv_tol <= 0 || conv_tol >= 1) {
+    stop("Input 'conv_tol' must be between 0 and 1.")
   }
   if (!is.numeric(nstart) || nstart <= 0 || nstart != round(nstart)) {
     stop("'nstart' must be a positive integer.")
@@ -58,7 +62,7 @@ GIBmix <- function(X, ncl, beta, alpha, randinit = NULL,
   if (alpha == 1){
     message('alpha = 1; running IBmix.')
     best_clust <- IBmix_iterate(X, ncl = ncl, beta = beta,
-                                randinit = randinit,
+                                randinit = randinit, conv_tol = conv_tol,
                                 tol = 0, py_x, hy, px, maxiter,
                                 bws_vec, contcols, catcols,
                                 runs = nstart, verbose = verbose)
@@ -71,11 +75,37 @@ GIBmix <- function(X, ncl, beta, alpha, randinit = NULL,
   } else {
     ######################################################
     best_clust <- GIBmix_iterate(X, ncl = ncl, beta = beta, alpha = alpha,
-                                 randinit = randinit,
+                                 randinit = randinit, conv_tol = conv_tol,
                                  tol = 0, py_x, hy, px, maxiter,
                                  bws_vec, contcols, catcols,
                                  runs = nstart, verbose = verbose)
     ######################################################
   }
-  return(best_clust)
+  
+  # Wrap into an S3 object of class gibclust
+  res <- new_gibclust(
+    cluster = best_clust$Cluster,
+    entropy = best_clust$Entropy,
+    cond_entropy = best_clust$CondEntropy,
+    mutual_info = best_clust$MutualInfo,
+    info_xt = best_clust$InfoXT,
+    beta = best_clust$beta,
+    alpha = best_clust$alpha,
+    s = best_clust$s,
+    lambda = best_clust$lambda,
+    call = match.call(),
+    ncl = ncl,
+    n = nrow(X),
+    iters = ifelse(best_clust$converged,
+                   as.integer(best_clust$iters),
+                   maxiter),
+    converged = best_clust$converged,
+    conv_tol = conv_tol,
+    contcols = contcols,
+    catcols = catcols,
+    kernels = list(cont = contkernel,
+                   nom = nomkernel,
+                   ord = ordkernel)
+  )
+  return(res)
 }

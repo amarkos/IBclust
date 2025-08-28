@@ -1,6 +1,7 @@
 IBmix <- function(X, ncl, beta, randinit = NULL,
                   s = -1, lambda = -1, scale = TRUE,
-                  maxiter = 100, nstart = 100, contkernel = "gaussian",
+                  maxiter = 100, nstart = 100, conv_tol = 1e-5,
+                  contkernel = "gaussian",
                   nomkernel = "aitchisonaitken", ordkernel = "liracine",
                   cat_first = FALSE, verbose = FALSE) {
   
@@ -13,6 +14,9 @@ IBmix <- function(X, ncl, beta, randinit = NULL,
   }
   if (!is.numeric(beta) || beta <= 0) {
     stop("Input 'beta' must be a positive number.")
+  }
+  if (!is.numeric(conv_tol) || conv_tol <= 0 || conv_tol >= 1) {
+    stop("Input 'conv_tol' must be between 0 and 1.")
   }
   if (!is.numeric(nstart) || nstart <= 0 || nstart != round(nstart)) {
     stop("'nstart' must be a positive integer.")
@@ -53,11 +57,36 @@ IBmix <- function(X, ncl, beta, randinit = NULL,
   
   ######################################################
   best_clust <- IBmix_iterate(X, ncl = ncl, beta = beta,
-                              randinit = randinit,
+                              randinit = randinit, conv_tol,
                               tol = 0, py_x, hy, px, maxiter,
                               bws_vec, contcols, catcols,
                               runs = nstart, verbose = verbose)
   ######################################################
   
-  return(best_clust)
+  # Wrap into an S3 object of class gibclust
+  res <- new_gibclust(
+    cluster = best_clust$Cluster,
+    entropy = best_clust$Entropy,
+    cond_entropy = best_clust$CondEntropy,
+    mutual_info = best_clust$MutualInfo,
+    info_xt = best_clust$InfoXT,
+    beta = best_clust$beta,
+    alpha = best_clust$alpha,
+    s = best_clust$s,
+    lambda = best_clust$lambda,
+    call = match.call(),
+    ncl = ncl,
+    n = nrow(X),
+    iters = ifelse(best_clust$converged,
+                   as.integer(best_clust$iters),
+                   maxiter),
+    converged = best_clust$converged,
+    conv_tol = conv_tol,
+    contcols = contcols,
+    catcols = catcols,
+    kernels = list(cont = contkernel,
+                   nom = nomkernel,
+                   ord = ordkernel)
+  )
+  return(res)
 }

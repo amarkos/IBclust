@@ -1,5 +1,9 @@
 # Export main user-facing functions
 export(DIBmix, IBmix, GIBmix, AIBmix)
+S3method(print,gibclust)
+S3method(summary,gibclust)
+S3method(print,summary.gibclust)
+S3method(plot,gibclust)
 
 # Use dynamic libraries for C++ integration
 useDynLib(IBclust, .registration = TRUE)
@@ -15,3 +19,4 @@ import(Rdpack)
 # Import additional required libraries
 importFrom(rje, powerSet)
 importFrom(utils, flush.console)
+importFrom(graphics, barplot, points)

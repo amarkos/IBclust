@@ -58,5 +58,31 @@ DIBmix <- function(X, ncl, randinit = NULL,
   if (best_clust$MutualInfo == Inf){
     warning("Initial cluster assignment remained unchanged; use other hyperparameter values for DIBmix to converge.")
   }
-  return(best_clust)
+  
+  # Wrap into an S3 object of class gibclust
+  res <- new_gibclust(
+    cluster = best_clust$Cluster,
+    entropy = best_clust$Entropy,
+    cond_entropy = best_clust$CondEntropy,
+    mutual_info = best_clust$MutualInfo,
+    info_xt = best_clust$InfoXT,
+    beta = best_clust$beta,
+    alpha = best_clust$alpha,
+    s = best_clust$s,
+    lambda = best_clust$lambda,
+    call = match.call(),
+    ncl = ncl,
+    n = nrow(X),
+    iters = ifelse(best_clust$converged,
+                   as.integer(best_clust$iters),
+                   maxiter),
+    converged = best_clust$converged,
+    conv_tol = 0,
+    contcols = contcols,
+    catcols = catcols,
+    kernels = list(cont = contkernel,
+                   nom = nomkernel,
+                   ord = ordkernel)
+  )
+  return(res)
 }

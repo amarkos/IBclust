@@ -127,6 +127,10 @@ if (requireNamespace("mclust", quietly = TRUE)){  # For adjustedRandIndex
                     result_cont_first$Cluster), 3)))
   }
 
+plot(result_cat_first, type = "sizes") # Bar plot of cluster sizes
+plot(result_cat_first, type = "info")  # Information-theoretic quantities plot
+plot(result_cat_first, type = "beta")  # Plot of evolution of beta
+
 # Simulated categorical data example
 data_cat <- data.frame(
   Var1 = as.factor(sample(letters[1:3], 200, replace = TRUE)),  # Nominal variable
@@ -155,6 +159,10 @@ result_cont <- DIBmix(X = data_cont, ncl = 3, s = -1, nstart = 10)
 print(result_cont$Cluster)       # Cluster assignments
 print(result_cont$Entropy)       # Final entropy
 print(result_cont$MutualInfo)    # Mutual information
+
+# Summary of output
+print(result_cont)
+summary(result_cont)
 
 
 
@@ -192,6 +200,9 @@ print(result_mix$Entropy)       # Entropy of final clustering
 print(result_mix$CondEntropy)   # Conditional entropy of final clustering
 print(result_mix$MutualInfo)    # Mutual information between Y and T
 
+# Summary of output
+summary(result_mix)
+
 # Simulated categorical data example
 set.seed(123)
 data_cat <- data.frame(
@@ -223,6 +234,9 @@ print(result_cont$Cluster)       # Cluster membership matrix
 print(result_cont$Entropy)       # Entropy of final clustering
 print(result_cont$CondEntropy)   # Conditional entropy of final clustering
 print(result_cont$MutualInfo)    # Mutual information between Y and T
+
+plot(result_cont, type = "sizes") # Bar plot of cluster sizes (hardened assignments)
+plot(result_cont, type = "info")  # Information-theoretic quantities plot
 
 
 
@@ -258,6 +272,9 @@ print(result_mix$Cluster)       # Cluster membership matrix
 print(result_mix$InfoXT)        # Mutual information between X and T
 print(result_mix$MutualInfo)    # Mutual information between Y and T
 
+# Summary of output
+summary(result_mix)
+
 # Simulated categorical data example
 set.seed(123)
 data_cat <- data.frame(
@@ -268,12 +285,15 @@ data_cat <- data.frame(
 )
 
 # Perform fuzzy clustering on categorical data with standard IB
-result_cat <- IBmix(X = data_cat, ncl = 3, beta = 15, lambda = -1, nstart = 10)
+result_cat <- IBmix(X = data_cat, ncl = 3, beta = 15, lambda = -1, nstart = 10, maxiter = 200)
 
 # Print clustering results
 print(result_cat$Cluster)       # Cluster membership matrix
 print(result_cat$InfoXT)        # Mutual information between X and T
 print(result_cat$MutualInfo)    # Mutual information between Y and T
+
+plot(result_cat, type = "sizes") # Bar plot of cluster sizes (hardened assignments)
+plot(result_cat, type = "info")  # Information-theoretic quantities plot
 
 # Simulated continuous data example
 set.seed(123)

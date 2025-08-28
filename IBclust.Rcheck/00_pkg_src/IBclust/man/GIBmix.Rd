@@ -12,7 +12,7 @@ relevant information in the cluster assignments while achieving effective data c
 GIBmix(X, ncl, beta, alpha, randinit = NULL,
        s = -1, lambda = -1, scale = TRUE,
        maxiter = 100, nstart = 100,
-       contkernel = "gaussian",
+       conv_tol = 1e-5, contkernel = "gaussian",
        nomkernel = "aitchisonaitken", ordkernel = "liracine",
        cat_first = FALSE, verbose = FALSE)
 }
@@ -38,6 +38,8 @@ GIBmix(X, ncl, beta, alpha, randinit = NULL,
 
 \item{nstart}{The number of random initializations to run. The best clustering solution is returned. Defaults to \eqn{100}.}
 
+\item{conv_tol}{Convergence tolerance level; for a cluster membership matrix \eqn{U^{(m)}} at iteration \eqn{m}, convergence is achieved if \eqn{\sum_{i,j}\lvert U_{i,j}^{m+1} - U_{i,j}^m \rvert \le } \code{conv_tol}. Must be in range \eqn{[0, 1]}. Defaults to \code{1e-5}.}
+
 \item{contkernel}{Kernel used for continuous variables. Can be one of \code{gaussian} (default) or \code{epanechnikov}. Argument is ignored when no variables are continuous.}
 
 \item{nomkernel}{Kernel used for nominal (unordered categorical) variables. Can be one of \code{aitchisonaitken} (default) or \code{liracine}. Argument is ignored when no variables are nominal.}
@@ -50,18 +52,39 @@ GIBmix(X, ncl, beta, alpha, randinit = NULL,
 }
 
 \value{
-A list containing the following elements:
-  \item{Cluster}{A cluster membership matrix.}
-  \item{Entropy}{A numeric value representing the entropy of the cluster assignments at the end of the iterative procedure.}
+An object of class \code{"gibclust"} representing the final clustering result. The returned object is a list with the following components:
+  \item{Cluster}{An integer vector giving the cluster assignments for each data point.}
+  \item{Entropy}{A numeric value representing the entropy of the cluster assignments at convergence.}
   \item{CondEntropy}{A numeric value representing the conditional entropy of cluster assignment, given the observation weights \eqn{H(T \mid X)}.}
-  \item{MutualInfo}{A numeric value representing the mutual information, \eqn{I(Y;T)}, between the data distribution and the cluster assignments.}
+  \item{MutualInfo}{A numeric value representing the mutual information, \eqn{I(Y;T)}, between the original labels (\eqn{Y}) and the cluster assignments (\eqn{T}).}
   \item{InfoXT}{A numeric value representing the mutual information, \eqn{I(X;T)}, between the original observations weights (\eqn{X}) and the cluster assignments (\eqn{T}).}
-  \item{beta}{A numeric value of the regularisation strength beta used.}
-  \item{alpha}{A numeric value of the strength of conditional entropy used.}
+  \item{beta}{A numeric vector of the final beta values used in the iterative procedure.}
+  \item{alpha}{A numeric value of the strength of conditional entropy used, controlling fuzziness of the solution. This is by default equal to \eqn{0} for \code{DIBmix}.}
   \item{s}{A numeric vector of bandwidth parameters used for the continuous variables. A value of \eqn{-1} is returned if all variables are categorical.}
   \item{lambda}{A numeric vector of bandwidth parameters used for the categorical variables. A value of \eqn{-1} is returned if all variables are continuous.}
+  \item{call}{The matched call.}
+  \item{ncl}{Number of clusters.}
+  \item{n}{Number of observations.}
+  \item{iters}{Number of iterations used to obtain the returned solution.}
+  \item{converged}{Logical indicating whether convergence was reached before \code{maxiter}.}
+  \item{conv_tol}{Numeric convergence tolerance.}
+  \item{contcols}{Indices of continuous columns in \code{X}.}
+  \item{catcols}{Indices of categorical columns in \code{X}.}
+  \item{kernels}{List with names of kernels used for continuous, nominal, and ordinal features.}
+  
+Objects of class \code{"gibclust"} support the following methods:
+  \itemize{
+    \item \code{print.gibclust}: Display a concise description of the fitted clustering.
+    \item \code{summary.gibclust}: Show detailed information including cluster sizes, 
+          information-theoretic metrics, hyperparameters, and convergence details.
+    \item \code{plot.gibclust}: Produce diagnostic plots:
+      \itemize{
+        \item \code{type = "sizes"}: barplot of cluster sizes or hardened sizes (IB/GIB).
+        \item \code{type = "info"}: barplot of entropy, conditional entropy, and mutual information.
+        \item \code{type = "beta"}: trajectory of \eqn{\log \beta} over iterations (only available for hard clustering outputs obtained using \code{DIBmix}).
+    }
+  }
 }
-
 
 \details{
 The \code{GIBmix} function produces a fuzzy clustering of the data while retaining maximal information about the original variable
@@ -141,6 +164,9 @@ print(result_mix$Entropy)       # Entropy of final clustering
 print(result_mix$CondEntropy)   # Conditional entropy of final clustering
 print(result_mix$MutualInfo)    # Mutual information between Y and T
 
+# Summary of output
+summary(result_mix)
+
 # Simulated categorical data example
 set.seed(123)
 data_cat <- data.frame(
@@ -172,6 +198,9 @@ print(result_cont$Cluster)       # Cluster membership matrix
 print(result_cont$Entropy)       # Entropy of final clustering
 print(result_cont$CondEntropy)   # Conditional entropy of final clustering
 print(result_cont$MutualInfo)    # Mutual information between Y and T
+
+plot(result_cont, type = "sizes") # Bar plot of cluster sizes (hardened assignments)
+plot(result_cont, type = "info")  # Information-theoretic quantities plot
 }
 
 \author{

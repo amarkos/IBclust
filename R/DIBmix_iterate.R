@@ -35,6 +35,8 @@ DIBmix_iterate <- function(X, ncl, randinit,
   best_clust$alpha <- 0
   best_clust$s <- if (length(contcols) == 0) -1 else as.vector(bws_vec[contcols])
   best_clust$lambda <- if (length(catcols) == 0) -1 else as.vector(bws_vec[catcols])
+  best_clust$iters <- NA
+  best_clust$converged <- NA
   if (ncl == 1){
     Loss <- 0
     best_clust$Cluster <- rep(1, nrow(X))
@@ -43,6 +45,8 @@ DIBmix_iterate <- function(X, ncl, randinit,
     best_clust$MutualInfo <- 0
     best_clust$InfoXT <- 0
     best_clust$beta <- 1
+    best_clust$iters <- 0
+    best_clust$converged <- FALSE
   } else {
     pb <- txtProgressBar(style = 3, min = 0, max = runs)
     for (i in c(1:runs)){
@@ -103,6 +107,8 @@ DIBmix_iterate <- function(X, ncl, randinit,
         metrics <- calc_metrics(beta = beta, qt, qy_t, hy, px, qt_x, quiet = TRUE)
         Lval <- metrics$iyt
       }
+      
+      converged_run <- (change_in_qt_x <= convergence_threshold)
 
       if (Lval > Loss){
         Loss <- Lval
@@ -113,6 +119,8 @@ DIBmix_iterate <- function(X, ncl, randinit,
         best_clust$MutualInfo <- as.numeric(metrics$iyt)
         best_clust$InfoXT <- as.numeric(metrics$ixt)
         best_clust$beta <- beta_vec
+        best_clust$iters <- iterations
+        best_clust$converged <- converged_run
       }
       if (verbose){
         message('Run ', i, ' complete.\n')

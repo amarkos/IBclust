@@ -1,9 +1,9 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.11.25) (preloaded format=pdflatex 2022.12.4)  28 AUG 2025 10:06
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.11.25) (preloaded format=pdflatex 2022.12.4)  28 AUG 2025 18:45
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**C:/Users/ec1917/AppData/Local/Temp/RtmpuUY9fs/Rd2pdfea810a27759/Rd2.tex
-(C:/Users/ec1917/AppData/Local/Temp/RtmpuUY9fs/Rd2pdfea810a27759/Rd2.tex
+**C:/Users/ec1917/AppData/Local/Temp/RtmpGkatOR/Rd2pdf3914706841ee/Rd2.tex
+(C:/Users/ec1917/AppData/Local/Temp/RtmpGkatOR/Rd2pdf3914706841ee/Rd2.tex
 LaTeX2e <2022-11-01> patch level 1
 L3 programming layer <2022-11-02>
 (C:\Users\ec1917\AppData\Local\Programs\MiKTeX\tex/latex/base\book.cls
@@ -510,74 +510,71 @@ les. Can be one of []\T1/zi4/m/n/10 aitchisonaitken
  []
 
 [6] [7]
-Overfull \hbox (6.85904pt too wide) in paragraph at lines 396--399
+Overfull \hbox (6.85904pt too wide) in paragraph at lines 424--427
 \T1/ptm/m/n/10 Clus-ter-ing Mixed-Type Data.'' [][]doi:10.48550/arXiv.2407.0338
 9[][], arXiv:2407.03389, [][]$\T1/zi4/m/n/10 https : / / arxiv .
  []
 
 
-Overfull \hbox (12.02605pt too wide) in paragraph at lines 400--403
+Overfull \hbox (12.02605pt too wide) in paragraph at lines 428--431
 []\T1/ptm/m/n/10 Aitchison J, Aitken CG (1976). ``Mul-ti-vari-ate bi-nary dis-c
 rim-i-na-tion by the ker-nel method.'' \T1/ptm/m/it/10 Biometrika\T1/ptm/m/n/10
  ,
  []
 
-[8]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [9]
-Overfull \hbox (9.0392pt too wide) in paragraph at lines 542--543
+[8] [9] [10]
+Overfull \hbox (9.0392pt too wide) in paragraph at lines 578--579
 \T1/ptm/m/n/10 op-ti-mal band-width. For nom-i-nal vari-ables and []\T1/zi4/m/n
 /10 nomkernel = \TS1/zi4/m/n/10 '\T1/zi4/m/n/10 aitchisonaitken\TS1/zi4/m/n/10 
 '[]\T1/ptm/m/n/10 ,
  []
 
-[10]
-Overfull \hbox (46.26848pt too wide) in paragraph at lines 552--553
+
+Overfull \hbox (46.26848pt too wide) in paragraph at lines 590--591
 []\T1/ptm/m/n/10 Kernel used for nom-i-nal (un-ordered cat-e-gor-i-cal) vari-ab
 les. Can be one of []\T1/zi4/m/n/10 aitchisonaitken
  []
 
-[11] [12]
-Overfull \hbox (12.02605pt too wide) in paragraph at lines 652--655
+[11] [12] [13]
+Overfull \hbox (12.02605pt too wide) in paragraph at lines 718--721
 []\T1/ptm/m/n/10 Aitchison J, Aitken CG (1976). ``Mul-ti-vari-ate bi-nary dis-c
 rim-i-na-tion by the ker-nel method.'' \T1/ptm/m/it/10 Biometrika\T1/ptm/m/n/10
  ,
  []
 
 
-Overfull \hbox (20.22874pt too wide) in paragraph at lines 683--683
+Overfull \hbox (20.22874pt too wide) in paragraph at lines 749--749
  []  \T1/zi4/m/n/9 cat_var = factor(sample(letters[1:3], 100, replace = TRUE)),
       # Nominal categorical variable[] 
  []
 
-[13]
-Overfull \hbox (9.0392pt too wide) in paragraph at lines 768--769
+[14] [15]
+Overfull \hbox (9.0392pt too wide) in paragraph at lines 840--841
 \T1/ptm/m/n/10 op-ti-mal band-width. For nom-i-nal vari-ables and []\T1/zi4/m/n
 /10 nomkernel = \TS1/zi4/m/n/10 '\T1/zi4/m/n/10 aitchisonaitken\TS1/zi4/m/n/10 
 '[]\T1/ptm/m/n/10 ,
  []
 
-[14]
-Overfull \hbox (46.26848pt too wide) in paragraph at lines 778--779
+
+Overfull \hbox (46.26848pt too wide) in paragraph at lines 852--853
 []\T1/ptm/m/n/10 Kernel used for nom-i-nal (un-ordered cat-e-gor-i-cal) vari-ab
 les. Can be one of []\T1/zi4/m/n/10 aitchisonaitken
  []
 
-[15] [16]
-Overfull \hbox (12.02605pt too wide) in paragraph at lines 876--879
+[16] [17]
+Overfull \hbox (12.02605pt too wide) in paragraph at lines 978--981
 []\T1/ptm/m/n/10 Aitchison J, Aitken CG (1976). ``Mul-ti-vari-ate bi-nary dis-c
 rim-i-na-tion by the ker-nel method.'' \T1/ptm/m/it/10 Biometrika\T1/ptm/m/n/10
  ,
  []
 
-
-Overfull \hbox (20.22874pt too wide) in paragraph at lines 907--907
+[18]
+Overfull \hbox (20.22874pt too wide) in paragraph at lines 1009--1009
  []  \T1/zi4/m/n/9 cat_var = factor(sample(letters[1:3], 100, replace = TRUE)),
       # Nominal categorical variable[] 
  []
 
-[17] (Rd2.ind [18] [19
+[19] (Rd2.ind [20] [21
 
 
 ]) (Rd2.aux)
@@ -585,13 +582,13 @@ Package rerunfilecheck Info: File `Rd2.out' has not changed.
 (rerunfilecheck)             Checksum: 2C4E23802987831CA836E8CE69AAFBD1;364.
  ) 
 Here is how much of TeX's memory you used:
- 10399 strings out of 475281
- 162434 string characters out of 2773593
- 506887 words of memory out of 3000000
+ 10401 strings out of 475281
+ 162459 string characters out of 2773593
+ 504887 words of memory out of 3000000
  31633 multiletter control sequences out of 15000+600000
  506703 words of font info for 74 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 89i,9n,93p,789b,728s stack positions out of 10000i,1000n,20000p,200000b,80000s
+ 89i,9n,93p,790b,728s stack positions out of 10000i,1000n,20000p,200000b,80000s
 {C:/Users/ec1917/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/inconsolata/i4
 -ts1.enc}{C:/Users/ec1917/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/base/8r
 .enc}{C:/Users/ec1917/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/inconsolata
@@ -611,9 +608,9 @@ TeX/fonts/type1/urw/times/utmb8a.pfb><C:/Users/ec1917/AppData/Local/Programs/Mi
 KTeX/fonts/type1/urw/times/utmr8a.pfb><C:/Users/ec1917/AppData/Local/Programs/M
 iKTeX/fonts/type1/urw/times/utmr8a.pfb><C:/Users/ec1917/AppData/Local/Programs/
 MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
-Output written on Rd2.pdf (19 pages, 244362 bytes).
+Output written on Rd2.pdf (21 pages, 252179 bytes).
 PDF statistics:
- 259 PDF objects out of 1000 (max. 8388607)
- 63 named destinations out of 1000 (max. 500000)
+ 267 PDF objects out of 1000 (max. 8388607)
+ 65 named destinations out of 1000 (max. 500000)
  41 words of extra memory for PDF output out of 10000 (max. 10000000)
 
