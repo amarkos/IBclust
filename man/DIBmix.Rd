@@ -158,7 +158,7 @@ data_mix <- data.frame(
 )
 
 # Perform Mixed-Type Clustering
-result_mix <- DIBmix(X = data_mix, ncl = 3, nstart = 50)
+result_mix <- DIBmix(X = data_mix, ncl = 3, nstart = 5)
 
 # View results
 print(paste("Number of clusters found:", length(unique(result_mix$Cluster))))
@@ -169,12 +169,12 @@ table(result_mix$Cluster)
 # When categorical variables are more informative
 result_cat_first <- DIBmix(X = data_mix, ncl = 3,
                            cat_first = TRUE,  # Prioritize categorical variables
-                           nstart = 50)
+                           nstart = 5)
 
 # When continuous variables are more informative (default)
 result_cont_first <- DIBmix(X = data_mix, ncl = 3,
                             cat_first = FALSE,
-                            nstart = 50)
+                            nstart = 5)
 
 # Compare clustering performance
 if (requireNamespace("mclust", quietly = TRUE)){  # For adjustedRandIndex
@@ -196,7 +196,7 @@ data_cat <- data.frame(
 )
 
 # Perform hard clustering on categorical data with Deterministic IB
-result_cat <- DIBmix(X = data_cat, ncl = 3, lambda = -1, nstart = 10)
+result_cat <- DIBmix(X = data_cat, ncl = 3, lambda = -1, nstart = 5)
 
 # Print clustering results
 print(result_cat$Cluster)       # Cluster assignments
@@ -209,7 +209,7 @@ set.seed(123)
 data_cont <- as.data.frame(matrix(rnorm(1000), ncol = 5))
 
 # Perform hard clustering on continuous data with Deterministic IB
-result_cont <- DIBmix(X = data_cont, ncl = 3, s = -1, nstart = 10)
+result_cont <- DIBmix(X = data_cont, ncl = 3, s = -1, nstart = 5)
 
 # Print clustering results
 print(result_cont$Cluster)       # Cluster assignments

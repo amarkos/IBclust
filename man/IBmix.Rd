@@ -153,7 +153,7 @@ data_mix <- data.frame(
 )
 
 # Perform Mixed-Type Fuzzy Clustering
-result_mix <- IBmix(X = data_mix, ncl = 3, beta = 2, nstart = 10)
+result_mix <- IBmix(X = data_mix, ncl = 3, beta = 2, nstart = 5)
 
 # Print clustering results
 print(result_mix$Cluster)       # Cluster membership matrix
@@ -173,7 +173,7 @@ data_cat <- data.frame(
 )
 
 # Perform fuzzy clustering on categorical data with standard IB
-result_cat <- IBmix(X = data_cat, ncl = 3, beta = 15, lambda = -1, nstart = 10, maxiter = 200)
+result_cat <- IBmix(X = data_cat, ncl = 3, beta = 15, lambda = -1, nstart = 5, maxiter = 200)
 
 # Print clustering results
 print(result_cat$Cluster)       # Cluster membership matrix
@@ -189,7 +189,7 @@ set.seed(123)
 data_cont <- as.data.frame(matrix(rnorm(1000), ncol = 5))
 
 # Perform fuzzy clustering on continuous data with standard IB
-result_cont <- IBmix(X = data_cont, ncl = 3, beta = 50, s = -1, nstart = 10)
+result_cont <- IBmix(X = data_cont, ncl = 3, beta = 50, s = -1, nstart = 5)
 
 # Print clustering results
 print(result_cont$Cluster)       # Cluster membership matrix

@@ -76,9 +76,8 @@ arma::mat qt_x_step_cpp(int n_rows, int T, double beta,
     arma::vec l = log_qt - beta * kl_divs;
 
     // Identify the cluster with the maximum adjusted divergence
-    arma::uword t_max;
-    l.max(t_max); // Finds the index of the maximum value
-
+    arma::uword t_max = l.index_max(); // FIXED: Use index_max() instead of max()
+    
     // Assign the data point to the identified cluster
     qt_x(t_max, x) = 1;
   }
