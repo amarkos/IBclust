@@ -24,7 +24,7 @@ Description: Implements multiple variants of the Information Bottleneck ('IB') m
 License: GPL (>= 3)
 Encoding: UTF-8
 Depends: R (>= 3.5.0)
-Imports: Rcpp, stats, utils, np, rje, Rdpack, RcppEigen
+Imports: Rcpp, stats, utils, np, rje, Rdpack
 Suggests: mclust
 LinkingTo: Rcpp, RcppArmadillo, RcppEigen
 RoxygenNote: 7.3.2
