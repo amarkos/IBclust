@@ -1,7 +1,6 @@
 pkgname <- "IBclust"
 source(file.path(R.home("share"), "R", "examples-header.R"))
 options(warn = 1)
-options(pager = "console")
 library('IBclust')
 
 base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
@@ -108,7 +107,7 @@ data_mix <- data.frame(
 )
 
 # Perform Mixed-Type Clustering
-result_mix <- DIBmix(X = data_mix, ncl = 3, nstart = 50)
+result_mix <- DIBmix(X = data_mix, ncl = 3, nstart = 5)
 
 # View results
 print(paste("Number of clusters found:", length(unique(result_mix$Cluster))))
@@ -119,12 +118,12 @@ table(result_mix$Cluster)
 # When categorical variables are more informative
 result_cat_first <- DIBmix(X = data_mix, ncl = 3,
                            cat_first = TRUE,  # Prioritize categorical variables
-                           nstart = 50)
+                           nstart = 5)
 
 # When continuous variables are more informative (default)
 result_cont_first <- DIBmix(X = data_mix, ncl = 3,
                             cat_first = FALSE,
-                            nstart = 50)
+                            nstart = 5)
 
 # Compare clustering performance
 if (requireNamespace("mclust", quietly = TRUE)){  # For adjustedRandIndex
@@ -146,7 +145,7 @@ data_cat <- data.frame(
 )
 
 # Perform hard clustering on categorical data with Deterministic IB
-result_cat <- DIBmix(X = data_cat, ncl = 3, lambda = -1, nstart = 10)
+result_cat <- DIBmix(X = data_cat, ncl = 3, lambda = -1, nstart = 5)
 
 # Print clustering results
 print(result_cat$Cluster)       # Cluster assignments
@@ -159,7 +158,7 @@ set.seed(123)
 data_cont <- as.data.frame(matrix(rnorm(1000), ncol = 5))
 
 # Perform hard clustering on continuous data with Deterministic IB
-result_cont <- DIBmix(X = data_cont, ncl = 3, s = -1, nstart = 10)
+result_cont <- DIBmix(X = data_cont, ncl = 3, s = -1, nstart = 5)
 
 # Print clustering results
 print(result_cont$Cluster)       # Cluster assignments
@@ -198,7 +197,7 @@ data_mix <- data.frame(
 )
 
 # Perform Mixed-Type Fuzzy Clustering with Generalised IB
-result_mix <- GIBmix(X = data_mix, ncl = 3, beta = 2, alpha = 0.5, nstart = 20)
+result_mix <- GIBmix(X = data_mix, ncl = 3, beta = 2, alpha = 0.5, nstart = 5)
 
 # Print clustering results
 print(result_mix$Cluster)       # Cluster membership matrix
@@ -219,7 +218,7 @@ data_cat <- data.frame(
 )
 
 # Perform Fuzzy Clustering on categorical data with Generalised IB
-result_cat <- GIBmix(X = data_cat, ncl = 2, beta = 25, alpha = 0.75, lambda = -1, nstart = 10)
+result_cat <- GIBmix(X = data_cat, ncl = 2, beta = 25, alpha = 0.75, lambda = -1, nstart = 5)
 
 # Print clustering results
 print(result_cat$Cluster)       # Cluster membership matrix
@@ -233,7 +232,7 @@ set.seed(123)
 data_cont <- as.data.frame(matrix(rnorm(1000), ncol = 5))
 
 # Perform Fuzzy Clustering on continuous data with Generalised IB
-result_cont <- GIBmix(X = data_cont, ncl = 2, beta = 50, alpha = 0.75, s = -1, nstart = 10)
+result_cont <- GIBmix(X = data_cont, ncl = 2, beta = 50, alpha = 0.75, s = -1, nstart = 5)
 
 # Print clustering results
 print(result_cont$Cluster)       # Cluster membership matrix
@@ -271,7 +270,7 @@ data_mix <- data.frame(
 )
 
 # Perform Mixed-Type Fuzzy Clustering
-result_mix <- IBmix(X = data_mix, ncl = 3, beta = 2, nstart = 10)
+result_mix <- IBmix(X = data_mix, ncl = 3, beta = 2, nstart = 1)
 
 # Print clustering results
 print(result_mix$Cluster)       # Cluster membership matrix
@@ -284,14 +283,14 @@ summary(result_mix)
 # Simulated categorical data example
 set.seed(123)
 data_cat <- data.frame(
-  Var1 = as.factor(sample(letters[1:3], 200, replace = TRUE)),  # Nominal variable
-  Var2 = as.factor(sample(letters[4:6], 200, replace = TRUE)),  # Nominal variable
-  Var3 = factor(sample(c("low", "medium", "high"), 200, replace = TRUE),
+  Var1 = as.factor(sample(letters[1:3], 100, replace = TRUE)),  # Nominal variable
+  Var2 = as.factor(sample(letters[4:6], 100, replace = TRUE)),  # Nominal variable
+  Var3 = factor(sample(c("low", "medium", "high"), 100, replace = TRUE),
                 levels = c("low", "medium", "high"), ordered = TRUE)  # Ordinal variable
 )
 
 # Perform fuzzy clustering on categorical data with standard IB
-result_cat <- IBmix(X = data_cat, ncl = 3, beta = 15, lambda = -1, nstart = 10, maxiter = 200)
+result_cat <- IBmix(X = data_cat, ncl = 3, beta = 15, lambda = -1, nstart = 2, maxiter = 200)
 
 # Print clustering results
 print(result_cat$Cluster)       # Cluster membership matrix
@@ -303,11 +302,11 @@ plot(result_cat, type = "info")  # Information-theoretic quantities plot
 
 # Simulated continuous data example
 set.seed(123)
-# Continuous data with 200 observations, 5 features
-data_cont <- as.data.frame(matrix(rnorm(1000), ncol = 5))
+# Continuous data with 100 observations, 5 features
+data_cont <- as.data.frame(matrix(rnorm(500), ncol = 5))
 
 # Perform fuzzy clustering on continuous data with standard IB
-result_cont <- IBmix(X = data_cont, ncl = 3, beta = 50, s = -1, nstart = 10)
+result_cont <- IBmix(X = data_cont, ncl = 3, beta = 50, s = -1, nstart = 2)
 
 # Print clustering results
 print(result_cont$Cluster)       # Cluster membership matrix

@@ -1,6 +1,103 @@
 Hmm ... looks like a package
 Converting parsed Rd's to LaTeX 
 Creating pdf output from LaTeX ...
-Saving output to 'IBclust-manual.pdf' ...
+
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025) (preloaded format=pdflatex)
+ restricted \write18 enabled.
+entering extended mode
+LaTeX2e <2025-06-01> patch level 1
+L3 programming layer <2025-08-13>
+(./Rd2.tex
+(/Users/ec1917/Library/TinyTeX/texmf-dist/tex/latex/base/book.cls
+Document Class: book 2025/01/22 v1.4n Standard LaTeX document class
+(/Users/ec1917/Library/TinyTeX/texmf-dist/tex/latex/base/bk10.clo)) (/Library/Frameworks/R.framework/Resources/share/texmf/tex/latex/Rd.sty (/Users/ec1917/Library/TinyTeX/texmf-dist/tex/latex/base/ifthen.sty) (/Users/ec1917/Library/TinyTeX/texmf-dist/tex/generic/iftex/iftex.sty) (/Users/ec1917/Library/TinyTeX/texmf-dist/tex/latex/tools/longtable.sty) (/Users/ec1917/Library/TinyTeX/texmf-dist/tex/latex/tools/bm.sty) (/Users/ec1917/Library/TinyTeX/texmf-dist/tex/latex/base/alltt.sty) (/Users/ec1917/Library/TinyTeX/texmf-dist/tex/latex/tools/verbatim.sty) (/Users/ec1917/Library/TinyTeX/texmf-dist/tex/latex/url/url.sty) (/Users/ec1917/Library/TinyTeX/texmf-dist/tex/latex/base/textcomp.sty) (/Users/ec1917/Library/TinyTeX/texmf-dist/tex/latex/amsmath/amsmath.sty
+For additional information on amsmath, use the `?' option.
+(/Users/ec1917/Library/TinyTeX/texmf-dist/tex/latex/amsmath/amstext.sty (/Users/ec1917/Library/TinyTeX/texmf-dist/tex/latex/amsmath/amsgen.sty)) (/Users/ec1917/Library/TinyTeX/texmf-dist/tex/latex/amsmath/amsbsy.sty) (/Users/ec1917/Library/TinyTeX/texmf-dist/tex/latex/amsmath/amsopn.sty)) (/Users/ec1917/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/amsfonts.sty) (/Users/ec1917/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/amssymb.sty) (/Users/ec1917/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/eucal.sty) (/Users/ec1917/Library/TinyTeX/texmf-dist/tex/latex/base/fontenc.sty) (/Users/ec1917/Library/TinyTeX/texmf-dist/tex/latex/psnfss/times.sty) (/Users/ec1917/Library/TinyTeX/texmf-dist/tex/latex/inconsolata/zi4.sty `inconsolata-zi4' v1.12, 2019/05/17 Text macros for Inconsolata (msharpe) (/Users/ec1917/Library/TinyTeX/texmf-dist/tex/latex/xkeyval/xkeyval.sty (/Users/ec1917/Library/TinyTeX/texmf-dist/tex/generic/xkeyval/xkeyval.tex (/Users/ec1917/Library/TinyTeX/texmf-dist/tex/generic/xkeyval/xkvutils.tex (/Users/ec1917/Library/TinyTeX/texmf-dist/tex/generic/xkeyval/keyval.tex))))) (/Users/ec1917/Library/TinyTeX/texmf-dist/tex/latex/graphics/color.sty (/Users/ec1917/Library/TinyTeX/texmf-dist/tex/latex/graphics-cfg/color.cfg) (/Users/ec1917/Library/TinyTeX/texmf-dist/tex/latex/graphics-def/pdftex.def) (/Users/ec1917/Library/TinyTeX/texmf-dist/tex/latex/graphics/mathcolor.ltx)) (/Users/ec1917/Library/TinyTeX/texmf-dist/tex/latex/hyperref/hyperref.sty (/Users/ec1917/Library/TinyTeX/texmf-dist/tex/latex/kvsetkeys/kvsetkeys.sty) (/Users/ec1917/Library/TinyTeX/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty) (/Users/ec1917/Library/TinyTeX/texmf-dist/tex/generic/pdfescape/pdfescape.sty (/Users/ec1917/Library/TinyTeX/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty) (/Users/ec1917/Library/TinyTeX/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty (/Users/ec1917/Library/TinyTeX/texmf-dist/tex/generic/infwarerr/infwarerr.sty))) (/Users/ec1917/Library/TinyTeX/texmf-dist/tex/latex/hycolor/hycolor.sty) (/Users/ec1917/Library/TinyTeX/texmf-dist/tex/latex/hyperref/nameref.sty (/Users/ec1917/Library/TinyTeX/texmf-dist/tex/latex/refcount/refcount.sty) (/Users/ec1917/Library/TinyTeX/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty (/Users/ec1917/Library/TinyTeX/texmf-dist/tex/latex/kvoptions/kvoptions.sty))) (/Users/ec1917/Library/TinyTeX/texmf-dist/tex/latex/etoolbox/etoolbox.sty) (/Users/ec1917/Library/TinyTeX/texmf-dist/tex/generic/stringenc/stringenc.sty) (/Users/ec1917/Library/TinyTeX/texmf-dist/tex/latex/hyperref/pd1enc.def) (/Users/ec1917/Library/TinyTeX/texmf-dist/tex/generic/intcalc/intcalc.sty) (/Users/ec1917/Library/TinyTeX/texmf-dist/tex/latex/hyperref/puenc.def) (/Users/ec1917/Library/TinyTeX/texmf-dist/tex/generic/bitset/bitset.sty (/Users/ec1917/Library/TinyTeX/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty))) (/Users/ec1917/Library/TinyTeX/texmf-dist/tex/latex/hyperref/hpdftex.def (/Users/ec1917/Library/TinyTeX/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty (/Users/ec1917/Library/TinyTeX/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty)))) (/Users/ec1917/Library/TinyTeX/texmf-dist/tex/latex/base/makeidx.sty)
+Writing index file Rd2.idx
+(/Users/ec1917/Library/TinyTeX/texmf-dist/tex/latex/psnfss/t1ptm.fd) (/Users/ec1917/Library/TinyTeX/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def) (/private/var/folders/db/ybnxx8ys5jx5ndj7l2g3ztbh0000gp/T/RtmpKs35se/Rd2pdf12e9321f19bb5/Rd2.aux) (/private/var/folders/db/ybnxx8ys5jx5ndj7l2g3ztbh0000gp/T/RtmpKs35se/Rd2pdf12e9321f19bb5/Rd2.out) (/private/var/folders/db/ybnxx8ys5jx5ndj7l2g3ztbh0000gp/T/RtmpKs35se/Rd2pdf12e9321f19bb5/Rd2.out) (/Users/ec1917/Library/TinyTeX/texmf-dist/tex/latex/psnfss/ts1ptm.fd) (/Users/ec1917/Library/TinyTeX/texmf-dist/tex/latex/inconsolata/t1zi4.fd) (/Users/ec1917/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/umsa.fd) (/Users/ec1917/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/umsb.fd) (/private/var/folders/db/ybnxx8ys5jx5ndj7l2g3ztbh0000gp/T/RtmpKs35se/Rd2pdf12e9321f19bb5/Rd2.toc)
+Underfull \hbox (badness 1242) in paragraph at lines 45--45
+[]\T1/ptm/m/it/10 Agglomerative In-for-ma-tion Bot-tle-neck Clus-ter-ing for Mixed-Type
+
+[1{/Users/ec1917/Library/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{/Users/ec1917/Library/TinyTeX/texmf-dist/fonts/enc/dvips/base/8r.enc}{/Users/ec1917/Library/TinyTeX/texmf-dist/fonts/enc/dvips/inconsolata/i4-t1-0.enc}] (/Users/ec1917/Library/TinyTeX/texmf-dist/tex/latex/inconsolata/ts1zi4.fd)
+Overfull \hbox (9.0392pt too wide) in paragraph at lines 74--75
+\T1/ptm/m/n/10 op-ti-mal band-width. For nom-i-nal vari-ables and []\T1/zi4/m/n/10 nomkernel = \TS1/zi4/m/n/10 '\T1/zi4/m/n/10 aitchisonaitken\TS1/zi4/m/n/10 '[]\T1/ptm/m/n/10 ,
+
+Overfull \hbox (46.26848pt too wide) in paragraph at lines 83--84
+[]\T1/ptm/m/n/10 Kernel used for nom-i-nal (un-ordered cat-e-gor-i-cal) vari-ables. Can be one of []\T1/zi4/m/n/10 aitchisonaitken
+
+[2{/Users/ec1917/Library/TinyTeX/texmf-dist/fonts/enc/dvips/inconsolata/i4-ts1.enc}]
+[3]
+Overfull \hbox (11.6832pt too wide) in paragraph at lines 160--161
+[]\T1/ptm/m/n/10 A nu-meric vec-tor track-ing the cost in-curred by each merge $\OML/cmm/m/it/10 I\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 T[]\OT1/cmr/m/n/10 ; \OML/cmm/m/it/10 Y\OT1/cmr/m/n/10 ) \OMS/cmsy/m/n/10 ^^@ \OML/cmm/m/it/10 I\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 T[]\OT1/cmr/m/n/10 ; \OML/cmm/m/it/10 Y\OT1/cmr/m/n/10 )$\T1/ptm/m/n/10 . 
+
+Overfull \hbox (12.02605pt too wide) in paragraph at lines 205--208
+[]\T1/ptm/m/n/10 Aitchison J, Aitken CG (1976). ``Mul-ti-vari-ate bi-nary dis-crim-i-na-tion by the ker-nel method.'' \T1/ptm/m/it/10 Biometrika\T1/ptm/m/n/10 ,
+
+[4]
+Overfull \hbox (6.85904pt too wide) in paragraph at lines 229--232
+\T1/ptm/m/n/10 Clus-ter-ing Mixed-Type Data.'' [][]doi:10.48550/arXiv.2407.03389[][], arXiv:2407.03389, [][]$\T1/zi4/m/n/10 https : / / arxiv .
+
+Overfull \hbox (20.22874pt too wide) in paragraph at lines 240--240
+ []  \T1/zi4/m/n/9 cat_var = factor(sample(letters[1:3], 100, replace = TRUE)),      # Nominal categorical variable[] 
+
+[5]
+Overfull \hbox (9.0392pt too wide) in paragraph at lines 321--322
+\T1/ptm/m/n/10 op-ti-mal band-width. For nom-i-nal vari-ables and []\T1/zi4/m/n/10 nomkernel = \TS1/zi4/m/n/10 '\T1/zi4/m/n/10 aitchisonaitken\TS1/zi4/m/n/10 '[]\T1/ptm/m/n/10 ,
+
+[6]
+Overfull \hbox (46.26848pt too wide) in paragraph at lines 331--332
+[]\T1/ptm/m/n/10 Kernel used for nom-i-nal (un-ordered cat-e-gor-i-cal) vari-ables. Can be one of []\T1/zi4/m/n/10 aitchisonaitken
+
+[7]
+[8]
+Overfull \hbox (6.85904pt too wide) in paragraph at lines 453--456
+\T1/ptm/m/n/10 Clus-ter-ing Mixed-Type Data.'' [][]doi:10.48550/arXiv.2407.03389[][], arXiv:2407.03389, [][]$\T1/zi4/m/n/10 https : / / arxiv .
+
+Overfull \hbox (12.02605pt too wide) in paragraph at lines 457--460
+[]\T1/ptm/m/n/10 Aitchison J, Aitken CG (1976). ``Mul-ti-vari-ate bi-nary dis-crim-i-na-tion by the ker-nel method.'' \T1/ptm/m/it/10 Biometrika\T1/ptm/m/n/10 ,
+
+[9]
+Underfull \vbox (badness 10000) has occurred while \output is active
+[10]
+Overfull \hbox (9.0392pt too wide) in paragraph at lines 607--608
+\T1/ptm/m/n/10 op-ti-mal band-width. For nom-i-nal vari-ables and []\T1/zi4/m/n/10 nomkernel = \TS1/zi4/m/n/10 '\T1/zi4/m/n/10 aitchisonaitken\TS1/zi4/m/n/10 '[]\T1/ptm/m/n/10 ,
+
+[11]
+Overfull \hbox (46.26848pt too wide) in paragraph at lines 619--620
+[]\T1/ptm/m/n/10 Kernel used for nom-i-nal (un-ordered cat-e-gor-i-cal) vari-ables. Can be one of []\T1/zi4/m/n/10 aitchisonaitken
+
+[12]
+[13]
+Overfull \hbox (12.02605pt too wide) in paragraph at lines 747--750
+[]\T1/ptm/m/n/10 Aitchison J, Aitken CG (1976). ``Mul-ti-vari-ate bi-nary dis-crim-i-na-tion by the ker-nel method.'' \T1/ptm/m/it/10 Biometrika\T1/ptm/m/n/10 ,
+
+Overfull \hbox (20.22874pt too wide) in paragraph at lines 778--778
+ []  \T1/zi4/m/n/9 cat_var = factor(sample(letters[1:3], 100, replace = TRUE)),      # Nominal categorical variable[] 
+
+[14]
+[15]
+Overfull \hbox (9.0392pt too wide) in paragraph at lines 869--870
+\T1/ptm/m/n/10 op-ti-mal band-width. For nom-i-nal vari-ables and []\T1/zi4/m/n/10 nomkernel = \TS1/zi4/m/n/10 '\T1/zi4/m/n/10 aitchisonaitken\TS1/zi4/m/n/10 '[]\T1/ptm/m/n/10 ,
+
+Overfull \hbox (46.26848pt too wide) in paragraph at lines 881--882
+[]\T1/ptm/m/n/10 Kernel used for nom-i-nal (un-ordered cat-e-gor-i-cal) vari-ables. Can be one of []\T1/zi4/m/n/10 aitchisonaitken
+
+[16]
+[17]
+[18]
+Overfull \hbox (12.02605pt too wide) in paragraph at lines 1007--1010
+[]\T1/ptm/m/n/10 Aitchison J, Aitken CG (1976). ``Mul-ti-vari-ate bi-nary dis-crim-i-na-tion by the ker-nel method.'' \T1/ptm/m/it/10 Biometrika\T1/ptm/m/n/10 ,
+
+Overfull \hbox (20.22874pt too wide) in paragraph at lines 1038--1038
+ []  \T1/zi4/m/n/9 cat_var = factor(sample(letters[1:3], 100, replace = TRUE)),      # Nominal categorical variable[] 
+
+[19]
+No file Rd2.ind.
+
+[20] (/private/var/folders/db/ybnxx8ys5jx5ndj7l2g3ztbh0000gp/T/RtmpKs35se/Rd2pdf12e9321f19bb5/Rd2.aux) )
+(see the transcript file for additional information)</Users/ec1917/Library/TinyTeX/texmf-dist/fonts/type1/public/inconsolata/Inconsolata-zi4r.pfb></Users/ec1917/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></Users/ec1917/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></Users/ec1917/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></Users/ec1917/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></Users/ec1917/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb></Users/ec1917/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></Users/ec1917/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></Users/ec1917/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb></Users/ec1917/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></Users/ec1917/Library/TinyTeX/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></Users/ec1917/Library/TinyTeX/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></Users/ec1917/Library/TinyTeX/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></Users/ec1917/Library/TinyTeX/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on Rd2.pdf (20 pages, 219753 bytes).
+Transcript written on Rd2.log.
+Saving output to ‘IBclust-manual.pdf’ ...
 Done
-You may want to clean up by 'rm -Rf C:/Users/ec1917/AppData/Local/Temp/Rtmpoj31F8/Rd2pdf50a071dd6afc'
+You may want to clean up by 'rm -Rf /var/folders/db/ybnxx8ys5jx5ndj7l2g3ztbh0000gp/T//RtmpKs35se/Rd2pdf12e9321f19bb5'

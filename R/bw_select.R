@@ -16,7 +16,7 @@ preprocess_cat_data <- function(X) {
 
 # Helper function to compute bandwidth (s) for continuous data
 compute_bandwidth_cont <- function(X, contkernel){
-  s_seq <- seq(0.1, 10, by = 1e-1)
+  s_seq <- seq(0.1, 100, by = 1e-1)
   for (s_val in s_seq) {
     pxy_list_cont <- coord_to_pxy_R(as.data.frame(X), s = s_val,
                                     cat_cols = c(), cont_cols = seq_len(ncol(X)),

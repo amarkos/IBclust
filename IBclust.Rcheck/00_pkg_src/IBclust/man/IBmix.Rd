@@ -153,7 +153,7 @@ data_mix <- data.frame(
 )
 
 # Perform Mixed-Type Fuzzy Clustering
-result_mix <- IBmix(X = data_mix, ncl = 3, beta = 2, nstart = 10)
+result_mix <- IBmix(X = data_mix, ncl = 3, beta = 2, nstart = 1)
 
 # Print clustering results
 print(result_mix$Cluster)       # Cluster membership matrix
@@ -166,14 +166,14 @@ summary(result_mix)
 # Simulated categorical data example
 set.seed(123)
 data_cat <- data.frame(
-  Var1 = as.factor(sample(letters[1:3], 200, replace = TRUE)),  # Nominal variable
-  Var2 = as.factor(sample(letters[4:6], 200, replace = TRUE)),  # Nominal variable
-  Var3 = factor(sample(c("low", "medium", "high"), 200, replace = TRUE),
+  Var1 = as.factor(sample(letters[1:3], 100, replace = TRUE)),  # Nominal variable
+  Var2 = as.factor(sample(letters[4:6], 100, replace = TRUE)),  # Nominal variable
+  Var3 = factor(sample(c("low", "medium", "high"), 100, replace = TRUE),
                 levels = c("low", "medium", "high"), ordered = TRUE)  # Ordinal variable
 )
 
 # Perform fuzzy clustering on categorical data with standard IB
-result_cat <- IBmix(X = data_cat, ncl = 3, beta = 15, lambda = -1, nstart = 10, maxiter = 200)
+result_cat <- IBmix(X = data_cat, ncl = 3, beta = 15, lambda = -1, nstart = 2, maxiter = 200)
 
 # Print clustering results
 print(result_cat$Cluster)       # Cluster membership matrix
@@ -185,11 +185,11 @@ plot(result_cat, type = "info")  # Information-theoretic quantities plot
 
 # Simulated continuous data example
 set.seed(123)
-# Continuous data with 200 observations, 5 features
-data_cont <- as.data.frame(matrix(rnorm(1000), ncol = 5))
+# Continuous data with 100 observations, 5 features
+data_cont <- as.data.frame(matrix(rnorm(500), ncol = 5))
 
 # Perform fuzzy clustering on continuous data with standard IB
-result_cont <- IBmix(X = data_cont, ncl = 3, beta = 50, s = -1, nstart = 10)
+result_cont <- IBmix(X = data_cont, ncl = 3, beta = 50, s = -1, nstart = 2)
 
 # Print clustering results
 print(result_cont$Cluster)       # Cluster membership matrix

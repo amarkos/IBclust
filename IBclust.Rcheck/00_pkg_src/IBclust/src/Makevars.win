@@ -1,4 +1,6 @@
-PKG_CXXFLAGS += -Wno-ignored-attributes
+# Suppress ignored attributes warnings from RcppArmadillo/Eigen on Windows
+# These are harmless but generate excessive noise during compilation
+#PKG_CXXFLAGS += -Wno-ignored-attributes
 CXX_STD = CXX17
-CXX17FLAGS += -Wno-ignored-attributes
+#	CXX17FLAGS += -Wno-ignored-attributes
 PKG_LIBS += $(BLAS_LIBS) $(LAPACK_LIBS) $(FLIBS)

@@ -156,7 +156,7 @@ data_mix <- data.frame(
 )
 
 # Perform Mixed-Type Fuzzy Clustering with Generalised IB
-result_mix <- GIBmix(X = data_mix, ncl = 3, beta = 2, alpha = 0.5, nstart = 20)
+result_mix <- GIBmix(X = data_mix, ncl = 3, beta = 2, alpha = 0.5, nstart = 5)
 
 # Print clustering results
 print(result_mix$Cluster)       # Cluster membership matrix
@@ -177,7 +177,7 @@ data_cat <- data.frame(
 )
 
 # Perform Fuzzy Clustering on categorical data with Generalised IB
-result_cat <- GIBmix(X = data_cat, ncl = 2, beta = 25, alpha = 0.75, lambda = -1, nstart = 10)
+result_cat <- GIBmix(X = data_cat, ncl = 2, beta = 25, alpha = 0.75, lambda = -1, nstart = 5)
 
 # Print clustering results
 print(result_cat$Cluster)       # Cluster membership matrix
@@ -191,7 +191,7 @@ set.seed(123)
 data_cont <- as.data.frame(matrix(rnorm(1000), ncol = 5))
 
 # Perform Fuzzy Clustering on continuous data with Generalised IB
-result_cont <- GIBmix(X = data_cont, ncl = 2, beta = 50, alpha = 0.75, s = -1, nstart = 10)
+result_cont <- GIBmix(X = data_cont, ncl = 2, beta = 50, alpha = 0.75, s = -1, nstart = 5)
 
 # Print clustering results
 print(result_cont$Cluster)       # Cluster membership matrix

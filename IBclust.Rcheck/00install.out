@@ -1,14 +1,100 @@
-* installing *source* package 'IBclust' ...
+* installing *source* package ‘IBclust’ ...
+** this is package ‘IBclust’ version ‘1.2.1’
 ** using staged installation
 ** libs
-using C++ compiler: 'G__~1.EXE (GCC) 13.3.0'
-using C++17
-g++  -std=gnu++17 -I"C:/PROGRA~1/R/R-44~1.2/include" -DNDEBUG  -I'C:/Users/ec1917/AppData/Local/R/win-library/4.4/Rcpp/include' -I'C:/Users/ec1917/AppData/Local/R/win-library/4.4/RcppArmadillo/include' -I'C:/Users/ec1917/AppData/Local/R/win-library/4.4/RcppEigen/include'   -I"C:/RBuildTools/4.4/x86_64-w64-mingw32.static.posix/include"  -Wno-ignored-attributes   -O2 -Wall  -mfpmath=sse -msse2 -mstackrealign  -c RcppExports.cpp -o RcppExports.o
-g++  -std=gnu++17 -I"C:/PROGRA~1/R/R-44~1.2/include" -DNDEBUG  -I'C:/Users/ec1917/AppData/Local/R/win-library/4.4/Rcpp/include' -I'C:/Users/ec1917/AppData/Local/R/win-library/4.4/RcppArmadillo/include' -I'C:/Users/ec1917/AppData/Local/R/win-library/4.4/RcppEigen/include'   -I"C:/RBuildTools/4.4/x86_64-w64-mingw32.static.posix/include"  -Wno-ignored-attributes   -O2 -Wall  -mfpmath=sse -msse2 -mstackrealign  -c entropy_functions.cpp -o entropy_functions.o
-g++  -std=gnu++17 -I"C:/PROGRA~1/R/R-44~1.2/include" -DNDEBUG  -I'C:/Users/ec1917/AppData/Local/R/win-library/4.4/Rcpp/include' -I'C:/Users/ec1917/AppData/Local/R/win-library/4.4/RcppArmadillo/include' -I'C:/Users/ec1917/AppData/Local/R/win-library/4.4/RcppEigen/include'   -I"C:/RBuildTools/4.4/x86_64-w64-mingw32.static.posix/include"  -Wno-ignored-attributes   -O2 -Wall  -mfpmath=sse -msse2 -mstackrealign  -c ib_dist.cpp -o ib_dist.o
-g++  -std=gnu++17 -I"C:/PROGRA~1/R/R-44~1.2/include" -DNDEBUG  -I'C:/Users/ec1917/AppData/Local/R/win-library/4.4/Rcpp/include' -I'C:/Users/ec1917/AppData/Local/R/win-library/4.4/RcppArmadillo/include' -I'C:/Users/ec1917/AppData/Local/R/win-library/4.4/RcppEigen/include'   -I"C:/RBuildTools/4.4/x86_64-w64-mingw32.static.posix/include"  -Wno-ignored-attributes   -O2 -Wall  -mfpmath=sse -msse2 -mstackrealign  -c qt_x_step.cpp -o qt_x_step.o
-g++ -shared -s -static-libgcc -o IBclust.dll tmp.def RcppExports.o entropy_functions.o ib_dist.o qt_x_step.o -LC:/PROGRA~1/R/R-44~1.2/bin/x64 -lRblas -LC:/PROGRA~1/R/R-44~1.2/bin/x64 -lRlapack -lgfortran -lm -lquadmath -LC:/RBuildTools/4.4/x86_64-w64-mingw32.static.posix/lib/x64 -LC:/RBuildTools/4.4/x86_64-w64-mingw32.static.posix/lib -LC:/PROGRA~1/R/R-44~1.2/bin/x64 -lR
-installing to C:/Users/ec1917/Desktop/IBclust/IBclust.Rcheck/00LOCK-IBclust/00new/IBclust/libs/x64
+using C++ compiler: ‘Apple clang version 17.0.0 (clang-1700.3.19.1)’
+using SDK: ‘MacOSX26.0.sdk’
+clang++ -arch arm64 -std=gnu++17 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I'/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/Rcpp/include' -I'/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/RcppArmadillo/include' -I'/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/RcppEigen/include' -I/opt/R/arm64/include    -fPIC  -falign-functions=64 -Wall -g -O2   -c RcppExports.cpp -o RcppExports.o
+In file included from RcppExports.cpp:4:
+In file included from /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/RcppArmadillo/include/RcppArmadillo.h:29:
+/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/RcppArmadillo/include/RcppArmadillo/version/arma.h:71:17: warning: Using fallback compilation with Armadillo 14.6.3. Please consider defining -DARMA_USE_CURRENT. See GitHub issue #475 for more. [-W#pragma-messages]
+   71 |         #pragma message("Using fallback compilation with Armadillo 14.6.3. Please consider defining -DARMA_USE_CURRENT. See GitHub issue #475 for more.")
+      |                 ^
+In file included from RcppExports.cpp:5:
+In file included from /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/RcppEigen/include/RcppEigen.h:25:
+In file included from /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/RcppEigen/include/RcppEigenForward.h:29:
+In file included from /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/RcppEigen/include/Eigen/Sparse:26:
+In file included from /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/RcppEigen/include/Eigen/SparseCore:61:
+/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/RcppEigen/include/Eigen/src/SparseCore/TriangularSolver.h:273:13: warning: variable 'count' set but not used [-Wunused-but-set-variable]
+  273 |       Index count = 0;
+      |             ^
+In file included from RcppExports.cpp:5:
+In file included from /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/RcppEigen/include/RcppEigen.h:25:
+In file included from /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/RcppEigen/include/RcppEigenForward.h:29:
+In file included from /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/RcppEigen/include/Eigen/Sparse:29:
+In file included from /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/RcppEigen/include/Eigen/SparseLU:35:
+/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/RcppEigen/include/Eigen/src/SparseLU/SparseLU_heap_relax_snode.h:78:9: warning: variable 'nsuper_et_post' set but not used [-Wunused-but-set-variable]
+   78 |   Index nsuper_et_post = 0; // Number of relaxed snodes in postordered etree 
+      |         ^
+/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/RcppEigen/include/Eigen/src/SparseLU/SparseLU_heap_relax_snode.h:79:9: warning: variable 'nsuper_et' set but not used [-Wunused-but-set-variable]
+   79 |   Index nsuper_et = 0; // Number of relaxed snodes in the original etree 
+      |         ^
+In file included from RcppExports.cpp:5:
+In file included from /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/RcppEigen/include/RcppEigen.h:25:
+In file included from /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/RcppEigen/include/RcppEigenForward.h:31:
+In file included from /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/RcppEigen/include/unsupported/Eigen/IterativeSolvers:46:
+/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/RcppEigen/include/unsupported/Eigen/src/IterativeSolvers/IDRS.h:72:10: warning: variable 'replacements' set but not used [-Wunused-but-set-variable]
+   72 |                         Index replacements = 0;
+      |                               ^
+In file included from RcppExports.cpp:5:
+In file included from /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/RcppEigen/include/RcppEigen.h:25:
+In file included from /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/RcppEigen/include/RcppEigenForward.h:37:
+In file included from /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/RcppEigen/include/unsupported/Eigen/SparseExtra:45:
+/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/RcppEigen/include/unsupported/Eigen/src/SparseExtra/MarketIO.h:246:7: warning: variable 'count' set but not used [-Wunused-but-set-variable]
+  246 |   int count = 0;
+      |       ^
+6 warnings generated.
+clang++ -arch arm64 -std=gnu++17 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I'/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/Rcpp/include' -I'/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/RcppArmadillo/include' -I'/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/RcppEigen/include' -I/opt/R/arm64/include    -fPIC  -falign-functions=64 -Wall -g -O2   -c entropy_functions.cpp -o entropy_functions.o
+In file included from entropy_functions.cpp:3:
+In file included from /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/RcppEigen/include/RcppEigen.h:25:
+In file included from /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/RcppEigen/include/RcppEigenForward.h:29:
+In file included from /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/RcppEigen/include/Eigen/Sparse:26:
+In file included from /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/RcppEigen/include/Eigen/SparseCore:61:
+/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/RcppEigen/include/Eigen/src/SparseCore/TriangularSolver.h:273:13: warning: variable 'count' set but not used [-Wunused-but-set-variable]
+  273 |       Index count = 0;
+      |             ^
+In file included from entropy_functions.cpp:3:
+In file included from /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/RcppEigen/include/RcppEigen.h:25:
+In file included from /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/RcppEigen/include/RcppEigenForward.h:29:
+In file included from /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/RcppEigen/include/Eigen/Sparse:29:
+In file included from /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/RcppEigen/include/Eigen/SparseLU:35:
+/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/RcppEigen/include/Eigen/src/SparseLU/SparseLU_heap_relax_snode.h:78:9: warning: variable 'nsuper_et_post' set but not used [-Wunused-but-set-variable]
+   78 |   Index nsuper_et_post = 0; // Number of relaxed snodes in postordered etree 
+      |         ^
+/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/RcppEigen/include/Eigen/src/SparseLU/SparseLU_heap_relax_snode.h:79:9: warning: variable 'nsuper_et' set but not used [-Wunused-but-set-variable]
+   79 |   Index nsuper_et = 0; // Number of relaxed snodes in the original etree 
+      |         ^
+In file included from entropy_functions.cpp:3:
+In file included from /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/RcppEigen/include/RcppEigen.h:25:
+In file included from /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/RcppEigen/include/RcppEigenForward.h:31:
+In file included from /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/RcppEigen/include/unsupported/Eigen/IterativeSolvers:46:
+/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/RcppEigen/include/unsupported/Eigen/src/IterativeSolvers/IDRS.h:72:10: warning: variable 'replacements' set but not used [-Wunused-but-set-variable]
+   72 |                         Index replacements = 0;
+      |                               ^
+In file included from entropy_functions.cpp:3:
+In file included from /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/RcppEigen/include/RcppEigen.h:25:
+In file included from /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/RcppEigen/include/RcppEigenForward.h:37:
+In file included from /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/RcppEigen/include/unsupported/Eigen/SparseExtra:45:
+/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/RcppEigen/include/unsupported/Eigen/src/SparseExtra/MarketIO.h:246:7: warning: variable 'count' set but not used [-Wunused-but-set-variable]
+  246 |   int count = 0;
+      |       ^
+5 warnings generated.
+clang++ -arch arm64 -std=gnu++17 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I'/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/Rcpp/include' -I'/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/RcppArmadillo/include' -I'/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/RcppEigen/include' -I/opt/R/arm64/include    -fPIC  -falign-functions=64 -Wall -g -O2   -c ib_dist.cpp -o ib_dist.o
+In file included from ib_dist.cpp:2:
+In file included from /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/RcppArmadillo/include/RcppArmadillo.h:29:
+/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/RcppArmadillo/include/RcppArmadillo/version/arma.h:71:17: warning: Using fallback compilation with Armadillo 14.6.3. Please consider defining -DARMA_USE_CURRENT. See GitHub issue #475 for more. [-W#pragma-messages]
+   71 |         #pragma message("Using fallback compilation with Armadillo 14.6.3. Please consider defining -DARMA_USE_CURRENT. See GitHub issue #475 for more.")
+      |                 ^
+1 warning generated.
+clang++ -arch arm64 -std=gnu++17 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I'/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/Rcpp/include' -I'/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/RcppArmadillo/include' -I'/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/RcppEigen/include' -I/opt/R/arm64/include    -fPIC  -falign-functions=64 -Wall -g -O2   -c qt_x_step.cpp -o qt_x_step.o
+In file included from qt_x_step.cpp:1:
+In file included from /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/RcppArmadillo/include/RcppArmadillo.h:29:
+/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/RcppArmadillo/include/RcppArmadillo/version/arma.h:71:17: warning: Using fallback compilation with Armadillo 14.6.3. Please consider defining -DARMA_USE_CURRENT. See GitHub issue #475 for more. [-W#pragma-messages]
+   71 |         #pragma message("Using fallback compilation with Armadillo 14.6.3. Please consider defining -DARMA_USE_CURRENT. See GitHub issue #475 for more.")
+      |                 ^
+1 warning generated.
+clang++ -arch arm64 -std=gnu++17 -dynamiclib -Wl,-headerpad_max_install_names -undefined dynamic_lookup -L/Library/Frameworks/R.framework/Resources/lib -L/opt/R/arm64/lib -o IBclust.so RcppExports.o entropy_functions.o ib_dist.o qt_x_step.o -F/Library/Frameworks/R.framework/.. -framework R
+installing to /Users/ec1917/Documents/IBclust/IBclust.Rcheck/00LOCK-IBclust/00new/IBclust/libs
 ** R
 ** inst
 ** byte-compile and prepare package for lazy loading
@@ -17,6 +103,7 @@ installing to C:/Users/ec1917/Desktop/IBclust/IBclust.Rcheck/00LOCK-IBclust/00ne
 *** copying figures
 ** building package indices
 ** testing if installed package can be loaded from temporary location
+** checking absolute paths in shared objects and dynamic libraries
 ** testing if installed package can be loaded from final location
 ** testing if installed package keeps a record of temporary installation path
 * DONE (IBclust)
