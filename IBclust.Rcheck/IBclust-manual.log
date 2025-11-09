@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025) (preloaded format=pdflatex 2025.9.16)  31 OCT 2025 22:21
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025) (preloaded format=pdflatex 2025.9.16)  9 NOV 2025 21:31
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -289,7 +289,7 @@ File: t1ptm.fd 2001/06/04 font definitions for T1/ptm.
 ) (/Users/ec1917/Library/TinyTeX/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
 File: l3backend-pdftex.def 2025-06-09 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count315
-) (/private/var/folders/db/ybnxx8ys5jx5ndj7l2g3ztbh0000gp/T/RtmpKs35se/Rd2pdf12e9321f19bb5/Rd2.aux)
+) (/private/var/folders/db/ybnxx8ys5jx5ndj7l2g3ztbh0000gp/T/RtmpzpMGV4/Rd2pdf174c777e8b562/Rd2.aux)
 \openout1 = `Rd2.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 8.
@@ -311,7 +311,7 @@ LaTeX Font Info:    ... okay on input line 8.
 LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 8.
 LaTeX Font Info:    ... okay on input line 8.
 Package hyperref Info: Link coloring ON on input line 8.
- (/private/var/folders/db/ybnxx8ys5jx5ndj7l2g3ztbh0000gp/T/RtmpKs35se/Rd2pdf12e9321f19bb5/Rd2.out) (/private/var/folders/db/ybnxx8ys5jx5ndj7l2g3ztbh0000gp/T/RtmpKs35se/Rd2pdf12e9321f19bb5/Rd2.out)
+ (/private/var/folders/db/ybnxx8ys5jx5ndj7l2g3ztbh0000gp/T/RtmpzpMGV4/Rd2pdf174c777e8b562/Rd2.out) (/private/var/folders/db/ybnxx8ys5jx5ndj7l2g3ztbh0000gp/T/RtmpzpMGV4/Rd2pdf174c777e8b562/Rd2.out)
 \@outlinefile=\write4
 \openout4 = `Rd2.out'.
 
@@ -332,7 +332,7 @@ File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 LaTeX Font Info:    Trying to load font information for U+msb on input line 28.
  (/Users/ec1917/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-) (/private/var/folders/db/ybnxx8ys5jx5ndj7l2g3ztbh0000gp/T/RtmpKs35se/Rd2pdf12e9321f19bb5/Rd2.toc)
+) (/private/var/folders/db/ybnxx8ys5jx5ndj7l2g3ztbh0000gp/T/RtmpzpMGV4/Rd2pdf174c777e8b562/Rd2.toc)
 \tf@toc=\write5
 \openout5 = `Rd2.toc'.
 
@@ -488,7 +488,7 @@ Overfull \hbox (20.22874pt too wide) in paragraph at lines 1038--1038
 No file Rd2.ind.
 
 
-[20] (/private/var/folders/db/ybnxx8ys5jx5ndj7l2g3ztbh0000gp/T/RtmpKs35se/Rd2pdf12e9321f19bb5/Rd2.aux)
+[20] (/private/var/folders/db/ybnxx8ys5jx5ndj7l2g3ztbh0000gp/T/RtmpzpMGV4/Rd2pdf174c777e8b562/Rd2.aux)
  ***********
 LaTeX2e <2025-06-01> patch level 1
 L3 programming layer <2025-08-13>
@@ -505,7 +505,7 @@ Here is how much of TeX's memory you used:
  14 hyphenation exceptions out of 8191
  92i,9n,95p,734b,769s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </Users/ec1917/Library/TinyTeX/texmf-dist/fonts/type1/public/inconsolata/Inconsolata-zi4r.pfb></Users/ec1917/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></Users/ec1917/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></Users/ec1917/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></Users/ec1917/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></Users/ec1917/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb></Users/ec1917/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></Users/ec1917/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></Users/ec1917/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb></Users/ec1917/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></Users/ec1917/Library/TinyTeX/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></Users/ec1917/Library/TinyTeX/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></Users/ec1917/Library/TinyTeX/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></Users/ec1917/Library/TinyTeX/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on Rd2.pdf (20 pages, 219753 bytes).
+Output written on Rd2.pdf (20 pages, 219755 bytes).
 PDF statistics:
  253 PDF objects out of 1000 (max. 8388607)
  200 compressed objects within 2 object streams

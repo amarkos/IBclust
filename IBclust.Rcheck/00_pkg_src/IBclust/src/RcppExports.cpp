@@ -82,7 +82,7 @@ BEGIN_RCPP
 END_RCPP
 }
 // qt_x_step_cpp
-arma::mat qt_x_step_cpp(int n_rows, int T, double beta, const arma::mat& py_x, const arma::mat& qy_t, const arma::vec& qt);
+List qt_x_step_cpp(int n_rows, int T, double beta, const arma::mat& py_x, const arma::mat& qy_t, const arma::vec& qt);
 RcppExport SEXP _IBclust_qt_x_step_cpp(SEXP n_rowsSEXP, SEXP TSEXP, SEXP betaSEXP, SEXP py_xSEXP, SEXP qy_tSEXP, SEXP qtSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;

@@ -4,7 +4,7 @@
 * R was compiled by
     Apple clang version 16.0.0 (clang-1600.0.26.6)
     GNU Fortran (GCC) 14.2.0
-* running under: macOS Tahoe 26.0.1
+* running under: macOS Tahoe 26.1
 * using session charset: UTF-8
 * checking for file ‘IBclust/DESCRIPTION’ ... OK
 * checking extension type ... Package
@@ -19,8 +19,8 @@
 * checking for portable file names ... OK
 * checking for sufficient/correct file permissions ... OK
 * checking whether package ‘IBclust’ can be installed ... OK
-* used C++ compiler: ‘Apple clang version 17.0.0 (clang-1700.3.19.1)’
-* used SDK: ‘MacOSX26.0.sdk’
+* used C++ compiler: ‘Apple clang version 17.0.0 (clang-1700.4.4.1)’
+* used SDK: ‘MacOSX26.1.sdk’
 * checking installed package size ... OK
 * checking package directory ... OK
 * checking DESCRIPTION meta-information ... OK

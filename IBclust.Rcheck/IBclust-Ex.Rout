@@ -1043,7 +1043,7 @@ Convergence tolerance: 1e-05
 > cleanEx()
 > options(digits = 7L)
 > base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
-Time elapsed:  5.178 2.421 12.71 0 0 
+Time elapsed:  2.24 0.093 2.403 0 0 
 > grDevices::dev.off()
 null device 
           1 

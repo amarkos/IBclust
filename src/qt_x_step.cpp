@@ -52,16 +52,54 @@ arma::vec vlog(const arma::vec& x) {
 // Function to perform the qt_x_step in C++
 // Assigns each data point to the cluster with the highest adjusted KL divergence
 // -----------------------------------------------------------------------------
+// arma::mat qt_x_step_cpp(int n_rows, int T, double beta,
+//                         const arma::mat& py_x, const arma::mat& qy_t, const arma::vec& qt) {
+
+//   // Initialize qt_x matrix with zeros (Clusters x Data Points)
+//   arma::mat qt_x(T, n_rows, arma::fill::zeros);
+
+//   // Precompute log(qt) for efficiency
+//   arma::vec log_qt = vlog(qt);
+
+//   // Iterate over each data point
+//   for (int x = 0; x < n_rows; ++x) {
+//     arma::vec kl_divs(T);
+
+//     // Compute KL divergence between data point x and each cluster
+//     for (int t = 0; t < T; ++t) {
+//       kl_divs(t) = klSingle(py_x.col(x), qy_t.col(t));
+//     }
+
+//     // Compute the adjusted divergence
+//     arma::vec l = log_qt - beta * kl_divs;
+
+//     // Identify the cluster with the maximum adjusted divergence
+//     arma::uword t_max = l.index_max(); // FIXED: Use index_max() instead of max()
+    
+//     // Assign the data point to the identified cluster
+//     qt_x(t_max, x) = 1;
+//   }
+
+//   return qt_x;
+// }
+
+// -----------------------------------------------------------------------------
+// Function to perform the qt_x_step in C++ with empty cluster protection
+// Assigns each data point to the cluster with the highest adjusted KL divergence
+// -----------------------------------------------------------------------------
 
 // [[Rcpp::export]]
-arma::mat qt_x_step_cpp(int n_rows, int T, double beta,
-                        const arma::mat& py_x, const arma::mat& qy_t, const arma::vec& qt) {
+List qt_x_step_cpp(int n_rows, int T, double beta,
+                   const arma::mat& py_x, const arma::mat& qy_t, const arma::vec& qt) {
 
   // Initialize qt_x matrix with zeros (Clusters x Data Points)
   arma::mat qt_x(T, n_rows, arma::fill::zeros);
 
   // Precompute log(qt) for efficiency
   arma::vec log_qt = vlog(qt);
+
+  // Store the loss matrix for potential cluster rescue
+  arma::mat L(T, n_rows);
 
   // Iterate over each data point
   for (int x = 0; x < n_rows; ++x) {
@@ -74,15 +112,77 @@ arma::mat qt_x_step_cpp(int n_rows, int T, double beta,
 
     // Compute the adjusted divergence
     arma::vec l = log_qt - beta * kl_divs;
+    L.col(x) = l;  // Store for later
 
     // Identify the cluster with the maximum adjusted divergence
-    arma::uword t_max = l.index_max(); // FIXED: Use index_max() instead of max()
+    arma::uword t_max = l.index_max();
     
     // Assign the data point to the identified cluster
     qt_x(t_max, x) = 1;
   }
 
-  return qt_x;
+  // Check for empty clusters and rescue
+  arma::vec cluster_sizes = arma::sum(qt_x, 1);
+  arma::uvec empty_clusters = arma::find(cluster_sizes == 0);
+  
+  bool rescue_occurred = false;  // Track if rescue happened
+  
+  if (empty_clusters.n_elem > 0) {
+    rescue_occurred = true;  // Mark that rescue was needed
+    
+    // For each empty cluster
+    for (arma::uword i = 0; i < empty_clusters.n_elem; ++i) {
+      arma::uword empty_c = empty_clusters(i);
+      
+      // Find observations in clusters with size > 1
+      arma::uvec current_assignments(n_rows);
+      for (int x = 0; x < n_rows; ++x) {
+        current_assignments(x) = arma::index_max(qt_x.col(x));
+      }
+      
+      // Build list of observations that can be borrowed
+      std::vector<arma::uword> available_obs;
+      for (int x = 0; x < n_rows; ++x) {
+        arma::uword curr_cluster = current_assignments(x);
+        if (cluster_sizes(curr_cluster) > 1) {
+          available_obs.push_back(x);
+        }
+      }
+      
+      // If no observations can be safely borrowed, steal from any cluster
+      if (available_obs.empty()) {
+        for (int x = 0; x < n_rows; ++x) {
+          available_obs.push_back(x);
+        }
+      }
+      
+      // Find the observation with the best loss for the empty cluster
+      double best_loss = -arma::datum::inf;
+      arma::uword best_obs = available_obs[0];
+      
+      for (arma::uword x : available_obs) {
+        if (L(empty_c, x) > best_loss) {
+          best_loss = L(empty_c, x);
+          best_obs = x;
+        }
+      }
+      
+      // Borrow this observation
+      arma::uword old_cluster = current_assignments(best_obs);
+      qt_x(old_cluster, best_obs) = 0;
+      qt_x(empty_c, best_obs) = 1;
+      
+      // Update cluster sizes
+      cluster_sizes(old_cluster) -= 1;
+      cluster_sizes(empty_c) += 1;
+    }
+  }
+
+  // Return both the matrix and the rescue flag
+  return List::create(
+    Named("qt_x") = qt_x,
+    Named("rescue_occurred") = rescue_occurred
+  );
 }
 
 // -----------------------------------------------------------------------------
@@ -103,7 +203,11 @@ List qt_x_step_beta_cpp(int n_rows, int T,
   // Handle the case with a single cluster
   if (T == 1) {
     qt_x.fill(1);
-    return List::create(Named("qt_x") = qt_x);
+    return List::create(
+      Named("qt_x") = qt_x,
+      Named("beta") = 1.0,
+      Named("rescue_occurred") = false
+    );
   } else {
     // Initialize a vector to store minimum beta values for each relevant data point
     arma::vec beta_min(x_min_t.n_elem, arma::fill::zeros);
@@ -140,10 +244,18 @@ List qt_x_step_beta_cpp(int n_rows, int T,
     // Determine the new beta value
     double beta = std::max(arma::max(beta_min) + 1e-3, 1.0);
 
-    // Update qt_x with the new beta
-    qt_x = qt_x_step_cpp(n_rows, T, beta, py_x, qy_t, qt);
+    // Update qt_x with the new beta - NOW RETURNS A LIST
+    List qt_x_result = qt_x_step_cpp(n_rows, T, beta, py_x, qy_t, qt);
+    
+    // Extract the matrix and rescue flag from the returned List
+    arma::mat qt_x_new = qt_x_result["qt_x"];
+    bool rescue_occurred = qt_x_result["rescue_occurred"];
 
-    return List::create(Named("qt_x") = qt_x, Named("beta") = beta);
+    return List::create(
+      Named("qt_x") = qt_x_new, 
+      Named("beta") = beta,
+      Named("rescue_occurred") = rescue_occurred
+    );
   }
 }
 

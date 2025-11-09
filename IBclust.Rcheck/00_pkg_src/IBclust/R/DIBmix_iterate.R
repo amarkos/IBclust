@@ -37,6 +37,7 @@ DIBmix_iterate <- function(X, ncl, randinit,
   best_clust$lambda <- if (length(catcols) == 0) -1 else as.vector(bws_vec[catcols])
   best_clust$iters <- NA
   best_clust$converged <- NA
+  best_rescue_used <- TRUE
   if (ncl == 1){
     Loss <- 0
     best_clust$Cluster <- rep(1, nrow(X))
@@ -47,11 +48,13 @@ DIBmix_iterate <- function(X, ncl, randinit,
     best_clust$beta <- 1
     best_clust$iters <- 0
     best_clust$converged <- FALSE
+    best_rescue_used <- FALSE
   } else {
     pb <- txtProgressBar(style = 3, min = 0, max = runs)
     for (i in c(1:runs)){
       setTxtProgressBar(pb, i)
       beta_vec <- c()
+      rescue_used_this_run <- FALSE
       # Initialize qt_x (randomly)
       qt_x_init <- matrix(0, nrow = ncl, ncol = nrow(X))
       if (is.null(randinit)){
@@ -70,6 +73,10 @@ DIBmix_iterate <- function(X, ncl, randinit,
       qt_x_obj <- qt_x_step_beta_cpp(n_rows = nrow(X), T = qt_list$T, py_x, qy_t, as.numeric(qt), qt_x)
       qt_x <- qt_x_obj$qt_x
       beta <- qt_x_obj$beta
+      # Track if rescue occurred in this step
+      if (!is.null(qt_x_obj$rescue_occurred) && qt_x_obj$rescue_occurred) {
+        rescue_used_this_run <- TRUE
+      }
       beta_vec <- c(beta_vec, beta)
       metrics <- calc_metrics(beta = beta, qt, qy_t, hy, px, qt_x, quiet = TRUE)
       Lval <- metrics$iyt
@@ -94,6 +101,10 @@ DIBmix_iterate <- function(X, ncl, randinit,
         qt_x_obj <- qt_x_step_beta_cpp(n_rows = nrow(X), T = qt_list$T, py_x, qy_t, as.numeric(qt), qt_x)
         qt_x <- qt_x_obj$qt_x
         beta <- qt_x_obj$beta
+        # Track if rescue occurred in this step
+        if (!is.null(qt_x_obj$rescue_occurred) && qt_x_obj$rescue_occurred) {
+          rescue_used_this_run <- TRUE
+        }
         beta_vec <- c(beta_vec, beta)
 
         if (nrow(qt_x)!=ncl){
@@ -109,8 +120,16 @@ DIBmix_iterate <- function(X, ncl, randinit,
       }
       
       converged_run <- (change_in_qt_x <= convergence_threshold)
+      
+      should_update <- FALSE
+      
+      if (!rescue_used_this_run && best_rescue_used) {
+        should_update <- TRUE
+      } else if (rescue_used_this_run == best_rescue_used) {
+        should_update <- (Lval > Loss)
+      }
 
-      if (Lval > Loss){
+      if (should_update){
         Loss <- Lval
         best_clust$Cluster <- apply(qt_x, 2, function(col) which(col == 1))
         metrics <- calc_metrics(beta = beta, qt, qy_t, hy, px, qt_x, quiet = TRUE)
@@ -121,6 +140,7 @@ DIBmix_iterate <- function(X, ncl, randinit,
         best_clust$beta <- beta_vec
         best_clust$iters <- iterations
         best_clust$converged <- converged_run
+        best_rescue_used <- rescue_used_this_run
       }
       if (verbose){
         message('Run ', i, ' complete.\n')
