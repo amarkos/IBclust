@@ -117,7 +117,7 @@ table(result_mix$Cluster)
 # Example 2: Comparing cat_first parameter
 # When categorical variables are more informative
 result_cat_first <- DIBmix(X = data_mix, ncl = 3,
-                           cat_first = TRUE,  # Prioritize categorical variables
+                           cat_first = TRUE,  # Prioritise categorical variables
                            nstart = 5)
 
 # When continuous variables are more informative (default)

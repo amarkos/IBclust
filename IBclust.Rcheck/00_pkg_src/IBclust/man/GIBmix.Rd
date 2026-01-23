@@ -14,7 +14,7 @@ GIBmix(X, ncl, beta, alpha, randinit = NULL,
        maxiter = 100, nstart = 100,
        conv_tol = 1e-5, contkernel = "gaussian",
        nomkernel = "aitchisonaitken", ordkernel = "liracine",
-       cat_first = FALSE, verbose = FALSE)
+       cat_first = FALSE, verbose = FALSE, nystrom = FALSE)
 }
 \arguments{
 \item{X}{A data frame containing the input data to be clustered. It should include categorical variables
@@ -49,6 +49,8 @@ GIBmix(X, ncl, beta, alpha, randinit = NULL,
 \item{cat_first}{A logical value indicating whether bandwidth selection is prioritised for the categorical variables, instead of the continuous. Defaults to \code{FALSE}. Set to \code{TRUE} if you suspect that the continuous variables are not informative of the cluster structure. Can only be \code{TRUE} when data is of mixed-type and all bandwidths are selected automatically (i.e. \code{s = -1}, \code{lambda = -1}).}
 
 \item{verbose}{Logical. Defaults to \code{FALSE} to suppress progress messages. Change to \code{TRUE} to print.}
+
+\item{nystrom}{Logical. Indicates if the Nystr\enc{ö}{o}m approximation for kernel Gram matrices is to be used for quicker implementation. Defaults to \code{FALSE}. Change to \code{TRUE} only for data sets with over 1000 observations.}
 }
 
 \value{

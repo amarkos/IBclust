@@ -21,6 +21,7 @@
 #' @return A list containing clustering results.
 #'
 #' @keywords internal
+#' @noRd
 DIBmix_iterate <- function(X, ncl, randinit,
                            tol, py_x, hy, px, maxiter, bws_vec,
                            contcols, catcols, runs, verbose = FALSE){
@@ -69,8 +70,8 @@ DIBmix_iterate <- function(X, ncl, randinit,
       qt_list <- qt_step(X, qt_x_init, ptol = tol, quiet =TRUE)
       qt <- qt_list$qt
       qt_x <- qt_list$qt_x
-      qy_t <- qy_t_step_cpp(py_x, qt_x, qt, px)
-      qt_x_obj <- qt_x_step_beta_cpp(n_rows = nrow(X), T = qt_list$T, py_x, qy_t, as.numeric(qt), qt_x)
+      qy_t <- qy_t_step(py_x, qt_x, qt, px)
+      qt_x_obj <- qt_x_step_beta(n_rows = nrow(X), T = qt_list$T, py_x, qy_t, as.numeric(qt), qt_x)
       qt_x <- qt_x_obj$qt_x
       beta <- qt_x_obj$beta
       # Track if rescue occurred in this step
@@ -89,7 +90,7 @@ DIBmix_iterate <- function(X, ncl, randinit,
       # Run the iterative process with convergence criteria
       while(change_in_qt_x > convergence_threshold && iterations < max_iterations) {
         iterations <- iterations + 1  # Increment iteration counter
-
+        
         # Store old qt_x for comparison
         old_qt_x <- qt_x
 
@@ -97,8 +98,8 @@ DIBmix_iterate <- function(X, ncl, randinit,
         qt_list <- qt_step(X, qt_x, tol, FALSE)
         qt <- qt_list$qt
         qt_x <- qt_list$qt_x
-        qy_t <- qy_t_step_cpp(py_x, qt_x, qt, px)
-        qt_x_obj <- qt_x_step_beta_cpp(n_rows = nrow(X), T = qt_list$T, py_x, qy_t, as.numeric(qt), qt_x)
+        qy_t <- qy_t_step(py_x, qt_x, qt, px)
+        qt_x_obj <- qt_x_step_beta(n_rows = nrow(X), T = qt_list$T, py_x, qy_t, as.numeric(qt), qt_x)
         qt_x <- qt_x_obj$qt_x
         beta <- qt_x_obj$beta
         # Track if rescue occurred in this step

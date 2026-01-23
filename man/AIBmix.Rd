@@ -11,7 +11,7 @@ leveraging bandwidth parameters to handle different categorical data types (nomi
 AIBmix(X, s = -1, lambda = -1,
        scale = TRUE, contkernel = "gaussian",
        nomkernel = "aitchisonaitken", ordkernel = "liracine",
-       cat_first = FALSE)
+       cat_first = FALSE, nystrom = FALSE)
 }
 \arguments{
   \item{X}{
@@ -38,6 +38,9 @@ AIBmix(X, s = -1, lambda = -1,
   }
   \item{cat_first}{
     A logical value indicating whether bandwidth selection is prioritised for the categorical variables, instead of the continuous. Defaults to \code{FALSE}. Set to \code{TRUE} if you suspect that the continuous variables are not informative of the cluster structure. Can only be \code{TRUE} when all bandwidths are selected automatically (i.e. \code{s = -1}, \code{lambda = -1}). 
+  }
+  \item{nystrom}{
+    Logical. Indicates if the Nystr\enc{ö}{o}m approximation for kernel Gram matrices is to be used for quicker implementation. Defaults to \code{FALSE}. Change to \code{TRUE} only for data sets with over 1000 observations.
   }
 }
 

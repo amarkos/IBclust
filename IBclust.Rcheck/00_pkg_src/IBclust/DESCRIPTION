@@ -1,7 +1,7 @@
 Package: IBclust
 Type: Package
 Title: Information Bottleneck Methods for Clustering Mixed-Type Data
-Version: 1.2.1
+Version: 1.3
 Authors@R: c(person(given = "Efthymios",
                     family = "Costa",
                     role = "aut"),
@@ -27,10 +27,10 @@ Depends: R (>= 3.5.0)
 Imports: Rcpp, stats, utils, np, rje, Rdpack, RcppEigen
 Suggests: mclust
 LinkingTo: Rcpp, RcppArmadillo, RcppEigen
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 RdMacros: Rdpack
 NeedsCompilation: yes
-Packaged: 2025-11-09 21:30:38 UTC; ec1917
+Packaged: 2026-01-23 14:10:05 UTC; ec1917
 Author: Efthymios Costa [aut],
   Ioanna Papatsouma [aut],
   Angelos Markos [aut, cre]

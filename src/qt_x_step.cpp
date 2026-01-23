@@ -1,4 +1,5 @@
 #include <RcppArmadillo.h>
+#include <cmath>
 using namespace Rcpp;
 
 // [[Rcpp::depends(RcppArmadillo)]]
@@ -48,45 +49,6 @@ arma::vec vlog(const arma::vec& x) {
   return log_x;
 }
 
-// -----------------------------------------------------------------------------
-// Function to perform the qt_x_step in C++
-// Assigns each data point to the cluster with the highest adjusted KL divergence
-// -----------------------------------------------------------------------------
-// arma::mat qt_x_step_cpp(int n_rows, int T, double beta,
-//                         const arma::mat& py_x, const arma::mat& qy_t, const arma::vec& qt) {
-
-//   // Initialize qt_x matrix with zeros (Clusters x Data Points)
-//   arma::mat qt_x(T, n_rows, arma::fill::zeros);
-
-//   // Precompute log(qt) for efficiency
-//   arma::vec log_qt = vlog(qt);
-
-//   // Iterate over each data point
-//   for (int x = 0; x < n_rows; ++x) {
-//     arma::vec kl_divs(T);
-
-//     // Compute KL divergence between data point x and each cluster
-//     for (int t = 0; t < T; ++t) {
-//       kl_divs(t) = klSingle(py_x.col(x), qy_t.col(t));
-//     }
-
-//     // Compute the adjusted divergence
-//     arma::vec l = log_qt - beta * kl_divs;
-
-//     // Identify the cluster with the maximum adjusted divergence
-//     arma::uword t_max = l.index_max(); // FIXED: Use index_max() instead of max()
-    
-//     // Assign the data point to the identified cluster
-//     qt_x(t_max, x) = 1;
-//   }
-
-//   return qt_x;
-// }
-
-// -----------------------------------------------------------------------------
-// Function to perform the qt_x_step in C++ with empty cluster protection
-// Assigns each data point to the cluster with the highest adjusted KL divergence
-// -----------------------------------------------------------------------------
 
 // [[Rcpp::export]]
 List qt_x_step_cpp(int n_rows, int T, double beta,
@@ -326,4 +288,247 @@ arma::mat qt_x_step_gib_cpp(int n_rows, int T, double beta, double alpha,
   }
 
   return qt_x;
+}
+
+// [[Rcpp::depends(RcppArmadillo)]]
+// [[Rcpp::export]]
+arma::mat qy_t_step_nystrom_cpp(const arma::mat& B,
+                                 const arma::vec& col_sums,
+                                 const arma::mat& qt_x,
+                                 const arma::vec& qt,
+                                 const arma::vec& px) {
+  
+  int n = B.n_rows;
+  
+  // Check for zeros in qt to prevent division by zero
+  arma::vec safe_qt = qt;
+  arma::uvec zero_qt = arma::find(qt == 0);
+  if(zero_qt.n_elem > 0) {
+    Rcpp::warning("Zero elements detected in 'qt'. Assigning small value.");
+    safe_qt.elem(zero_qt).fill(1e-10);
+  }
+  
+  // Compute inv_qt and qt_px
+  arma::vec inv_qt = 1.0 / safe_qt;
+  arma::mat qt_px = inv_qt * px.t(); 
+  
+  // Element-wise multiplication of qt_x by qt_px
+  arma::mat scaled_qt_x = qt_x % qt_px;
+ 
+  
+  // Compute D * scaled_qt_x.t() 
+  arma::mat scaled_qt_x_t = scaled_qt_x.t(); 
+  
+  for(int i = 0; i < n; i++) {
+    if(col_sums(i) > 1e-10) { 
+      scaled_qt_x_t.row(i) /= col_sums(i);
+    } else {
+      scaled_qt_x_t.row(i).zeros();
+    }
+  }
+  
+  // Compute B * (B^T * scaled_qt_x_t)
+  arma::mat temp = B.t() * scaled_qt_x_t;  
+  arma::mat qy_t = B * temp; 
+  
+  return qy_t;
+}
+
+// [[Rcpp::depends(RcppArmadillo)]]
+// -----------------------------------------------------------------------------
+// HELPER: Compute Cross-Entropy Matrix efficiently
+// -----------------------------------------------------------------------------
+// [[Rcpp::export]]
+arma::mat compute_cross_entropy_nystrom(const arma::mat& B,
+                                        const arma::vec& col_sums,
+                                        const arma::mat& qy_t) {
+  
+  // Log of centroids (safe)
+  arma::mat log_qy_t = arma::log(qy_t);
+  
+  // Use small value -1e100 instead of -Inf to avoid NaN propagation
+  log_qy_t.elem(arma::find(qy_t <= 1e-300)).fill(-1e100); 
+  
+  // Efficient Chain Multiplication
+  arma::mat temp = B.t() * log_qy_t;
+  arma::mat M_raw = B * temp;
+  
+  // Row normalisation
+  arma::mat M = M_raw;
+  for(unsigned int i = 0; i < M.n_rows; ++i) {
+    if(col_sums(i) > 1e-10) {
+      M.row(i) /= col_sums(i);
+    } else {
+      M.row(i).zeros();
+    }
+  }
+  
+  return M;
+}
+
+// -----------------------------------------------------------------------------
+// FAST REPLACEMENT: qt_x_step_nystrom_cpp
+// -----------------------------------------------------------------------------
+// [[Rcpp::export]]
+List qt_x_step_nystrom_cpp(int n_rows, int T, double beta,
+                           const arma::mat& B,
+                           const arma::vec& col_sums,
+                           const arma::mat& qy_t,
+                           const arma::vec& qt) {
+
+  arma::mat qt_x(T, n_rows, arma::fill::zeros);
+  arma::vec log_qt = arma::log(qt);
+  log_qt.elem(arma::find(qt <= 1e-300)).fill(-1e100);
+
+  // Precompute Cross-Entropy Matrix M
+  arma::mat M = compute_cross_entropy_nystrom(B, col_sums, qy_t);
+  
+  // Iterative procedure
+  // Set score = log q(t) + beta * M(x, t)
+  for (int x = 0; x < n_rows; ++x) {
+    arma::vec scores = log_qt + beta * M.row(x).t();
+    arma::uword t_max = scores.index_max();
+    qt_x(t_max, x) = 1;
+  }
+
+  // Rescue Empty Clusters
+  arma::vec cluster_sizes = arma::sum(qt_x, 1);
+  arma::uvec empty_clusters = arma::find(cluster_sizes == 0);
+  bool rescue_occurred = false;
+  
+  if (empty_clusters.n_elem > 0) {
+    rescue_occurred = true;
+    
+    // Current assignments
+    arma::uvec current_assignments(n_rows);
+    for (int x = 0; x < n_rows; ++x) {
+      current_assignments(x) = arma::index_max(qt_x.col(x));
+    }
+    
+    for (arma::uword i = 0; i < empty_clusters.n_elem; ++i) {
+      arma::uword empty_c = empty_clusters(i);
+      
+      // Candidate pool from clusters with size > 1
+      std::vector<arma::uword> available_obs;
+      for (int x = 0; x < n_rows; ++x) {
+        if (cluster_sizes(current_assignments(x)) > 1) {
+          available_obs.push_back(x);
+        }
+      }
+      
+      // Fallback: if all clusters size 1, allow stealing
+      if (available_obs.empty()) {
+        for(int x=0; x<n_rows; ++x) available_obs.push_back(x);
+      }
+      
+      // Pick observation with max cross entropy
+      double best_val = -arma::datum::inf;
+      arma::uword best_obs = available_obs[0];
+      
+      for (arma::uword x : available_obs) {
+        // Safe access
+        double val = M(x, empty_c);
+        if (val > best_val) {
+          best_val = val;
+          best_obs = x;
+        }
+      }
+      
+      arma::uword old_cluster = current_assignments(best_obs);
+      qt_x(old_cluster, best_obs) = 0;
+      qt_x(empty_c, best_obs) = 1;
+      
+      // Update sizes locally to prevent stealing same point twice
+      cluster_sizes(old_cluster)--;
+      cluster_sizes(empty_c)++;
+      current_assignments(best_obs) = empty_c;
+    }
+  }
+
+  return List::create(
+    Named("qt_x") = qt_x,
+    Named("rescue_occurred") = rescue_occurred
+  );
+}
+
+// -----------------------------------------------------------------------------
+// FAST REPLACEMENT: qt_x_step_beta_nystrom_cpp
+// -----------------------------------------------------------------------------
+// [[Rcpp::export]]
+List qt_x_step_beta_nystrom_cpp(int n_rows, int T,
+                                const arma::mat& B,
+                                const arma::vec& col_sums,
+                                const arma::mat& qy_t,
+                                const arma::vec& qt,
+                                const arma::mat& qt_x) {
+
+  arma::uword min_t = qt.index_min();
+  arma::uvec x_min_t = arma::find(qt_x.row(min_t) == 1);
+
+  // Safety check for single point cluster
+  if (T == 1) {
+    arma::mat qt_x_out = qt_x; 
+    qt_x_out.fill(1);
+    return List::create(Named("qt_x") = qt_x_out, Named("beta") = 1.0, Named("rescue_occurred") = false);
+  } 
+  
+  // Sefety check for empty cluster case
+  // Return beta = 10.0 and let assignment step rescue cluster
+  if (x_min_t.n_elem == 0) {
+    double default_beta = 10.0;
+    List qt_x_result = qt_x_step_nystrom_cpp(n_rows, T, default_beta, B, col_sums, qy_t, qt);
+    
+    // Pass through 
+    return List::create(
+      Named("qt_x") = qt_x_result["qt_x"],
+      Named("beta") = default_beta,
+      Named("rescue_occurred") = true 
+    );
+  }
+
+  // Precompute Cross-Entropy Matrix M
+  arma::mat M = compute_cross_entropy_nystrom(B, col_sums, qy_t);
+  
+  arma::vec beta_min(x_min_t.n_elem, arma::fill::zeros);
+  arma::vec log_qt = arma::log(qt);
+  log_qt.elem(arma::find(qt <= 1e-300)).fill(-1e100);
+
+  // Beta constraints
+  for (arma::uword i = 0; i < x_min_t.n_elem; ++i) {
+    int x = x_min_t[i];
+    
+    arma::vec denom = M.row(x).t() - M(x, min_t);
+    arma::vec num = log_qt(min_t) - log_qt;
+    
+    arma::uvec zero_denom = arma::find(arma::abs(denom) < 1e-9);
+    if (zero_denom.n_elem > 0) denom.elem(zero_denom).fill(1e-10);
+    
+    arma::vec ratios = num / denom;
+    
+    // Safety check: filter out NaNs or Infs if any
+    double max_r = -arma::datum::inf;
+    for(unsigned int k=0; k<ratios.n_elem; k++) {
+        if(std::isfinite(ratios(k)) && ratios(k) > max_r) {
+            max_r = ratios(k);
+        }
+    }
+    // No valid ratio found => default to 0
+    if(max_r == -arma::datum::inf) max_r = 0.0;
+    
+    beta_min(i) = max_r;
+  }
+
+  double beta = std::max(arma::max(beta_min) + 1e-3, 1.0);
+
+  // Update clusters using new beta
+  List qt_x_result = qt_x_step_nystrom_cpp(n_rows, T, beta, B, col_sums, qy_t, qt);
+  
+  arma::mat qt_x_new = qt_x_result["qt_x"];
+  bool rescue_occurred = qt_x_result["rescue_occurred"];
+
+  return List::create(
+    Named("qt_x") = qt_x_new,
+    Named("beta") = beta,
+    Named("rescue_occurred") = rescue_occurred
+  );
 }

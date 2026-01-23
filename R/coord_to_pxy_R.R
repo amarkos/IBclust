@@ -13,10 +13,8 @@
 #'
 #' @return A list containing py_x, px, pxy, hy, hx, hy_x, and mutual_information.
 #'
-#' @export
-
-# Source the C++ code
-#sourceCpp("src/entropy_functions.cpp")
+#' @keywords internal
+#' @noRd
 
 coord_to_pxy_R <- function(X, s, cat_cols, cont_cols, lambda,
                            contkernel = "gaussian",
@@ -25,7 +23,7 @@ coord_to_pxy_R <- function(X, s, cat_cols, cont_cols, lambda,
   bws <- rep(NA, ncol(X))
   bws[cat_cols] <- lambda
   bws[cont_cols] <- s
-
+  
   py_x <- t(np::npksum(bws = bws,
                        txdat = X,
                        exdat = X,
@@ -40,11 +38,9 @@ coord_to_pxy_R <- function(X, s, cat_cols, cont_cols, lambda,
   py_x <- sweep(py_x, 2, colSums(py_x),'/')
   px <- matrix(1/nrow(X), nrow = nrow(py_x), ncol = nrow(X))
   pxy <- t(py_x * px)
-  # cat('Calculating entropies.\n')
   hx <- entropySingle(rowSums(pxy))
   hy <- entropySingle(colSums(pxy))
   hy_x <- rowSums(pxy) %*% entropy(py_x)
-  #hy_x <- eigenMapMatMult(rowSums(pxy), entropy(py_x))
   ixy <- hy - hy_x
   px <- matrix(1/nrow(X), nrow = nrow(X), ncol = 1)
   return(list('py_x' = py_x, 'px' = px, 'pxy' = pxy, 'hy' = hy))

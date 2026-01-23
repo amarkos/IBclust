@@ -1,6 +1,7 @@
 input_checks_preprocess <- function(X, s, lambda, scale,
                                     contkernel, nomkernel,
-                                    ordkernel, cat_first){
+                                    ordkernel, cat_first,
+                                    nystrom){
   # Validate inputs
   if (!is.data.frame(X)) {
     stop("Input 'X' must be a data frame.")
@@ -86,14 +87,19 @@ input_checks_preprocess <- function(X, s, lambda, scale,
   } else if (length(catcols) == 0){
     if (length(s) == 1){
       if (s == -1){
-        s <- compute_bandwidth_cont(X, contkernel = contkernel)
+        s <- compute_bandwidth_cont(X,
+                                    contcols = contcols,
+                                    contkernel = contkernel,
+                                    nomkernel = nomkernel,
+                                    ordkernel = ordkernel,
+                                    nystrom = nystrom)
       }
     }
     bws_vec <- rep(s, length(contcols))
   } else {
     bws_vec <- compute_s_lambda(X, contcols, catcols, s, lambda,
                                 contkernel, nomkernel, ordkernel,
-                                cat_first)
+                                cat_first, nystrom)
   }
   return(list('X' = X, 'bws_vec' = bws_vec,
               'contcols' = contcols,

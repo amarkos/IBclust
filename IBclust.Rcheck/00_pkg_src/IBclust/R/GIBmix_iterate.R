@@ -23,6 +23,7 @@
 #' @return A list containing clustering results.
 #'
 #' @keywords internal
+#' @noRd
 GIBmix_iterate <- function(X, ncl, beta, alpha, randinit, conv_tol,
                            tol, py_x, hy, px, maxiter, bws_vec,
                            contcols, catcols, runs, verbose = FALSE){

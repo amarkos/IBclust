@@ -14,7 +14,7 @@ DIBmix(X, ncl, randinit = NULL,
        maxiter = 100, nstart = 100,
        contkernel = "gaussian",
        nomkernel = "aitchisonaitken", ordkernel = "liracine",
-       cat_first = FALSE, verbose = FALSE)
+       cat_first = FALSE, verbose = FALSE, nystrom = FALSE)
 }
 \arguments{
 \item{X}{A data frame containing the input data to be clustered. It should include categorical variables
@@ -43,6 +43,8 @@ DIBmix(X, ncl, randinit = NULL,
 \item{cat_first}{A logical value indicating whether bandwidth selection is prioritised for the categorical variables, instead of the continuous. Defaults to \code{FALSE}. Set to \code{TRUE} if you suspect that the continuous variables are not informative of the cluster structure. Can only be \code{TRUE} when data is of mixed-type and all bandwidths are selected automatically (i.e. \code{s = -1}, \code{lambda = -1}).}
 
 \item{verbose}{Logical. Defaults to \code{FALSE} to suppress progress messages. Change to \code{TRUE} to print.}
+
+\item{nystrom}{Logical. Indicates if the Nystr\enc{ö}{o}m approximation for kernel Gram matrices is to be used for quicker implementation. Defaults to \code{FALSE}. Change to \code{TRUE} only for data sets with over 1000 observations.}
 }
 \value{
 An object of class \code{"gibclust"} representing the final clustering result. The returned object is a list with the following components:
@@ -87,7 +89,8 @@ objective that balances information preservation and compression. Bandwidth para
 (nominal, ordinal) and continuous variables are adaptively determined if not provided. This iterative
 process identifies stable and interpretable cluster assignments by maximizing mutual information while
 controlling complexity. The method is well-suited for datasets with mixed-type variables and integrates
-information from all variable types effectively.
+information from all variable types effectively. For data sets with over a thousand observations ($n > 1000$),
+a Nystr\enc{ö}{o}m approximation of the kernel Gram matrix can be used for a quicker implementation \insertCite{williams2000using}{IBclust}.
 
 The following kernel functions can be used to estimate densities for the clustering procedure. For continuous variables:
 
@@ -168,7 +171,7 @@ table(result_mix$Cluster)
 # Example 2: Comparing cat_first parameter
 # When categorical variables are more informative
 result_cat_first <- DIBmix(X = data_mix, ncl = 3,
-                           cat_first = TRUE,  # Prioritize categorical variables
+                           cat_first = TRUE,  # Prioritise categorical variables
                            nstart = 5)
 
 # When continuous variables are more informative (default)
@@ -239,6 +242,8 @@ Efthymios Costa, Ioanna Papatsouma, Angelos Markos
 \insertRef{wang1981class}{IBclust}
 
 \insertRef{epanechnikov1969non}{IBclust}
+
+\insertRef{williams2000using}{IBclust}
 }
 }
 \keyword{clustering}

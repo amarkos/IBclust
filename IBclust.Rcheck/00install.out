@@ -1,15 +1,10 @@
 * installing *source* package ‘IBclust’ ...
-** this is package ‘IBclust’ version ‘1.2.1’
+** this is package ‘IBclust’ version ‘1.3’
 ** using staged installation
 ** libs
-using C++ compiler: ‘Apple clang version 17.0.0 (clang-1700.4.4.1)’
-using SDK: ‘MacOSX26.1.sdk’
+using C++ compiler: ‘Apple clang version 17.0.0 (clang-1700.6.3.2)’
+using SDK: ‘MacOSX26.2.sdk’
 clang++ -arch arm64 -std=gnu++17 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I'/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/Rcpp/include' -I'/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/RcppArmadillo/include' -I'/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/RcppEigen/include' -I/opt/R/arm64/include    -fPIC  -falign-functions=64 -Wall -g -O2   -c RcppExports.cpp -o RcppExports.o
-In file included from RcppExports.cpp:4:
-In file included from /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/RcppArmadillo/include/RcppArmadillo.h:29:
-/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/RcppArmadillo/include/RcppArmadillo/version/arma.h:71:17: warning: Using fallback compilation with Armadillo 14.6.3. Please consider defining -DARMA_USE_CURRENT. See GitHub issue #475 for more. [-W#pragma-messages]
-   71 |         #pragma message("Using fallback compilation with Armadillo 14.6.3. Please consider defining -DARMA_USE_CURRENT. See GitHub issue #475 for more.")
-      |                 ^
 In file included from RcppExports.cpp:5:
 In file included from /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/RcppEigen/include/RcppEigen.h:25:
 In file included from /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/RcppEigen/include/RcppEigenForward.h:29:
@@ -43,7 +38,7 @@ In file included from /Library/Frameworks/R.framework/Versions/4.5-arm64/Resourc
 /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/RcppEigen/include/unsupported/Eigen/src/SparseExtra/MarketIO.h:246:7: warning: variable 'count' set but not used [-Wunused-but-set-variable]
   246 |   int count = 0;
       |       ^
-6 warnings generated.
+5 warnings generated.
 clang++ -arch arm64 -std=gnu++17 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I'/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/Rcpp/include' -I'/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/RcppArmadillo/include' -I'/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/RcppEigen/include' -I/opt/R/arm64/include    -fPIC  -falign-functions=64 -Wall -g -O2   -c entropy_functions.cpp -o entropy_functions.o
 In file included from entropy_functions.cpp:3:
 In file included from /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/RcppEigen/include/RcppEigen.h:25:
@@ -80,19 +75,7 @@ In file included from /Library/Frameworks/R.framework/Versions/4.5-arm64/Resourc
       |       ^
 5 warnings generated.
 clang++ -arch arm64 -std=gnu++17 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I'/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/Rcpp/include' -I'/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/RcppArmadillo/include' -I'/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/RcppEigen/include' -I/opt/R/arm64/include    -fPIC  -falign-functions=64 -Wall -g -O2   -c ib_dist.cpp -o ib_dist.o
-In file included from ib_dist.cpp:2:
-In file included from /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/RcppArmadillo/include/RcppArmadillo.h:29:
-/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/RcppArmadillo/include/RcppArmadillo/version/arma.h:71:17: warning: Using fallback compilation with Armadillo 14.6.3. Please consider defining -DARMA_USE_CURRENT. See GitHub issue #475 for more. [-W#pragma-messages]
-   71 |         #pragma message("Using fallback compilation with Armadillo 14.6.3. Please consider defining -DARMA_USE_CURRENT. See GitHub issue #475 for more.")
-      |                 ^
-1 warning generated.
 clang++ -arch arm64 -std=gnu++17 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I'/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/Rcpp/include' -I'/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/RcppArmadillo/include' -I'/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/RcppEigen/include' -I/opt/R/arm64/include    -fPIC  -falign-functions=64 -Wall -g -O2   -c qt_x_step.cpp -o qt_x_step.o
-In file included from qt_x_step.cpp:1:
-In file included from /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/RcppArmadillo/include/RcppArmadillo.h:29:
-/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/RcppArmadillo/include/RcppArmadillo/version/arma.h:71:17: warning: Using fallback compilation with Armadillo 14.6.3. Please consider defining -DARMA_USE_CURRENT. See GitHub issue #475 for more. [-W#pragma-messages]
-   71 |         #pragma message("Using fallback compilation with Armadillo 14.6.3. Please consider defining -DARMA_USE_CURRENT. See GitHub issue #475 for more.")
-      |                 ^
-1 warning generated.
 clang++ -arch arm64 -std=gnu++17 -dynamiclib -Wl,-headerpad_max_install_names -undefined dynamic_lookup -L/Library/Frameworks/R.framework/Resources/lib -L/opt/R/arm64/lib -o IBclust.so RcppExports.o entropy_functions.o ib_dist.o qt_x_step.o -F/Library/Frameworks/R.framework/.. -framework R
 installing to /Users/ec1917/Documents/IBclust/IBclust.Rcheck/00LOCK-IBclust/00new/IBclust/libs
 ** R

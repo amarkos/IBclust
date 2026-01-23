@@ -1,7 +1,128 @@
+find_s_nn <- function(X, contcols, contkernel, nomkernel, ordkernel,
+                      n_bw_reps = 100, s_min = 0.1, s_max = 100,
+                      nystrom) {
+  ratio_thresh <- ifelse(contkernel == "gaussian", 1.1, 1.04)
+  if (nystrom) {
+    n_bw_sample <- min(nrow(X), 1000)
+    compute_avg <- function(s_val) {
+      avg_py_x_reps <- replicate(n_bw_reps, {
+        bw_sample_idx <- sample(nrow(X), n_bw_sample)
+        X_bw <- X[bw_sample_idx, ]
+        
+        pxy_list_cont <- coord_to_pxy_R(
+          as.data.frame(X_bw[, contcols]),
+          s = s_val,
+          cat_cols = c(),
+          cont_cols = seq_along(contcols),
+          lambda = 0,
+          contkernel = contkernel,
+          nomkernel = nomkernel,
+          ordkernel = ordkernel
+        )
+        pyx_cont <- pxy_list_cont$py_x
+        nearest_neighbours_ratios <- apply(pyx_cont, 2, function(x) max(x) / max(x[-which.max(x)]))
+        mean(nearest_neighbours_ratios)
+      })
+      median(avg_py_x_reps[is.finite(avg_py_x_reps)])
+    }
+  } else {
+    compute_avg <- function(s_val) {
+      pxy_list_cont <- coord_to_pxy_R(
+        as.data.frame(X[, contcols]),
+        s = s_val,
+        cat_cols = c(),
+        cont_cols = seq_along(contcols),
+        lambda = 0,
+        contkernel = contkernel,
+        nomkernel = nomkernel,
+        ordkernel = ordkernel
+      )
+      pyx_cont <- pxy_list_cont$py_x
+      nearest_neighbours_ratios <- apply(pyx_cont, 2, function(x) max(x) / max(x[-which.max(x)]))
+      if (any(!is.finite(nearest_neighbours_ratios))) return(Inf)
+      mean(nearest_neighbours_ratios)
+    }
+  }
+  result <- tryCatch({
+    root <- uniroot(
+      f = function(s) compute_avg(s) - ratio_thresh,
+      interval = c(s_min, s_max),
+      tol = 0.05
+    )
+    floor(root$root * 10) / 10
+  }, error = function(e) {
+    if (compute_avg(s_max) >= ratio_thresh) s_max else s_min
+  })
+  return(result)
+}
+
+
+find_s_fn <- function(X, contcols, catcols, contkernel, nomkernel, ordkernel,
+                      cat_rel_imp, n_bw_reps = 100, s_min = 0.1, s_max = 100,
+                      nystrom) {
+  thresh <- (cat_rel_imp)^(length(catcols))
+  if (nystrom) {
+    n_bw_sample <- min(nrow(X), 1000)
+    compute_avg <- function(s_val) {
+      avg_py_x_reps <- replicate(n_bw_reps, {
+        bw_sample_idx <- sample(nrow(X), n_bw_sample)
+        X_bw <- X[bw_sample_idx, ]
+        pxy_list_cont <- coord_to_pxy_R(
+          as.data.frame(X_bw[, contcols]),
+          s = s_val,
+          cat_cols = c(),
+          cont_cols = seq_along(contcols),
+          lambda = 0,
+          contkernel = contkernel,
+          nomkernel = nomkernel,
+          ordkernel = ordkernel
+        )
+        pyx_cont <- pxy_list_cont$py_x
+        furthest_neighbours_ratios <- apply(pyx_cont, 2, function(x) max(x) / min(x[x > 0]))
+        mean(furthest_neighbours_ratios)
+      })
+      if (all(!is.finite(avg_py_x_reps))) return(Inf)
+      median(avg_py_x_reps[is.finite(avg_py_x_reps)])
+    }
+  } else {
+    compute_avg <- function(s_val) {
+      pxy_list_cont <- coord_to_pxy_R(
+        as.data.frame(X[, contcols]),
+        s = s_val,
+        cat_cols = c(),
+        cont_cols = seq_along(contcols),
+        lambda = 0,
+        contkernel = contkernel,
+        nomkernel = nomkernel,
+        ordkernel = ordkernel
+      )
+      pyx_cont <- pxy_list_cont$py_x
+      avg_max_min_py_x <- mean(apply(pyx_cont, 2, function(x) max(x) / min(x[x > 0])))
+      if (!is.finite(avg_max_min_py_x)) return(Inf)
+      avg_max_min_py_x
+    }
+  }
+  result <- tryCatch({
+    root <- uniroot(
+      f = function(s) compute_avg(s) - thresh,
+      interval = c(s_min, s_max),
+      tol = 0.05
+    )
+    s_candidate <- ceiling(root$root * 10) / 10
+    while (s_candidate > s_min && compute_avg(s_candidate - 0.1) < thresh) {
+      s_candidate <- s_candidate - 0.1
+    }
+    s_candidate
+  }, error = function(e) {
+    if (compute_avg(s_min) < thresh) s_min else s_max
+  })
+  return(result)
+}
+
 # Helper function to preprocess continuous data
 preprocess_cont_data <- function(X) {
   X <- data.frame(X)
-  X <- scale(X)  # Standardize continuous variables
+  X <- scale(X) 
   return(X)
 }
 
@@ -15,22 +136,12 @@ preprocess_cat_data <- function(X) {
 }
 
 # Helper function to compute bandwidth (s) for continuous data
-compute_bandwidth_cont <- function(X, contkernel){
-  s_seq <- seq(0.1, 100, by = 1e-1)
-  for (s_val in s_seq) {
-    pxy_list_cont <- coord_to_pxy_R(as.data.frame(X), s = s_val,
-                                    cat_cols = c(), cont_cols = seq_len(ncol(X)),
-                                    lambda = 0,
-                                    contkernel = contkernel)
-    pyx_cont <- pxy_list_cont$py_x
-    nearest_neighbours_ratios <- apply(pyx_cont, 2, FUN = function(x) max(x)/max(x[-which.max(x)]))
-    if (any(nearest_neighbours_ratios == Inf)) next
-    avg_py_x <- mean(nearest_neighbours_ratios)
-    ratio_thresh <- ifelse(contkernel == "gaussian", 1.1, 1.04)
-    if (avg_py_x < ratio_thresh) {
-      return(s_val - 1e-1)
-    }
-  }
+compute_bandwidth_cont <- function(X, contcols, contkernel,
+                                   nomkernel, ordkernel, nystrom){
+  n_bw_reps <- 100
+  s_val <- find_s_nn(X, contcols, contkernel, nomkernel, ordkernel,
+                     n_bw_reps = n_bw_reps, s_min = 0.1, s_max = 100,
+                     nystrom)
   return(s_val)
 }
 
@@ -61,7 +172,7 @@ compute_lambda_cat <- function(X, nomkernel, ordkernel){
 # Helper function to compute s and lambda to equalise variable contributions
 compute_s_lambda <- function(X, contcols, catcols, s, lambda,
                              contkernel, nomkernel, ordkernel,
-                             cat_first){
+                             cat_first, nystrom){
   cat_rel_imp <- 2
   # Get ratio of categorical variables
   cat_ratio <- length(catcols)/(ncol(X))
@@ -77,35 +188,31 @@ compute_s_lambda <- function(X, contcols, catcols, s, lambda,
   
   # Bandwidth values
   if (!cat_first){
-    if (length(s) == 1){
-      if (s == -1){
-        s_seq <- seq(0.1, 10, by=1e-1)
-        for (s_val in s_seq){
-          pxy_list_cont <- coord_to_pxy_R(as.data.frame(X[, contcols]), s = s_val, cat_cols = c(),
-                                          cont_cols = c(1:length(contcols)),
-                                          lambda = 0,
-                                          contkernel = contkernel,
-                                          nomkernel = nomkernel,
-                                          ordkernel = ordkernel)
-          pyx_cont <- pxy_list_cont$py_x
-          # Filter out infinites caused by division by zero (e.g. Epanechnikov kernel)
-          nearest_neighbours_ratios <- apply(pyx_cont, 2, FUN = function(x) max(x)/max(x[-which.max(x)]))
-          if (any(nearest_neighbours_ratios == Inf)) next
-          avg_py_x <- mean(nearest_neighbours_ratios)
-          ratio_thresh <- ifelse(contkernel == "gaussian", 1.1, 1.04)
-          if (avg_py_x < ratio_thresh){
-            s <- s_val - 1e-1
-            avg_max_min_py_x <- mean(apply(pyx_cont, 2, FUN = function(x) max(x)/min(x[which(x > 0)])))
-            break
-          }
-        }
-      }
-    } else {
-      pxy_list_cont <- coord_to_pxy_R(as.data.frame(X[, contcols]), s = s, cat_cols = c(),
-                                      cont_cols = c(1:length(contcols)),
-                                      lambda = 0)
-      pyx_cont <- pxy_list_cont$py_x
+    if (length(s) == 1 && s == -1){
+      n_bw_reps <- 100
+      s <- find_s_nn(X, contcols, contkernel, nomkernel, ordkernel,
+                     n_bw_reps = n_bw_reps, s_min = 0.1, s_max = 100,
+                     nystrom)
+      n_bw_sample <- min(nrow(X), 1000)
+      avg_py_x_reps <- replicate(n_bw_reps, {
+        bw_sample_idx <- sample(nrow(X), n_bw_sample)
+        X_bw <- X[bw_sample_idx, ]
+        pxy_list_cont <- coord_to_pxy_R(
+          as.data.frame(X_bw[, contcols]),
+          s = s,
+          cat_cols = c(),
+          cont_cols = c(1:length(contcols)),
+          lambda = 0,
+          contkernel = contkernel,
+          nomkernel = nomkernel,
+          ordkernel = ordkernel)
+        pyx_cont <- pxy_list_cont$py_x
+        furthest_neighbours_ratios <- apply(pyx_cont, 2, FUN = function(x) max(x)/min(x[which(x > 0)]))
+        mean(furthest_neighbours_ratios)
+      })
+      avg_max_min_py_x <- median(avg_py_x_reps[is.finite(avg_py_x_reps)])
     }
+    
     if (length(lambda) == 1 && lambda == -1){
       cat_rel_imp <- min(2, avg_max_min_py_x^(1/length(contcols)))
       # Check if cat_rel_imp is 2 & cat_ratio > 0.5
@@ -146,23 +253,14 @@ compute_s_lambda <- function(X, contcols, catcols, s, lambda,
         lambda[inxs] <- (1 / (cat_rel_imp_wvr/2))^(1 / (num_lvls_vec[inxs] - 1))
       }
     }
-    s_seq <- seq(0.1, 10, by=1e-1)
-    for (s_val in s_seq){
-      pxy_list_cont <- coord_to_pxy_R(as.data.frame(X[, contcols]), s = s_val, cat_cols = c(),
-                                      cont_cols = c(1:length(contcols)),
-                                      lambda = 0, contkernel, nomkernel, ordkernel)
-      pyx_cont <- pxy_list_cont$py_x
-      avg_max_min_py_x <- mean(apply(pyx_cont, 2, FUN = function(x) max(x)/min(x[which(x > 0)])))
-      if (avg_max_min_py_x < (cat_rel_imp)^(length(catcols))){
-        s <- s_val
-        break
-      }
-    }
+    s <- find_s_fn(X, contcols, catcols, contkernel, nomkernel, ordkernel,
+                   cat_rel_imp, n_bw_reps = 100, s_min = 0.1, s_max = 100,
+                   nystrom)
   }
-  
   bw <- rep(NA, ncol(X))
   bw[contcols] <- s
   bw[catcols] <- lambda
   bws_vec <- bw
   return(bws_vec)
 }
+

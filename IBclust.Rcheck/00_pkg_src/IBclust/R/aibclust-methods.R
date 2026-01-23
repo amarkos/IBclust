@@ -7,10 +7,9 @@
 #' @aliases print.aibclust summary.aibclust print.summary.aibclust plot.aibclust
 #' @keywords methods
 #' @importFrom graphics plot points barplot
-NULL
+#' @keywords internal
+#' @noRd
 
-#' @rdname aibclust-methods
-#' @export
 print.aibclust <- function(x, ...) {
   header <- "Hierarchical clustering with AIBmix"
   cat(header, "\n", strrep("-", nchar(header)), "\n", sep = "")
@@ -55,10 +54,11 @@ print.aibclust <- function(x, ...) {
   invisible(x)
 }
 
-#' @rdname aibclust-methods
 #' @param k Optional integer vector of cluster counts (cuts) to summarise (same as \code{m}).
 #' @param m Optional synonym for \code{k}; the number of clusters.
-#' @export
+#' @param object An aibclust object
+#' @keywords internal
+#' @noRd
 summary.aibclust <- function(object, k = NULL, m = NULL, ...) {
   n <- object$n
   # vectors (guard against NULL)
@@ -150,7 +150,10 @@ summary.aibclust <- function(object, k = NULL, m = NULL, ...) {
   out
 }
 
-#' @export
+#' @rdname aibclust-methods
+#' @param x an \code{aibclust} object.
+#' @keywords internal
+#' @noRd
 print.summary.aibclust <- function(x, ...) {
   header <- "Summary of AIBmix clustering"
   cat(header, "\n", strrep("-", nchar(header)), "\n", sep = "")
@@ -217,8 +220,8 @@ print.summary.aibclust <- function(x, ...) {
 #' @param main optional title.
 #' @param labels logical; show labels on dendrogram.
 #' @param ... passed to graphics.
-#' @rdname aibclust-methods
-#' @export
+#' @keywords internal
+#' @noRd
 plot.aibclust <- function(x, type = c("dendrogram", "info"), main = NULL, labels = TRUE, ...) {
   type <- match.arg(type)
   

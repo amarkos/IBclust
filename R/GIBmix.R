@@ -3,7 +3,7 @@ GIBmix <- function(X, ncl, beta, alpha, randinit = NULL,
                    maxiter = 100, nstart = 100,
                    conv_tol = 1e-5, contkernel = "gaussian",
                    nomkernel = "aitchisonaitken", ordkernel = "liracine",
-                   cat_first = FALSE, verbose = FALSE) {
+                   cat_first = FALSE, verbose = FALSE, nystrom = FALSE) {
   
   # Validate inputs
   if (!is.numeric(ncl) || ncl <= 1 || ncl != round(ncl)) {
@@ -27,31 +27,58 @@ GIBmix <- function(X, ncl, beta, alpha, randinit = NULL,
   if (!is.null(randinit) && (!is.numeric(randinit) || length(randinit) != nrow(X))) {
     stop("'randinit' must be a numeric vector with length equal to the number of rows in 'X', or NULL.")
   }
+  if (nrow(X) > 1000 & nystrom == FALSE){
+    warning("Number of observations exceeds 1000; perhaps consider using the Nystr\u00f6m approximation (nystrom = TRUE).")
+  }
+  if (nrow(X) <= 1000 & nystrom == TRUE){
+    stop("Nystr\u00f6m approximation cannot be used if number of observations is not more than 1000.")
+  }
   prep_list <- input_checks_preprocess(X, s, lambda,
                                        scale, contkernel, nomkernel,
-                                       ordkernel, cat_first)
+                                       ordkernel, cat_first,
+                                       nystrom = nystrom)
   X <- prep_list$X
   bws_vec <- prep_list$bws
   contcols <- prep_list$contcols
   catcols <- prep_list$catcols
   
   # Construct joint density with final bandwidths
-  pxy_list <- coord_to_pxy_R(as.data.frame(X),
-                             s = if (length(contcols) > 0){
-                               bws_vec[contcols]
-                             } else {
-                               -1
-                             },
-                             lambda = if (length(catcols) > 0){
-                               bws_vec[catcols]
-                             } else {
-                               -1
-                             },
-                             cat_cols = catcols,
-                             cont_cols = contcols,
-                             contkernel = contkernel,
-                             nomkernel = nomkernel,
-                             ordkernel = ordkernel)
+  if (nystrom){
+    pxy_list <- coord_to_pxy_nystrom_R(as.data.frame(X),
+                                       s = if (length(contcols) > 0){
+                                         bws_vec[contcols]
+                                       } else {
+                                         -1
+                                       },
+                                       lambda = if (length(catcols) > 0){
+                                         bws_vec[catcols]
+                                       } else {
+                                         -1
+                                       },
+                                       cat_cols = catcols,
+                                       cont_cols = contcols,
+                                       contkernel = contkernel,
+                                       nomkernel = nomkernel,
+                                       ordkernel = ordkernel,
+                                       n_landmarks = NULL)
+  } else {
+    pxy_list <- coord_to_pxy_R(as.data.frame(X),
+                               s = if (length(contcols) > 0){
+                                 bws_vec[contcols]
+                               } else {
+                                 -1
+                               },
+                               lambda = if (length(catcols) > 0){
+                                 bws_vec[catcols]
+                               } else {
+                                 -1
+                               },
+                               cat_cols = catcols,
+                               cont_cols = contcols,
+                               contkernel = contkernel,
+                               nomkernel = nomkernel,
+                               ordkernel = ordkernel)
+  }
   
   py_x <- pxy_list$py_x
   px <- pxy_list$px

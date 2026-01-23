@@ -8,12 +8,9 @@
 #' @keywords methods
 #' @seealso \code{\link{DIBmix}}, \code{\link{IBmix}}, \code{\link{GIBmix}}
 #' @importFrom graphics barplot points
-NULL
+#' @keywords internal
+#' @noRd
 
-# ---- S3: print() -------------------------------------------------------------
-
-#' @rdname gibclust-methods
-#' @export
 print.gibclust <- function(x, ...) {
   # Header depends on alpha
   header <- if (isTRUE(all.equal(x$alpha, 1))) {
@@ -83,7 +80,9 @@ print.gibclust <- function(x, ...) {
 # ---- S3: summary() -----------------------------------------------------------
 
 #' @rdname gibclust-methods
-#' @export
+#' @param object A gibclust object
+#' @keywords internal
+#' @noRd
 summary.gibclust <- function(object, ...) {
   variant <- if (isTRUE(all.equal(object$alpha, 0))) {
     "DIBmix"
@@ -160,7 +159,8 @@ summary.gibclust <- function(object, ...) {
 }
 
 #' @rdname gibclust-methods
-#' @export
+#' @keywords internal
+#' @noRd
 print.summary.gibclust <- function(x, ...) {
   header <- switch(x$variant,
                    "DIBmix" = "Summary of DIBmix clustering",
@@ -236,8 +236,8 @@ print.summary.gibclust <- function(x, ...) {
 #'   or "beta" (log(beta) trajectory; DIBmix only).
 #' @param main Optional title.
 #' @param ... Additional arguments passed to base plotting functions.
-#' @rdname gibclust-methods
-#' @export
+#' @keywords internal
+#' @noRd
 plot.gibclust <- function(x, type = c("sizes", "info", "beta"), main = NULL, ...) {
   type <- match.arg(type)
   

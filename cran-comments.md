@@ -1,3 +1,7 @@
+## Submission 1.3
+* Added an implementation of the Nyström approximation for large kernel Gram matrices.
+* Optimised continuous bandwidth search based on average nearest and furthest neighbour heuristics.
+
 ## Submission 1.2.1
 * Added logo.
 * Added vignette.
