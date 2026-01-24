@@ -17,6 +17,18 @@ mutual_information <- function(p_xy, base = 2.0) {
     .Call(`_IBclust_mutual_information`, p_xy, base)
 }
 
+js_divergence_nystrom <- function(p_z_i, p_z_j) {
+    .Call(`_IBclust_js_divergence_nystrom`, p_z_i, p_z_j)
+}
+
+make_IB_distmat_nystrom_cpp <- function(B, col_sums) {
+    .Call(`_IBclust_make_IB_distmat_nystrom_cpp`, B, col_sums)
+}
+
+mutual_information_nystrom_cpp <- function(B, col_sums) {
+    .Call(`_IBclust_mutual_information_nystrom_cpp`, B, col_sums)
+}
+
 klSingle <- function(p, q) {
     .Call(`_IBclust_klSingle`, p, q)
 }

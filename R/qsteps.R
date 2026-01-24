@@ -66,3 +66,20 @@ qt_x_step_gib <- function(n_rows, T, beta, alpha, py_x, qy_t, qt) {
     ))
   }
 }
+
+# Helper function to check Nystrom validity
+check_nystrom_valid <- function(B, col_sums, tol = 1e-10) {
+  n <- nrow(B)
+  # Too small col_sums check
+  if (any(col_sums < tol)) {
+    return(FALSE)
+  }
+  # Sample check for valid cond dists
+  for (i in seq_len(min(n, 100))) {
+    unnorm <- as.vector(B %*% B[i, ])
+    if (sum(unnorm) < tol) {
+      return(FALSE)
+    }
+  }
+  return(TRUE)
+}

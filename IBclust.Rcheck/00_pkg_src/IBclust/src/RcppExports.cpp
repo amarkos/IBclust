@@ -58,6 +58,42 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// js_divergence_nystrom
+double js_divergence_nystrom(const arma::vec& p_z_i, const arma::vec& p_z_j);
+RcppExport SEXP _IBclust_js_divergence_nystrom(SEXP p_z_iSEXP, SEXP p_z_jSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::vec& >::type p_z_i(p_z_iSEXP);
+    Rcpp::traits::input_parameter< const arma::vec& >::type p_z_j(p_z_jSEXP);
+    rcpp_result_gen = Rcpp::wrap(js_divergence_nystrom(p_z_i, p_z_j));
+    return rcpp_result_gen;
+END_RCPP
+}
+// make_IB_distmat_nystrom_cpp
+arma::mat make_IB_distmat_nystrom_cpp(const arma::mat& B, const arma::vec& col_sums);
+RcppExport SEXP _IBclust_make_IB_distmat_nystrom_cpp(SEXP BSEXP, SEXP col_sumsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::mat& >::type B(BSEXP);
+    Rcpp::traits::input_parameter< const arma::vec& >::type col_sums(col_sumsSEXP);
+    rcpp_result_gen = Rcpp::wrap(make_IB_distmat_nystrom_cpp(B, col_sums));
+    return rcpp_result_gen;
+END_RCPP
+}
+// mutual_information_nystrom_cpp
+double mutual_information_nystrom_cpp(const arma::mat& B, const arma::vec& col_sums);
+RcppExport SEXP _IBclust_mutual_information_nystrom_cpp(SEXP BSEXP, SEXP col_sumsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::mat& >::type B(BSEXP);
+    Rcpp::traits::input_parameter< const arma::vec& >::type col_sums(col_sumsSEXP);
+    rcpp_result_gen = Rcpp::wrap(mutual_information_nystrom_cpp(B, col_sums));
+    return rcpp_result_gen;
+END_RCPP
+}
 // klSingle
 double klSingle(const arma::vec& p, const arma::vec& q);
 RcppExport SEXP _IBclust_klSingle(SEXP pSEXP, SEXP qSEXP) {
@@ -230,6 +266,9 @@ static const R_CallMethodDef CallEntries[] = {
     {"_IBclust_make_IB_distmat", (DL_FUNC) &_IBclust_make_IB_distmat, 1},
     {"_IBclust_js_divergence", (DL_FUNC) &_IBclust_js_divergence, 2},
     {"_IBclust_mutual_information", (DL_FUNC) &_IBclust_mutual_information, 2},
+    {"_IBclust_js_divergence_nystrom", (DL_FUNC) &_IBclust_js_divergence_nystrom, 2},
+    {"_IBclust_make_IB_distmat_nystrom_cpp", (DL_FUNC) &_IBclust_make_IB_distmat_nystrom_cpp, 2},
+    {"_IBclust_mutual_information_nystrom_cpp", (DL_FUNC) &_IBclust_mutual_information_nystrom_cpp, 2},
     {"_IBclust_klSingle", (DL_FUNC) &_IBclust_klSingle, 2},
     {"_IBclust_vlog", (DL_FUNC) &_IBclust_vlog, 1},
     {"_IBclust_qt_x_step_cpp", (DL_FUNC) &_IBclust_qt_x_step_cpp, 6},

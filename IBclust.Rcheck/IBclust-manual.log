@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025) (preloaded format=pdflatex 2025.9.16)  24 JAN 2026 12:39
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025) (preloaded format=pdflatex 2025.9.16)  24 JAN 2026 15:00
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -289,7 +289,7 @@ File: t1ptm.fd 2001/06/04 font definitions for T1/ptm.
 ) (/Users/ec1917/Library/TinyTeX/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
 File: l3backend-pdftex.def 2025-06-09 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count315
-) (/private/var/folders/db/ybnxx8ys5jx5ndj7l2g3ztbh0000gp/T/RtmpwbKmlq/Rd2pdf103135e7512ca/Rd2.aux)
+) (/private/var/folders/db/ybnxx8ys5jx5ndj7l2g3ztbh0000gp/T/RtmpqKmYFi/Rd2pdf394f13d0c27f/Rd2.aux)
 \openout1 = `Rd2.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 8.
@@ -311,7 +311,7 @@ LaTeX Font Info:    ... okay on input line 8.
 LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 8.
 LaTeX Font Info:    ... okay on input line 8.
 Package hyperref Info: Link coloring ON on input line 8.
- (/private/var/folders/db/ybnxx8ys5jx5ndj7l2g3ztbh0000gp/T/RtmpwbKmlq/Rd2pdf103135e7512ca/Rd2.out) (/private/var/folders/db/ybnxx8ys5jx5ndj7l2g3ztbh0000gp/T/RtmpwbKmlq/Rd2pdf103135e7512ca/Rd2.out)
+ (/private/var/folders/db/ybnxx8ys5jx5ndj7l2g3ztbh0000gp/T/RtmpqKmYFi/Rd2pdf394f13d0c27f/Rd2.out) (/private/var/folders/db/ybnxx8ys5jx5ndj7l2g3ztbh0000gp/T/RtmpqKmYFi/Rd2pdf394f13d0c27f/Rd2.out)
 \@outlinefile=\write4
 \openout4 = `Rd2.out'.
 
@@ -332,7 +332,7 @@ File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 LaTeX Font Info:    Trying to load font information for U+msb on input line 28.
  (/Users/ec1917/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-) (/private/var/folders/db/ybnxx8ys5jx5ndj7l2g3ztbh0000gp/T/RtmpwbKmlq/Rd2pdf103135e7512ca/Rd2.toc)
+) (/private/var/folders/db/ybnxx8ys5jx5ndj7l2g3ztbh0000gp/T/RtmpqKmYFi/Rd2pdf394f13d0c27f/Rd2.toc)
 \tf@toc=\write5
 \openout5 = `Rd2.toc'.
 
@@ -491,7 +491,7 @@ Overfull \hbox (20.22874pt too wide) in paragraph at lines 1074--1074
 No file Rd2.ind.
 
 
-[21] (/private/var/folders/db/ybnxx8ys5jx5ndj7l2g3ztbh0000gp/T/RtmpwbKmlq/Rd2pdf103135e7512ca/Rd2.aux)
+[21] (/private/var/folders/db/ybnxx8ys5jx5ndj7l2g3ztbh0000gp/T/RtmpqKmYFi/Rd2pdf394f13d0c27f/Rd2.aux)
  ***********
 LaTeX2e <2025-06-01> patch level 1
 L3 programming layer <2025-08-13>
@@ -501,7 +501,7 @@ Package rerunfilecheck Info: File `Rd2.out' has not changed.
  ) 
 Here is how much of TeX's memory you used:
  10355 strings out of 469781
- 157194 string characters out of 5481415
+ 157183 string characters out of 5481415
  562683 words of memory out of 5000000
  38510 multiletter control sequences out of 15000+600000
  662667 words of font info for 82 fonts, out of 8000000 for 9000
