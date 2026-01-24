@@ -532,3 +532,43 @@ List qt_x_step_beta_nystrom_cpp(int n_rows, int T,
     Named("rescue_occurred") = rescue_occurred
   );
 }
+
+// -----------------------------------------------------------------------------
+// Nystrom version of qt_x_step_gib 
+// -----------------------------------------------------------------------------
+// [[Rcpp::export]]
+arma::mat qt_x_step_gib_nystrom_cpp(int n_rows, int T, double beta, double alpha,
+                                     const arma::mat& B,
+                                     const arma::vec& col_sums,
+                                     const arma::mat& qy_t,
+                                     const arma::vec& qt) {
+
+  // Initialize qt_x matrix 
+  arma::mat qt_x(T, n_rows, arma::fill::zeros);
+
+  // Precompute log(qt)
+  arma::vec log_qt = arma::log(qt);
+  log_qt.elem(arma::find(qt <= 1e-300)).fill(-1e100);
+
+  // Precompute Cross-Entropy Matrix M
+  arma::mat M = compute_cross_entropy_nystrom(B, col_sums, qy_t);
+
+  for (int x = 0; x < n_rows; ++x) {
+    // GIB score: log q(t) + beta * M(x,t)
+    arma::vec scores = (log_qt + beta * M.row(x).t()) / alpha;
+    
+    // Numerical stability fix
+    double max_score = scores.max();
+    arma::vec l = arma::exp(scores - max_score);
+
+    // Normalise
+    double S = arma::accu(l);
+    if (S > 0.0) {
+      qt_x.col(x) = l / S;
+    } else {
+      // fallback to uniform if underflow/zero
+      qt_x.col(x).fill(1.0 / T);
+    }
+  }
+  return qt_x;
+}

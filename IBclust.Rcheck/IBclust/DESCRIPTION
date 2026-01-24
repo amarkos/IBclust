@@ -30,9 +30,9 @@ LinkingTo: Rcpp, RcppArmadillo, RcppEigen
 RoxygenNote: 7.3.3
 RdMacros: Rdpack
 NeedsCompilation: yes
-Packaged: 2026-01-23 14:10:05 UTC; ec1917
+Packaged: 2026-01-24 12:39:17 UTC; ec1917
 Author: Efthymios Costa [aut],
   Ioanna Papatsouma [aut],
   Angelos Markos [aut, cre]
 Maintainer: Angelos Markos <amarkos@gmail.com>
-Built: R 4.5.1; aarch64-apple-darwin20; 2026-01-23 14:10:18 UTC; unix
+Built: R 4.5.1; aarch64-apple-darwin20; 2026-01-24 12:39:33 UTC; unix

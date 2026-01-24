@@ -2,58 +2,62 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 entropySingle <- function(p) {
-    .Call('_IBclust_entropySingle', PACKAGE = 'IBclust', p)
+    .Call(`_IBclust_entropySingle`, p)
 }
 
 make_IB_distmat <- function(p_xy) {
-    .Call('_IBclust_make_IB_distmat', PACKAGE = 'IBclust', p_xy)
+    .Call(`_IBclust_make_IB_distmat`, p_xy)
 }
 
 js_divergence <- function(p, q) {
-    .Call('_IBclust_js_divergence', PACKAGE = 'IBclust', p, q)
+    .Call(`_IBclust_js_divergence`, p, q)
 }
 
 mutual_information <- function(p_xy, base = 2.0) {
-    .Call('_IBclust_mutual_information', PACKAGE = 'IBclust', p_xy, base)
+    .Call(`_IBclust_mutual_information`, p_xy, base)
 }
 
 klSingle <- function(p, q) {
-    .Call('_IBclust_klSingle', PACKAGE = 'IBclust', p, q)
+    .Call(`_IBclust_klSingle`, p, q)
 }
 
 vlog <- function(x) {
-    .Call('_IBclust_vlog', PACKAGE = 'IBclust', x)
+    .Call(`_IBclust_vlog`, x)
 }
 
 qt_x_step_cpp <- function(n_rows, T, beta, py_x, qy_t, qt) {
-    .Call('_IBclust_qt_x_step_cpp', PACKAGE = 'IBclust', n_rows, T, beta, py_x, qy_t, qt)
+    .Call(`_IBclust_qt_x_step_cpp`, n_rows, T, beta, py_x, qy_t, qt)
 }
 
 qt_x_step_beta_cpp <- function(n_rows, T, py_x, qy_t, qt, qt_x) {
-    .Call('_IBclust_qt_x_step_beta_cpp', PACKAGE = 'IBclust', n_rows, T, py_x, qy_t, qt, qt_x)
+    .Call(`_IBclust_qt_x_step_beta_cpp`, n_rows, T, py_x, qy_t, qt, qt_x)
 }
 
 qy_t_step_cpp <- function(py_x, qt_x, qt, px) {
-    .Call('_IBclust_qy_t_step_cpp', PACKAGE = 'IBclust', py_x, qt_x, qt, px)
+    .Call(`_IBclust_qy_t_step_cpp`, py_x, qt_x, qt, px)
 }
 
 qt_x_step_gib_cpp <- function(n_rows, T, beta, alpha, py_x, qy_t, qt) {
-    .Call('_IBclust_qt_x_step_gib_cpp', PACKAGE = 'IBclust', n_rows, T, beta, alpha, py_x, qy_t, qt)
+    .Call(`_IBclust_qt_x_step_gib_cpp`, n_rows, T, beta, alpha, py_x, qy_t, qt)
 }
 
 qy_t_step_nystrom_cpp <- function(B, col_sums, qt_x, qt, px) {
-    .Call('_IBclust_qy_t_step_nystrom_cpp', PACKAGE = 'IBclust', B, col_sums, qt_x, qt, px)
+    .Call(`_IBclust_qy_t_step_nystrom_cpp`, B, col_sums, qt_x, qt, px)
 }
 
 compute_cross_entropy_nystrom <- function(B, col_sums, qy_t) {
-    .Call('_IBclust_compute_cross_entropy_nystrom', PACKAGE = 'IBclust', B, col_sums, qy_t)
+    .Call(`_IBclust_compute_cross_entropy_nystrom`, B, col_sums, qy_t)
 }
 
 qt_x_step_nystrom_cpp <- function(n_rows, T, beta, B, col_sums, qy_t, qt) {
-    .Call('_IBclust_qt_x_step_nystrom_cpp', PACKAGE = 'IBclust', n_rows, T, beta, B, col_sums, qy_t, qt)
+    .Call(`_IBclust_qt_x_step_nystrom_cpp`, n_rows, T, beta, B, col_sums, qy_t, qt)
 }
 
 qt_x_step_beta_nystrom_cpp <- function(n_rows, T, B, col_sums, qy_t, qt, qt_x) {
-    .Call('_IBclust_qt_x_step_beta_nystrom_cpp', PACKAGE = 'IBclust', n_rows, T, B, col_sums, qy_t, qt, qt_x)
+    .Call(`_IBclust_qt_x_step_beta_nystrom_cpp`, n_rows, T, B, col_sums, qy_t, qt, qt_x)
+}
+
+qt_x_step_gib_nystrom_cpp <- function(n_rows, T, beta, alpha, B, col_sums, qy_t, qt) {
+    .Call(`_IBclust_qt_x_step_gib_nystrom_cpp`, n_rows, T, beta, alpha, B, col_sums, qy_t, qt)
 }
 

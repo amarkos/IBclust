@@ -66,8 +66,8 @@ IBmix_iterate <- function(X, ncl, beta, randinit, conv_tol,
       qt_list <- qt_step(X, qt_x_init, ptol = tol, quiet = TRUE)
       qt <- qt_list$qt
       qt_x <- qt_list$qt_x
-      qy_t <- qy_t_step_cpp(py_x, qt_x, qt, px)
-      qt_x <- qt_x_step_gib_cpp(n_rows = nrow(X), T = qt_list$T, beta = beta, alpha = 1, py_x, qy_t, as.numeric(qt))
+      qy_t <- qy_t_step(py_x, qt_x, qt, px)
+      qt_x <- qt_x_step_gib(n_rows = nrow(X), T = qt_list$T, beta = beta, alpha = 1, py_x, qy_t, as.numeric(qt))
       metrics <- calc_metrics(beta = beta, qt, qy_t, hy, px, qt_x, quiet = TRUE)
       Lval <- metrics$ixt - beta * metrics$iyt
       # Initialize variables for convergence checking
@@ -87,8 +87,8 @@ IBmix_iterate <- function(X, ncl, beta, randinit, conv_tol,
         qt_list <- qt_step(X, qt_x, tol, FALSE)
         qt <- qt_list$qt
         qt_x <- qt_list$qt_x
-        qy_t <- qy_t_step_cpp(py_x, qt_x, qt, px)
-        qt_x <- qt_x_step_gib_cpp(n_rows = nrow(X), T = qt_list$T, beta = beta, alpha = 1, py_x, qy_t, as.numeric(qt))
+        qy_t <- qy_t_step(py_x, qt_x, qt, px)
+        qt_x <- qt_x_step_gib(n_rows = nrow(X), T = qt_list$T, beta = beta, alpha = 1, py_x, qy_t, as.numeric(qt))
         
         if (nrow(qt_x)!=ncl){
           Lval <- -Inf

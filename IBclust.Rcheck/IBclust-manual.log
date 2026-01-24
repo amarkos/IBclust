@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025) (preloaded format=pdflatex 2025.9.16)  23 JAN 2026 14:10
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025) (preloaded format=pdflatex 2025.9.16)  24 JAN 2026 12:39
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -289,7 +289,7 @@ File: t1ptm.fd 2001/06/04 font definitions for T1/ptm.
 ) (/Users/ec1917/Library/TinyTeX/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
 File: l3backend-pdftex.def 2025-06-09 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count315
-) (/private/var/folders/db/ybnxx8ys5jx5ndj7l2g3ztbh0000gp/T/RtmpNF685j/Rd2pdff81e72d84083/Rd2.aux)
+) (/private/var/folders/db/ybnxx8ys5jx5ndj7l2g3ztbh0000gp/T/RtmpwbKmlq/Rd2pdf103135e7512ca/Rd2.aux)
 \openout1 = `Rd2.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 8.
@@ -311,7 +311,7 @@ LaTeX Font Info:    ... okay on input line 8.
 LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 8.
 LaTeX Font Info:    ... okay on input line 8.
 Package hyperref Info: Link coloring ON on input line 8.
- (/private/var/folders/db/ybnxx8ys5jx5ndj7l2g3ztbh0000gp/T/RtmpNF685j/Rd2pdff81e72d84083/Rd2.out) (/private/var/folders/db/ybnxx8ys5jx5ndj7l2g3ztbh0000gp/T/RtmpNF685j/Rd2pdff81e72d84083/Rd2.out)
+ (/private/var/folders/db/ybnxx8ys5jx5ndj7l2g3ztbh0000gp/T/RtmpwbKmlq/Rd2pdf103135e7512ca/Rd2.out) (/private/var/folders/db/ybnxx8ys5jx5ndj7l2g3ztbh0000gp/T/RtmpwbKmlq/Rd2pdf103135e7512ca/Rd2.out)
 \@outlinefile=\write4
 \openout4 = `Rd2.out'.
 
@@ -332,14 +332,9 @@ File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 LaTeX Font Info:    Trying to load font information for U+msb on input line 28.
  (/Users/ec1917/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-) (/private/var/folders/db/ybnxx8ys5jx5ndj7l2g3ztbh0000gp/T/RtmpNF685j/Rd2pdff81e72d84083/Rd2.toc)
+) (/private/var/folders/db/ybnxx8ys5jx5ndj7l2g3ztbh0000gp/T/RtmpwbKmlq/Rd2pdf103135e7512ca/Rd2.toc)
 \tf@toc=\write5
 \openout5 = `Rd2.toc'.
-
-
-Underfull \hbox (badness 1242) in paragraph at lines 45--45
-[]\T1/ptm/m/it/10 Agglomerative In-for-ma-tion Bot-tle-neck Clus-ter-ing for Mixed-Type
- []
 
 
 
@@ -347,61 +342,70 @@ Underfull \hbox (badness 1242) in paragraph at lines 45--45
 
 
 {/Users/ec1917/Library/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{/Users/ec1917/Library/TinyTeX/texmf-dist/fonts/enc/dvips/base/8r.enc}{/Users/ec1917/Library/TinyTeX/texmf-dist/fonts/enc/dvips/inconsolata/i4-t1-0.enc}]
-LaTeX Font Info:    Trying to load font information for TS1+zi4 on input line 74.
- (/Users/ec1917/Library/TinyTeX/texmf-dist/tex/latex/inconsolata/ts1zi4.fd
+Overfull \hbox (131.06955pt too wide) in paragraph at lines 51--52
+\T1/ptm/m/n/10 tive vari-ant from Slonim and Tishby (1999) [][]$\T1/zi4/m/n/10 https : / / papers . nips . cc / paper / 1651-[]agglomerative-[]information-[]bottleneck$[][]\T1/ptm/m/n/10 ,
+ []
+
+
+Underfull \hbox (badness 1242) in paragraph at lines 67--67
+[]\T1/ptm/m/it/10 Agglomerative In-for-ma-tion Bot-tle-neck Clus-ter-ing for Mixed-Type
+ []
+
+LaTeX Font Info:    Trying to load font information for TS1+zi4 on input line 96.
+(/Users/ec1917/Library/TinyTeX/texmf-dist/tex/latex/inconsolata/ts1zi4.fd
 File: ts1zi4.fd 2018/01/14 TS1/zi4 (Inconsolata)
 )
 LaTeX Font Info:    Font shape `TS1/zi4/m/n' will be
-(Font)              scaled to size 10.0pt on input line 74.
+(Font)              scaled to size 10.0pt on input line 96.
 
-Overfull \hbox (9.0392pt too wide) in paragraph at lines 74--75
+Overfull \hbox (9.0392pt too wide) in paragraph at lines 96--97
 \T1/ptm/m/n/10 op-ti-mal band-width. For nom-i-nal vari-ables and []\T1/zi4/m/n/10 nomkernel = \TS1/zi4/m/n/10 '\T1/zi4/m/n/10 aitchisonaitken\TS1/zi4/m/n/10 '[]\T1/ptm/m/n/10 ,
  []
 
 
-Overfull \hbox (46.26848pt too wide) in paragraph at lines 83--84
+
+[2]
+Overfull \hbox (46.26848pt too wide) in paragraph at lines 105--106
 []\T1/ptm/m/n/10 Kernel used for nom-i-nal (un-ordered cat-e-gor-i-cal) vari-ables. Can be one of []\T1/zi4/m/n/10 aitchisonaitken
  []
 
 
 
-[2{/Users/ec1917/Library/TinyTeX/texmf-dist/fonts/enc/dvips/inconsolata/i4-ts1.enc}]
-
-[3]
-Overfull \hbox (11.6832pt too wide) in paragraph at lines 163--164
+[3{/Users/ec1917/Library/TinyTeX/texmf-dist/fonts/enc/dvips/inconsolata/i4-ts1.enc}]
+Overfull \hbox (11.6832pt too wide) in paragraph at lines 185--186
 []\T1/ptm/m/n/10 A nu-meric vec-tor track-ing the cost in-curred by each merge $\OML/cmm/m/it/10 I\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 T[]\OT1/cmr/m/n/10 ; \OML/cmm/m/it/10 Y\OT1/cmr/m/n/10 ) \OMS/cmsy/m/n/10 ^^@ \OML/cmm/m/it/10 I\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 T[]\OT1/cmr/m/n/10 ; \OML/cmm/m/it/10 Y\OT1/cmr/m/n/10 )$\T1/ptm/m/n/10 . 
- []
-
-
-Overfull \hbox (12.02605pt too wide) in paragraph at lines 208--211
-[]\T1/ptm/m/n/10 Aitchison J, Aitken CG (1976). ``Mul-ti-vari-ate bi-nary dis-crim-i-na-tion by the ker-nel method.'' \T1/ptm/m/it/10 Biometrika\T1/ptm/m/n/10 ,
  []
 
 
 
 [4]
-Overfull \hbox (6.85904pt too wide) in paragraph at lines 232--235
+Overfull \hbox (12.02605pt too wide) in paragraph at lines 230--233
+[]\T1/ptm/m/n/10 Aitchison J, Aitken CG (1976). ``Mul-ti-vari-ate bi-nary dis-crim-i-na-tion by the ker-nel method.'' \T1/ptm/m/it/10 Biometrika\T1/ptm/m/n/10 ,
+ []
+
+
+Overfull \hbox (6.85904pt too wide) in paragraph at lines 254--257
 \T1/ptm/m/n/10 Clus-ter-ing Mixed-Type Data.'' [][]doi:10.48550/arXiv.2407.03389[][], arXiv:2407.03389, [][]$\T1/zi4/m/n/10 https : / / arxiv .
  []
 
 LaTeX Font Info:    Font shape `T1/zi4/m/n' will be
-(Font)              scaled to size 9.0pt on input line 239.
+(Font)              scaled to size 9.0pt on input line 261.
 
-Overfull \hbox (20.22874pt too wide) in paragraph at lines 243--243
+Overfull \hbox (20.22874pt too wide) in paragraph at lines 265--265
  []  \T1/zi4/m/n/9 cat_var = factor(sample(letters[1:3], 100, replace = TRUE)),      # Nominal categorical variable[] 
  []
 
 
 
 [5]
-Overfull \hbox (9.0392pt too wide) in paragraph at lines 324--325
+
+[6]
+Overfull \hbox (9.0392pt too wide) in paragraph at lines 346--347
 \T1/ptm/m/n/10 op-ti-mal band-width. For nom-i-nal vari-ables and []\T1/zi4/m/n/10 nomkernel = \TS1/zi4/m/n/10 '\T1/zi4/m/n/10 aitchisonaitken\TS1/zi4/m/n/10 '[]\T1/ptm/m/n/10 ,
  []
 
 
-
-[6]
-Overfull \hbox (46.26848pt too wide) in paragraph at lines 334--335
+Overfull \hbox (46.26848pt too wide) in paragraph at lines 356--357
 []\T1/ptm/m/n/10 Kernel used for nom-i-nal (un-ordered cat-e-gor-i-cal) vari-ables. Can be one of []\T1/zi4/m/n/10 aitchisonaitken
  []
 
@@ -410,64 +414,58 @@ Overfull \hbox (46.26848pt too wide) in paragraph at lines 334--335
 [7]
 
 [8]
-Overfull \hbox (6.85904pt too wide) in paragraph at lines 459--462
+Overfull \hbox (6.85904pt too wide) in paragraph at lines 481--484
 \T1/ptm/m/n/10 Clus-ter-ing Mixed-Type Data.'' [][]doi:10.48550/arXiv.2407.03389[][], arXiv:2407.03389, [][]$\T1/zi4/m/n/10 https : / / arxiv .
  []
 
 
-Overfull \hbox (12.02605pt too wide) in paragraph at lines 463--466
+Overfull \hbox (12.02605pt too wide) in paragraph at lines 485--488
 []\T1/ptm/m/n/10 Aitchison J, Aitken CG (1976). ``Mul-ti-vari-ate bi-nary dis-crim-i-na-tion by the ker-nel method.'' \T1/ptm/m/it/10 Biometrika\T1/ptm/m/n/10 ,
  []
 
 
 
 [9]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-
 
 [10]
-Overfull \hbox (9.0392pt too wide) in paragraph at lines 617--618
-\T1/ptm/m/n/10 op-ti-mal band-width. For nom-i-nal vari-ables and []\T1/zi4/m/n/10 nomkernel = \TS1/zi4/m/n/10 '\T1/zi4/m/n/10 aitchisonaitken\TS1/zi4/m/n/10 '[]\T1/ptm/m/n/10 ,
- []
-
-
 
 [11]
-Overfull \hbox (46.26848pt too wide) in paragraph at lines 629--630
-[]\T1/ptm/m/n/10 Kernel used for nom-i-nal (un-ordered cat-e-gor-i-cal) vari-ables. Can be one of []\T1/zi4/m/n/10 aitchisonaitken
+Overfull \hbox (9.0392pt too wide) in paragraph at lines 639--640
+\T1/ptm/m/n/10 op-ti-mal band-width. For nom-i-nal vari-ables and []\T1/zi4/m/n/10 nomkernel = \TS1/zi4/m/n/10 '\T1/zi4/m/n/10 aitchisonaitken\TS1/zi4/m/n/10 '[]\T1/ptm/m/n/10 ,
  []
 
 
 
 [12]
+Overfull \hbox (46.26848pt too wide) in paragraph at lines 651--652
+[]\T1/ptm/m/n/10 Kernel used for nom-i-nal (un-ordered cat-e-gor-i-cal) vari-ables. Can be one of []\T1/zi4/m/n/10 aitchisonaitken
+ []
+
+
 
 [13]
-Overfull \hbox (12.02605pt too wide) in paragraph at lines 759--762
+
+[14]
+Overfull \hbox (12.02605pt too wide) in paragraph at lines 781--784
 []\T1/ptm/m/n/10 Aitchison J, Aitken CG (1976). ``Mul-ti-vari-ate bi-nary dis-crim-i-na-tion by the ker-nel method.'' \T1/ptm/m/it/10 Biometrika\T1/ptm/m/n/10 ,
  []
 
 
-
-[14]
-Overfull \hbox (20.22874pt too wide) in paragraph at lines 790--790
+Overfull \hbox (20.22874pt too wide) in paragraph at lines 812--812
  []  \T1/zi4/m/n/9 cat_var = factor(sample(letters[1:3], 100, replace = TRUE)),      # Nominal categorical variable[] 
  []
 
 
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-
 
 [15]
-Overfull \hbox (9.0392pt too wide) in paragraph at lines 881--882
+
+[16]
+Overfull \hbox (9.0392pt too wide) in paragraph at lines 903--904
 \T1/ptm/m/n/10 op-ti-mal band-width. For nom-i-nal vari-ables and []\T1/zi4/m/n/10 nomkernel = \TS1/zi4/m/n/10 '\T1/zi4/m/n/10 aitchisonaitken\TS1/zi4/m/n/10 '[]\T1/ptm/m/n/10 ,
  []
 
 
-
-[16]
-Overfull \hbox (46.26848pt too wide) in paragraph at lines 893--894
+Overfull \hbox (46.26848pt too wide) in paragraph at lines 915--916
 []\T1/ptm/m/n/10 Kernel used for nom-i-nal (un-ordered cat-e-gor-i-cal) vari-ables. Can be one of []\T1/zi4/m/n/10 aitchisonaitken
  []
 
@@ -476,42 +474,44 @@ Overfull \hbox (46.26848pt too wide) in paragraph at lines 893--894
 [17]
 
 [18]
-Overfull \hbox (12.02605pt too wide) in paragraph at lines 1021--1024
+Overfull \hbox (12.02605pt too wide) in paragraph at lines 1043--1046
 []\T1/ptm/m/n/10 Aitchison J, Aitken CG (1976). ``Mul-ti-vari-ate bi-nary dis-crim-i-na-tion by the ker-nel method.'' \T1/ptm/m/it/10 Biometrika\T1/ptm/m/n/10 ,
- []
-
-
-Overfull \hbox (20.22874pt too wide) in paragraph at lines 1052--1052
- []  \T1/zi4/m/n/9 cat_var = factor(sample(letters[1:3], 100, replace = TRUE)),      # Nominal categorical variable[] 
  []
 
 
 
 [19]
+Overfull \hbox (20.22874pt too wide) in paragraph at lines 1074--1074
+ []  \T1/zi4/m/n/9 cat_var = factor(sample(letters[1:3], 100, replace = TRUE)),      # Nominal categorical variable[] 
+ []
+
+
+
+[20]
 No file Rd2.ind.
 
 
-[20] (/private/var/folders/db/ybnxx8ys5jx5ndj7l2g3ztbh0000gp/T/RtmpNF685j/Rd2pdff81e72d84083/Rd2.aux)
+[21] (/private/var/folders/db/ybnxx8ys5jx5ndj7l2g3ztbh0000gp/T/RtmpwbKmlq/Rd2pdf103135e7512ca/Rd2.aux)
  ***********
 LaTeX2e <2025-06-01> patch level 1
 L3 programming layer <2025-08-13>
  ***********
 Package rerunfilecheck Info: File `Rd2.out' has not changed.
-(rerunfilecheck)             Checksum: 71A1245B5E564775429078BAC3CA2B0B;298.
+(rerunfilecheck)             Checksum: ECFEF0D942B7FF2AF613F2D3D031E639;434.
  ) 
 Here is how much of TeX's memory you used:
- 10348 strings out of 469781
- 157062 string characters out of 5481415
- 563683 words of memory out of 5000000
- 38509 multiletter control sequences out of 15000+600000
+ 10355 strings out of 469781
+ 157194 string characters out of 5481415
+ 562683 words of memory out of 5000000
+ 38510 multiletter control sequences out of 15000+600000
  662667 words of font info for 82 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 92i,9n,95p,734b,769s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 92i,9n,95p,1004b,769s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </Users/ec1917/Library/TinyTeX/texmf-dist/fonts/type1/public/inconsolata/Inconsolata-zi4r.pfb></Users/ec1917/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></Users/ec1917/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></Users/ec1917/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></Users/ec1917/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></Users/ec1917/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb></Users/ec1917/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></Users/ec1917/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></Users/ec1917/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb></Users/ec1917/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></Users/ec1917/Library/TinyTeX/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></Users/ec1917/Library/TinyTeX/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></Users/ec1917/Library/TinyTeX/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></Users/ec1917/Library/TinyTeX/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on Rd2.pdf (20 pages, 221101 bytes).
+Output written on Rd2.pdf (21 pages, 222731 bytes).
 PDF statistics:
- 253 PDF objects out of 1000 (max. 8388607)
- 200 compressed objects within 2 object streams
- 63 named destinations out of 1000 (max. 500000)
- 33 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 272 PDF objects out of 1000 (max. 8388607)
+ 217 compressed objects within 3 object streams
+ 69 named destinations out of 1000 (max. 500000)
+ 41 words of extra memory for PDF output out of 10000 (max. 10000000)
 

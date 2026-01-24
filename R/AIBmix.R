@@ -1,3 +1,5 @@
+#' @export
+#' @rdname AIBmix
 AIBmix <- function(X, s = -1, lambda = -1,
                    scale = TRUE,
                    contkernel = "gaussian",

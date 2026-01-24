@@ -10,7 +10,10 @@
 #' @importFrom graphics barplot points
 #' @keywords internal
 #' @noRd
+#' 
 
+#' @method print gibclust
+#' @exportS3Method
 print.gibclust <- function(x, ...) {
   # Header depends on alpha
   header <- if (isTRUE(all.equal(x$alpha, 1))) {
@@ -77,12 +80,12 @@ print.gibclust <- function(x, ...) {
   invisible(x)
 }
 
-# ---- S3: summary() -----------------------------------------------------------
-
 #' @rdname gibclust-methods
 #' @param object A gibclust object
 #' @keywords internal
 #' @noRd
+#' @method summary gibclust
+#' @exportS3Method
 summary.gibclust <- function(object, ...) {
   variant <- if (isTRUE(all.equal(object$alpha, 0))) {
     "DIBmix"
@@ -161,6 +164,8 @@ summary.gibclust <- function(object, ...) {
 #' @rdname gibclust-methods
 #' @keywords internal
 #' @noRd
+#' @method print summary.gibclust
+#' @exportS3Method
 print.summary.gibclust <- function(x, ...) {
   header <- switch(x$variant,
                    "DIBmix" = "Summary of DIBmix clustering",
@@ -228,7 +233,6 @@ print.summary.gibclust <- function(x, ...) {
   invisible(x)
 }
 
-# ---- S3: plot() --------------------------------------------------------------
 #' Plot a gibclust object
 #'
 #' @param x A gibclust object.
@@ -238,6 +242,8 @@ print.summary.gibclust <- function(x, ...) {
 #' @param ... Additional arguments passed to base plotting functions.
 #' @keywords internal
 #' @noRd
+#' @method plot gibclust
+#' @exportS3Method
 plot.gibclust <- function(x, type = c("sizes", "info", "beta"), main = NULL, ...) {
   type <- match.arg(type)
   

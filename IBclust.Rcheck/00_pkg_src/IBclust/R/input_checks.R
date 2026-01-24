@@ -22,6 +22,12 @@ input_checks_preprocess <- function(X, s, lambda, scale,
   if (!ordkernel %in% c("liracine", "wangvanryzin")){
     stop("'ordkernel' can only be one of 'liracine' or 'wangvanryzin'")
   }
+  if (nrow(X) > 1000 & nystrom == FALSE){
+    warning("Number of observations exceeds 1000; perhaps consider using the Nystr\u00f6m approximation (nystrom = TRUE).")
+  }
+  if (nrow(X) <= 1000 & nystrom == TRUE){
+    stop("Nystr\u00f6m approximation cannot be used if number of observations is not more than 1000.")
+  }
   X <- data.frame(X)
   # Check catcols/contcols
   catcols <- as.integer(which(sapply(X, is.factor)))

@@ -30,7 +30,7 @@ LinkingTo: Rcpp, RcppArmadillo, RcppEigen
 RoxygenNote: 7.3.3
 RdMacros: Rdpack
 NeedsCompilation: yes
-Packaged: 2026-01-23 14:10:05 UTC; ec1917
+Packaged: 2026-01-24 12:39:17 UTC; ec1917
 Author: Efthymios Costa [aut],
   Ioanna Papatsouma [aut],
   Angelos Markos [aut, cre]

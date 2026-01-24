@@ -1,3 +1,5 @@
+#' @export
+#' @rdname IBmix
 IBmix <- function(X, ncl, beta, randinit = NULL,
                   s = -1, lambda = -1, scale = TRUE,
                   maxiter = 100, nstart = 100, conv_tol = 1e-5,
@@ -23,12 +25,6 @@ IBmix <- function(X, ncl, beta, randinit = NULL,
   }
   if (!is.null(randinit) && (!is.numeric(randinit) || length(randinit) != nrow(X))) {
     stop("'randinit' must be a numeric vector with length equal to the number of rows in 'X', or NULL.")
-  }
-  if (nrow(X) > 1000 & nystrom == FALSE){
-    warning("Number of observations exceeds 1000; perhaps consider using the Nystr\u00f6m approximation (nystrom = TRUE).")
-  }
-  if (nrow(X) <= 1000 & nystrom == TRUE){
-    stop("Nystr\u00f6m approximation cannot be used if number of observations is not more than 1000.")
   }
   prep_list <- input_checks_preprocess(X, s, lambda,
                                        scale, contkernel, nomkernel,

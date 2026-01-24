@@ -10,6 +10,8 @@
 #' @keywords internal
 #' @noRd
 
+#' @method print aibclust
+#' @exportS3Method
 print.aibclust <- function(x, ...) {
   header <- "Hierarchical clustering with AIBmix"
   cat(header, "\n", strrep("-", nchar(header)), "\n", sep = "")
@@ -59,6 +61,8 @@ print.aibclust <- function(x, ...) {
 #' @param object An aibclust object
 #' @keywords internal
 #' @noRd
+#' @method summary aibclust
+#' @exportS3Method
 summary.aibclust <- function(object, k = NULL, m = NULL, ...) {
   n <- object$n
   # vectors (guard against NULL)
@@ -154,6 +158,8 @@ summary.aibclust <- function(object, k = NULL, m = NULL, ...) {
 #' @param x an \code{aibclust} object.
 #' @keywords internal
 #' @noRd
+#' @method print summary.aibclust
+#' @exportS3Method
 print.summary.aibclust <- function(x, ...) {
   header <- "Summary of AIBmix clustering"
   cat(header, "\n", strrep("-", nchar(header)), "\n", sep = "")
@@ -222,6 +228,8 @@ print.summary.aibclust <- function(x, ...) {
 #' @param ... passed to graphics.
 #' @keywords internal
 #' @noRd
+#' @method plot aibclust
+#' @exportS3Method
 plot.aibclust <- function(x, type = c("dendrogram", "info"), main = NULL, labels = TRUE, ...) {
   type <- match.arg(type)
   
