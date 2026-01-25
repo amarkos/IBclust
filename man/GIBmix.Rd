@@ -14,7 +14,8 @@ GIBmix(X, ncl, beta, alpha, randinit = NULL,
        maxiter = 100, nstart = 100,
        conv_tol = 1e-5, contkernel = "gaussian",
        nomkernel = "aitchisonaitken", ordkernel = "liracine",
-       cat_first = FALSE, verbose = FALSE, nystrom = FALSE)
+       cat_first = FALSE, verbose = FALSE, nystrom = FALSE,
+       n_landmarks = NULL)
 }
 \arguments{
 \item{X}{A data frame containing the input data to be clustered. It should include categorical variables
@@ -51,6 +52,8 @@ GIBmix(X, ncl, beta, alpha, randinit = NULL,
 \item{verbose}{Logical. Defaults to \code{FALSE} to suppress progress messages. Change to \code{TRUE} to print.}
 
 \item{nystrom}{Logical. Indicates if the Nystr\enc{ö}{o}m approximation for kernel Gram matrices is to be used for quicker implementation. Defaults to \code{FALSE}. Change to \code{TRUE} only for data sets with over 1000 observations.}
+
+\item{n_landmarks}{Number of randomly drawn landmark points used for the Nystr\enc{ö}{o}m approximation. Must be a positive integer less than the number of observations \code{nrow(X)}. Defaults to \code{NULL}, which selects \eqn{\lceil \sqrt{n} \rceil} observations, where \eqn{n} is the number of observations. Argument is ignored if \code{nystrom = FALSE}.}
 }
 
 \value{
@@ -97,7 +100,8 @@ process identifies stable and interpretable cluster assignments by maximizing mu
 controlling complexity. The method is well-suited for datasets with mixed-type variables and integrates
 information from all variable types effectively. Set \eqn{\alpha = 1} and \eqn{\alpha = 0} to recover the
 Information Bottleneck and its Deterministic variant, respectively. If \eqn{\alpha = 0}, the algorithm ignores
-the value of the regularisation parameter \eqn{\beta}.
+the value of the regularisation parameter \eqn{\beta}. For data sets with over a thousand observations ($n > 1000$),
+a Nystr\enc{ö}{o}m approximation of the kernel Gram matrix can be used for a quicker implementation \insertCite{williams2000using}{IBclust}.
 
 The following kernel functions can be used to estimate densities for the clustering procedure. For continuous variables:
 
@@ -223,6 +227,8 @@ Efthymios Costa, Ioanna Papatsouma, Angelos Markos
 \insertRef{wang1981class}{IBclust}
 
 \insertRef{epanechnikov1969non}{IBclust}
+
+\insertRef{williams2000using}{IBclust}
 }
 }
 \keyword{clustering}

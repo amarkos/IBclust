@@ -1,7 +1,7 @@
 input_checks_preprocess <- function(X, s, lambda, scale,
                                     contkernel, nomkernel,
                                     ordkernel, cat_first,
-                                    nystrom){
+                                    nystrom, n_landmarks){
   # Validate inputs
   if (!is.data.frame(X)) {
     stop("Input 'X' must be a data frame.")
@@ -27,6 +27,11 @@ input_checks_preprocess <- function(X, s, lambda, scale,
   }
   if (nrow(X) <= 1000 & nystrom == TRUE){
     stop("Nystr\u00f6m approximation cannot be used if number of observations is not more than 1000.")
+  }
+  if (nystrom){
+    if (n_landmarks != round(n_landmarks) || n_landmarks <= 0 || n_landmarks >= nrow(X)){
+      stop("'n_landmarks' must be a positive integer smaller than the number of observations.")
+    }
   }
   X <- data.frame(X)
   # Check catcols/contcols

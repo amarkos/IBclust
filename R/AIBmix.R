@@ -6,10 +6,20 @@ AIBmix <- function(X, s = -1, lambda = -1,
                    nomkernel = "aitchisonaitken",
                    ordkernel = "liracine",
                    cat_first = FALSE,
-                   nystrom = FALSE) {
+                   nystrom = FALSE,
+                   n_landmarks = NULL) {
+  if (!is.logical(nystrom)) {
+    stop("'nystrom' must be a logical (TRUE or FALSE).")
+  }
+  if (nystrom){
+    if (is.null(n_landmarks)){
+      n_landmarks <- ceiling(sqrt(nrow(X)))
+    }
+  }
   prep_list <- input_checks_preprocess(X, s, lambda,
                                        scale, contkernel, nomkernel,
-                                       ordkernel, cat_first, nystrom)
+                                       ordkernel, cat_first, nystrom,
+                                       n_landmarks = n_landmarks)
   X <- prep_list$X
   bws_vec <- prep_list$bws
   contcols <- prep_list$contcols
@@ -33,7 +43,7 @@ AIBmix <- function(X, s = -1, lambda = -1,
                                        contkernel = contkernel,
                                        nomkernel = nomkernel,
                                        ordkernel = ordkernel,
-                                       n_landmarks = NULL)
+                                       n_landmarks = n_landmarks)
     # Check validity and increase bandwidth if needed
     while (!check_nystrom_valid(pxy_list$py_x$B, pxy_list$py_x$col_sums)) {
       bws_vec[contcols] <- bws_vec[contcols] + 1e-1
@@ -53,7 +63,7 @@ AIBmix <- function(X, s = -1, lambda = -1,
                                          contkernel = contkernel,
                                          nomkernel = nomkernel,
                                          ordkernel = ordkernel,
-                                         n_landmarks = NULL)
+                                         n_landmarks = n_landmarks)
     }
     # Run AIB for hierarchical clustering
     best_clust <- AIB_nystrom(pxy_list$py_x$B, pxy_list$py_x$col_sums)

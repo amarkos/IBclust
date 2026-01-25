@@ -5,7 +5,8 @@ IBmix <- function(X, ncl, beta, randinit = NULL,
                   maxiter = 100, nstart = 100, conv_tol = 1e-5,
                   contkernel = "gaussian",
                   nomkernel = "aitchisonaitken", ordkernel = "liracine",
-                  cat_first = FALSE, verbose = FALSE, nystrom = FALSE) {
+                  cat_first = FALSE, verbose = FALSE, nystrom = FALSE,
+                  n_landmarks = NULL) {
   
   # Validate inputs
   if (!is.numeric(ncl) || ncl <= 1 || ncl != round(ncl)) {
@@ -26,10 +27,19 @@ IBmix <- function(X, ncl, beta, randinit = NULL,
   if (!is.null(randinit) && (!is.numeric(randinit) || length(randinit) != nrow(X))) {
     stop("'randinit' must be a numeric vector with length equal to the number of rows in 'X', or NULL.")
   }
+  if (!is.logical(nystrom)) {
+    stop("'nystrom' must be a logical (TRUE or FALSE).")
+  }
+  if (nystrom){
+    if (is.null(n_landmarks)){
+      n_landmarks <- ceiling(sqrt(nrow(X)))
+    }
+  }
   prep_list <- input_checks_preprocess(X, s, lambda,
                                        scale, contkernel, nomkernel,
                                        ordkernel, cat_first,
-                                       nystrom = nystrom)
+                                       nystrom = nystrom,
+                                       n_landmarks = n_landmarks)
   X <- prep_list$X
   bws_vec <- prep_list$bws
   contcols <- prep_list$contcols
@@ -53,7 +63,7 @@ IBmix <- function(X, ncl, beta, randinit = NULL,
                                        contkernel = contkernel,
                                        nomkernel = nomkernel,
                                        ordkernel = ordkernel,
-                                       n_landmarks = NULL)
+                                       n_landmarks = n_landmarks)
   } else {
     pxy_list <- coord_to_pxy_R(as.data.frame(X),
                                s = if (length(contcols) > 0){

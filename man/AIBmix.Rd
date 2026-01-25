@@ -11,7 +11,7 @@ leveraging bandwidth parameters to handle different categorical data types (nomi
 AIBmix(X, s = -1, lambda = -1,
        scale = TRUE, contkernel = "gaussian",
        nomkernel = "aitchisonaitken", ordkernel = "liracine",
-       cat_first = FALSE, nystrom = FALSE)
+       cat_first = FALSE, nystrom = FALSE, n_landmarks = NULL)
 }
 \arguments{
   \item{X}{
@@ -41,6 +41,9 @@ AIBmix(X, s = -1, lambda = -1,
   }
   \item{nystrom}{
     Logical. Indicates if the Nystr\enc{ö}{o}m approximation for kernel Gram matrices is to be used for quicker implementation. Defaults to \code{FALSE}. Change to \code{TRUE} only for data sets with over 1000 observations.
+  }
+  \item{n_landmarks}{
+    Number of randomly drawn landmark points used for the Nystr\enc{ö}{o}m approximation. Must be a positive integer less than the number of observations \code{nrow(X)}. Defaults to \code{NULL}, which selects \eqn{\lceil \sqrt{n} \rceil} observations, where \eqn{n} is the number of observations. Argument is ignored if \code{nystrom = FALSE}.
   }
 }
 
@@ -81,7 +84,8 @@ distributions. The Agglomerative Information Bottleneck algorithm uses an inform
 hence creating meaningful clusters with maximal information about the original distribution. Bandwidth parameters for categorical
 (nominal, ordinal) and continuous variables are adaptively determined if not provided. This process identifies stable and interpretable cluster assignments by maximizing mutual information while
 controlling complexity. The method is well-suited for datasets with mixed-type variables and integrates
-information from all variable types effectively. 
+information from all variable types effectively. For data sets with over a thousand observations ($n > 1000$),
+a Nystr\enc{ö}{o}m approximation of the kernel Gram matrix can be used for a quicker implementation \insertCite{williams2000using}{IBclust}.
 
 The following kernel functions can be used to estimate densities for the clustering procedure. For continuous variables:
 
@@ -202,6 +206,8 @@ Efthymios Costa, Ioanna Papatsouma, Angelos Markos
 \insertRef{epanechnikov1969non}{IBclust}
 
 \insertRef{costa_dib_2025}{IBclust}
+
+\insertRef{williams2000using}{IBclust}
 }
 }
 \keyword{clustering}

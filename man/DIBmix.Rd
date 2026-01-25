@@ -14,7 +14,8 @@ DIBmix(X, ncl, randinit = NULL,
        maxiter = 100, nstart = 100,
        contkernel = "gaussian",
        nomkernel = "aitchisonaitken", ordkernel = "liracine",
-       cat_first = FALSE, verbose = FALSE, nystrom = FALSE)
+       cat_first = FALSE, verbose = FALSE, nystrom = FALSE,
+       n_landmarks = NULL)
 }
 \arguments{
 \item{X}{A data frame containing the input data to be clustered. It should include categorical variables
@@ -45,6 +46,8 @@ DIBmix(X, ncl, randinit = NULL,
 \item{verbose}{Logical. Defaults to \code{FALSE} to suppress progress messages. Change to \code{TRUE} to print.}
 
 \item{nystrom}{Logical. Indicates if the Nystr\enc{ö}{o}m approximation for kernel Gram matrices is to be used for quicker implementation. Defaults to \code{FALSE}. Change to \code{TRUE} only for data sets with over 1000 observations.}
+
+\item{n_landmarks}{Number of randomly drawn landmark points used for the Nystr\enc{ö}{o}m approximation. Must be a positive integer less than the number of observations \code{nrow(X)}. Defaults to \code{NULL}, which selects \eqn{\lceil \sqrt{n} \rceil} observations, where \eqn{n} is the number of observations. Argument is ignored if \code{nystrom = FALSE}.}
 }
 \value{
 An object of class \code{"gibclust"} representing the final clustering result. The returned object is a list with the following components:

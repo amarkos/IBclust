@@ -17,22 +17,12 @@
 #' @keywords internal
 #' @noRd
 coord_to_pxy_nystrom_R <- function(X, s, cat_cols, cont_cols, lambda,
-                                   n_landmarks = NULL,
                                    contkernel = "gaussian",
                                    nomkernel = "aitchisonaitken",
-                                   ordkernel = "liracine"){
+                                   ordkernel = "liracine",
+                                   n_landmarks = NULL){
   
   n <- nrow(X)
-  # Default number of landmarks
-  if (is.null(n_landmarks)) {
-    n_landmarks <- min(ceiling(sqrt(n)), n %/% 2)
-  }
-  # Ensure valid number of landmarks
-  if (n_landmarks >= n) {
-    warning("n_landmarks >= n, using full matrix computation instead")
-    return(coord_to_pxy_R(X, s, cat_cols, cont_cols, lambda,
-                          contkernel, nomkernel, ordkernel))
-  }
   
   # Select random landmark points
   landmark_idx <- sample(n, n_landmarks, replace = FALSE)
