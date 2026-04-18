@@ -2,6 +2,7 @@ input_checks_preprocess <- function(X, s, lambda, scale,
                                     contkernel, nomkernel,
                                     ordkernel, cat_first,
                                     nystrom, n_landmarks,
+                                    landmark_indices = NULL,
                                     nystrom_available = TRUE){
   # Validate inputs
   if (!is.data.frame(X)) {
@@ -33,8 +34,27 @@ input_checks_preprocess <- function(X, s, lambda, scale,
     stop("Nystr\u00f6m approximation cannot be used if number of observations is not more than 1000.")
   }
   if (nystrom){
-    if (n_landmarks != round(n_landmarks) || n_landmarks <= 0 || n_landmarks >= nrow(X)){
-      stop("'n_landmarks' must be a positive integer smaller than the number of observations.")
+    if (!is.null(landmark_indices)){
+      if (!is.numeric(landmark_indices) ||
+          any(landmark_indices != round(landmark_indices)) ||
+          any(landmark_indices < 1) ||
+          any(landmark_indices > nrow(X)) ||
+          anyDuplicated(landmark_indices)) {
+        stop("'landmark_indices' must be a vector of unique integers in [1, nrow(X)].")
+      }
+      landmark_indices <- as.integer(landmark_indices)
+      if (is.null(n_landmarks)){
+        n_landmarks <- length(landmark_indices)
+      } else if (n_landmarks != length(landmark_indices)){
+        stop("'n_landmarks' must equal the length of 'landmark_indices' when both are provided.")
+      }
+    } else {
+      if (is.null(n_landmarks)){
+        n_landmarks <- ceiling(sqrt(nrow(X)))
+      }
+      if (n_landmarks != round(n_landmarks) || n_landmarks <= 0 || n_landmarks >= nrow(X)){
+        stop("'n_landmarks' must be a positive integer smaller than the number of observations.")
+      }
     }
   }
   X <- data.frame(X)
@@ -118,5 +138,7 @@ input_checks_preprocess <- function(X, s, lambda, scale,
   }
   return(list('X' = X, 'bws_vec' = bws_vec,
               'contcols' = contcols,
-              'catcols' = catcols))
+              'catcols' = catcols,
+              'n_landmarks' = n_landmarks,
+              'landmark_indices' = landmark_indices))
 }

@@ -21,7 +21,8 @@ IBmix(
   cat_first = FALSE,
   verbose = FALSE,
   nystrom = FALSE,
-  n_landmarks = NULL
+  n_landmarks = NULL,
+  landmark_indices = NULL
 )
 }
 \arguments{
@@ -74,6 +75,15 @@ to \code{FALSE}. Change to \code{TRUE} only for data sets with over 1000 observa
 \item{n_landmarks}{Number of randomly drawn landmark points used for the Nystr\enc{ö}{o}m approximation. Must be a positive integer less than the
 number of observations \code{nrow(X)}. Defaults to \code{NULL}, which selects \eqn{\lceil \sqrt{n} \rceil} observations, where \eqn{n} is the
 number of observations. Argument is ignored if \code{nystrom = FALSE}.}
+
+\item{landmark_indices}{Optional integer vector specifying the exact indices
+of observations to use as landmark points for the Nystr\enc{ö}{o}m
+approximation. Must contain unique integers in \eqn{[1, n]}, where
+\eqn{n} is the number of observations. When provided, this overrides
+random landmark sampling; if \code{n_landmarks} is also supplied, its
+value must equal \code{length(landmark_indices)}. Defaults to \code{NULL},
+in which case landmarks are sampled randomly. Argument is ignored if
+\code{nystrom = FALSE}.}
 }
 \value{
 An object of class \code{"gibclust"} representing the final clustering result. The returned object is a list with the following components:
@@ -95,6 +105,7 @@ An object of class \code{"gibclust"} representing the final clustering result. T
   \item{contcols}{Indices of continuous columns in \code{X}.}
   \item{catcols}{Indices of categorical columns in \code{X}.}
   \item{kernels}{List with names of kernels used for continuous, nominal, and ordinal features.}
+  \item{nystrom_landmarks}{Integer vector of observation indices used as landmark points when \code{nystrom = TRUE}; \code{NULL} otherwise.}
 
 Objects of class \code{"gibclust"} support the following methods:
   \itemize{
@@ -106,6 +117,7 @@ Objects of class \code{"gibclust"} support the following methods:
         \item \code{type = "sizes"}: barplot of cluster sizes or hardened sizes (IB/GIB).
         \item \code{type = "info"}: barplot of entropy, conditional entropy, and mutual information.
         \item \code{type = "beta"}: trajectory of \eqn{\log \beta} over iterations (only available for hard clustering outputs obtained using \code{DIBmix}).
+        \item \code{type = "importance"}: barplot of variable importance \eqn{I(T; Y_j)}, measuring how much each variable contributes to the cluster structure. Requires \code{X} (the original data frame) to be passed.
     }
   }
 }
@@ -212,6 +224,8 @@ print(result_cat$MutualInfo)    # Mutual information between Y and T
 
 plot(result_cat, type = "sizes") # Bar plot of cluster sizes (hardened assignments)
 plot(result_cat, type = "info")  # Information-theoretic quantities plot
+# Variable importance plot (hardened assignments)
+plot(result_cat, type = "importance", X = data_cat)
 
 # Simulated continuous data example
 set.seed(123)

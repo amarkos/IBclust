@@ -11,6 +11,8 @@
 #' @param contkernel Continuous kernel (Gaussian or Epanechnikov)
 #' @param nomkernel Unordered categorical (nominal) kernel (Aitchison & Aitken or Li & Racine)
 #' @param ordkernel Ordered categorical (ordinal) kernel (Li & Racine or Wang & van Ryzin)
+#' @param n_landmarks Number of landmark points used.
+#' @param landmark_indices Indices of landmark points used.
 #'
 #' @return A list containing py_x_approx (Nyström approximation), px, pxy, hy, and landmark_indices.
 #'
@@ -20,12 +22,22 @@ coord_to_pxy_nystrom_R <- function(X, s, cat_cols, cont_cols, lambda,
                                    contkernel = "gaussian",
                                    nomkernel = "aitchisonaitken",
                                    ordkernel = "liracine",
-                                   n_landmarks = NULL){
+                                   n_landmarks = NULL,
+                                   landmark_indices = NULL){
   
   n <- nrow(X)
   
-  # Select random landmark points
-  landmark_idx <- sample(n, n_landmarks, replace = FALSE)
+  # Select random landmark points (random by default, or use pre-specified)
+  if (is.null(landmark_indices)) {
+    landmark_idx <- sample(n, n_landmarks, replace = FALSE)
+  } else {
+    if (any(landmark_indices < 1) || any(landmark_indices > n) ||
+        anyDuplicated(landmark_indices)) {
+      stop("'landmark_indices' must be a vector of unique integers in [1, n].")
+    }
+    landmark_idx <- landmark_indices
+    n_landmarks <- length(landmark_idx)
+  }
   X_landmarks <- X[landmark_idx, , drop = FALSE]
   
   # Prepare bandwidth vector

@@ -36,6 +36,14 @@
 #' @param n_landmarks Number of randomly drawn landmark points used for the Nystr\enc{ö}{o}m approximation. Must be a positive integer less than the
 #'   number of observations \code{nrow(X)}. Defaults to \code{NULL}, which selects \eqn{\lceil \sqrt{n} \rceil} observations, where \eqn{n} is the
 #'   number of observations. Argument is ignored if \code{nystrom = FALSE}.
+#' @param landmark_indices Optional integer vector specifying the exact indices
+#'   of observations to use as landmark points for the Nystr\enc{ö}{o}m
+#'   approximation. Must contain unique integers in \eqn{[1, n]}, where
+#'   \eqn{n} is the number of observations. When provided, this overrides
+#'   random landmark sampling; if \code{n_landmarks} is also supplied, its
+#'   value must equal \code{length(landmark_indices)}. Defaults to \code{NULL},
+#'   in which case landmarks are sampled randomly. Argument is ignored if
+#'   \code{nystrom = FALSE}.
 #'
 #' @return An object of class \code{"gibclust"} representing the final clustering result. The returned object is a list with the following components:
 #'   \item{Cluster}{An integer vector giving the cluster assignments for each data point.}
@@ -56,6 +64,7 @@
 #'   \item{contcols}{Indices of continuous columns in \code{X}.}
 #'   \item{catcols}{Indices of categorical columns in \code{X}.}
 #'   \item{kernels}{List with names of kernels used for continuous, nominal, and ordinal features.}
+#'   \item{nystrom_landmarks}{Integer vector of observation indices used as landmark points when \code{nystrom = TRUE}; \code{NULL} otherwise.}
 #'
 #' Objects of class \code{"gibclust"} support the following methods:
 #'   \itemize{
@@ -67,6 +76,7 @@
 #'         \item \code{type = "sizes"}: barplot of cluster sizes or hardened sizes (IB/GIB).
 #'         \item \code{type = "info"}: barplot of entropy, conditional entropy, and mutual information.
 #'         \item \code{type = "beta"}: trajectory of \eqn{\log \beta} over iterations (only available for hard clustering outputs obtained using \code{DIBmix}).
+#'         \item \code{type = "importance"}: barplot of variable importance \eqn{I(T; Y_j)}, measuring how much each variable contributes to the cluster structure. Requires \code{X} (the original data frame) to be passed.
 #'     }
 #'   }
 #'
@@ -175,6 +185,7 @@
 #' plot(result_cat_first, type = "sizes") # Bar plot of cluster sizes
 #' plot(result_cat_first, type = "info")  # Information-theoretic quantities plot
 #' plot(result_cat_first, type = "beta")  # Plot of evolution of beta
+#' plot(result_cat_first, type = "importance", X = data_mix) # Variable importance plot
 #'
 #' # Simulated categorical data example
 #' data_cat <- data.frame(
@@ -236,7 +247,7 @@ DIBmix <- function(X, ncl, randinit = NULL,
                    maxiter = 100, nstart = 100, contkernel = "gaussian",
                    nomkernel = "aitchisonaitken", ordkernel = "liracine",
                    cat_first = FALSE, verbose = FALSE, nystrom = FALSE,
-                   n_landmarks = NULL) {
+                   n_landmarks = NULL, landmark_indices = NULL) {
 
   # Validate inputs
   if (!is.numeric(ncl) || ncl <= 1 || ncl != round(ncl)) {
@@ -254,19 +265,19 @@ DIBmix <- function(X, ncl, randinit = NULL,
   if (!is.logical(nystrom)) {
     stop("'nystrom' must be a logical (TRUE or FALSE).")
   }
-  if (nystrom){
-    if (is.null(n_landmarks)){
-      n_landmarks <- ceiling(sqrt(nrow(X)))
-    }
-  }
   prep_list <- input_checks_preprocess(X, s, lambda,
                                        scale, contkernel, nomkernel,
                                        ordkernel, cat_first,
-                                       nystrom, n_landmarks)
+                                       nystrom = nystrom,
+                                       n_landmarks = n_landmarks,
+                                       landmark_indices = landmark_indices)
   X <- prep_list$X
   bws_vec <- prep_list$bws_vec
   contcols <- prep_list$contcols
   catcols <- prep_list$catcols
+  n_landmarks <- prep_list$n_landmarks
+  landmark_indices <- prep_list$landmark_indices
+  
   # Construct joint density with final bandwidths
   if (nystrom){
     pxy_list <- coord_to_pxy_nystrom_R(as.data.frame(X),
@@ -285,7 +296,9 @@ DIBmix <- function(X, ncl, randinit = NULL,
                                        contkernel = contkernel,
                                        nomkernel = nomkernel,
                                        ordkernel = ordkernel,
-                                       n_landmarks = n_landmarks)
+                                       n_landmarks = n_landmarks,
+                                       landmark_indices = landmark_indices)
+    nystrom_landmarks <- pxy_list$landmark_indices
   } else {
     pxy_list <- coord_to_pxy_R(as.data.frame(X),
                                s = if (length(contcols) > 0){
@@ -303,6 +316,7 @@ DIBmix <- function(X, ncl, randinit = NULL,
                                contkernel = contkernel,
                                nomkernel = nomkernel,
                                ordkernel = ordkernel)
+    nystrom_landmarks <- NULL
   }
   py_x <- pxy_list$py_x
   px <- pxy_list$px
@@ -342,7 +356,8 @@ DIBmix <- function(X, ncl, randinit = NULL,
     catcols = catcols,
     kernels = list(cont = contkernel,
                    nom = nomkernel,
-                   ord = ordkernel)
+                   ord = ordkernel),
+    nystrom_landmarks = nystrom_landmarks
   )
   return(res)
 }

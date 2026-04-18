@@ -236,19 +236,54 @@ print.summary.gibclust <- function(x, ...) {
 #' Plot a gibclust object
 #'
 #' @param x A gibclust object.
-#' @param type Plot type: "sizes" (cluster sizes), "info" (information metrics),
-#'   or "beta" (log(beta) trajectory; DIBmix only).
+#' @param type Plot type: \code{"sizes"} (cluster sizes), \code{"info"} (information metrics), \code{"beta"} (log(beta) trajectory; DIBmix only), or \code{"importance"} (variable importance bar chart).
 #' @param main Optional title.
+#' @param col Optional color.
+#' @param X Original data frame used to fit \code{x}; required for
+#'   \code{type = "importance"}.
+#' @param ncl Number of clusters at which to cut the hierarchy; required
+#'   for \code{type = "importance"} on \code{aibclust} objects.
+#' @param color_by_type Logical; if \code{TRUE}, colour bars by variable type
+#'   (continuous / nominal / ordinal). Defaults to \code{TRUE}.
 #' @param ... Additional arguments passed to base plotting functions.
 #' @keywords internal
 #' @noRd
 #' @method plot gibclust
 #' @exportS3Method
-plot.gibclust <- function(x, type = c("sizes", "info", "beta"), main = NULL, ...) {
+plot.gibclust <- function(x, type = c("sizes", "info", "beta", "importance"),
+                          X = NULL, color_by_type = TRUE, col = NULL,
+                          main = NULL, ...) {
   type <- match.arg(type)
   
   # helper: harden fuzzy memberships for ncl x n membership matrix
   harden <- function(C) apply(C, 2, which.max)
+  
+  if (type == "importance") {
+    if (is.null(X)) {
+      stop("Argument 'X' (the original data frame) is required for type = 'importance'.")
+    }
+    if (nrow(X) != x$n) {
+      stop(sprintf("nrow(X) = %d does not match the fitted model's n = %d.",
+                   nrow(X), x$n))
+    }
+    cluster <- if (is.matrix(x$Cluster)) harden(x$Cluster) else x$Cluster
+    
+    iyt <- .compute_variable_importance(
+      X = X,
+      cluster = cluster,
+      s = x$s,
+      lambda = x$lambda,
+      contcols = x$contcols,
+      catcols = x$catcols,
+      kernels = x$kernels,
+      nystrom_landmarks = x$nystrom_landmarks
+    )
+    .plot_variable_importance(iyt, X = X,
+                              color_by_type = color_by_type,
+                              col = col,
+                              main = main, ...)
+    return(invisible(x))
+  }
   
   if (type == "sizes") {
     if (isTRUE(all.equal(x$alpha, 0))) {

@@ -51,6 +51,7 @@
 #'       \itemize{
 #'         \item \code{type = "dendrogram"}: dendrogram visualising the hierarchy of partitions obtained.
 #'         \item \code{type = "info"}: information retention curve; the proportion of information preserved \eqn{I(T_m;Y)/I(X;Y)} by the clustering \eqn{T_m} is plotted against the number of clusters \eqn{m}.
+#'         \item \code{type = "importance"}: barplot of variable importance \eqn{I(T_m; Y_j)} at a chosen number of clusters \eqn{m}. Requires \code{X} (the original data frame) and \code{ncl} (the number of clusters at which to cut the hierarchy).
 #'     }
 #'   }
 #'

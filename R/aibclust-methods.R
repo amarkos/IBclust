@@ -222,16 +222,59 @@ print.summary.aibclust <- function(x, ...) {
 #' Plot an aibclust object
 #'
 #' @param x an \code{aibclust} object.
-#' @param type \code{"dendrogram"} (default) or \code{"info"} (information retained curve).
-#' @param main optional title.
+#' @param type \code{"dendrogram"} (default), \code{"info"} (information retained curve), or \code{"importance"} (variable importance bar chart).
+#' @param main Optional title.
+#' @param col Optional color
 #' @param labels logical; show labels on dendrogram.
+#' @param X Original data frame used to fit \code{x}; required for
+#'   \code{type = "importance"}.
+#' @param ncl Number of clusters at which to cut the hierarchy; required
+#'   for \code{type = "importance"} on \code{aibclust} objects.
+#' @param color_by_type Logical; if \code{TRUE}, colour bars by variable type
+#'   (continuous / nominal / ordinal). Defaults to \code{TRUE}.
 #' @param ... passed to graphics.
 #' @keywords internal
 #' @noRd
 #' @method plot aibclust
 #' @exportS3Method
-plot.aibclust <- function(x, type = c("dendrogram", "info"), main = NULL, labels = TRUE, ...) {
+plot.aibclust <- function(x, type = c("dendrogram", "info", "importance"),
+                          X = NULL, ncl = NULL, color_by_type = TRUE, col = NULL,
+                          main = NULL, labels = TRUE, ...) {
   type <- match.arg(type)
+  
+  if (type == "importance") {
+    if (is.null(X)) {
+      stop("Argument 'X' (the original data frame) is required for type = 'importance'.")
+    }
+    if (is.null(ncl)) {
+      stop("Argument 'ncl' (number of clusters to cut at) is required for type = 'importance'.")
+    }
+    if (ncl < 2 || ncl > length(x$partitions)) {
+      stop(sprintf("'ncl' must be between 2 and %d.", length(x$partitions)))
+    }
+    if (nrow(X) != x$n) {
+      stop(sprintf("nrow(X) = %d does not match the fitted model's n = %d.",
+                   nrow(X), x$n))
+    }
+    
+    cluster <- x$partitions[[ncl]]
+    
+    iyt <- .compute_variable_importance(
+      X = X,
+      cluster = cluster,
+      s = x$s,
+      lambda = x$lambda,
+      contcols = x$contcols,
+      catcols = x$catcols,
+      kernels = x$kernels,
+      nystrom_landmarks = NULL
+    )
+    .plot_variable_importance(iyt, X = X,
+                              color_by_type = color_by_type,
+                              col = col,
+                              main = main, ...)
+    return(invisible(x))
+  }
   
   if (type == "dendrogram") {
     # rebuild dendrogram at plot time
