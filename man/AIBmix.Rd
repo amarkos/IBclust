@@ -60,6 +60,7 @@ An object of class \code{"aibclust"} representing the final clustering result. T
   \item{catcols}{Indices of categorical columns in \code{X}.}
   \item{kernels}{List with names of kernels used for continuous, nominal, and ordinal features.}
   \item{obs_names}{Names of rows in \code{X}; used for plotting the cluster hierarchy using a dendrogram.}
+  \item{scale}{Logical indicating whether continuous variables were scaled to unit variance before clustering.}
 
 Objects of class \code{"aibclust"} support the following methods:
   \itemize{

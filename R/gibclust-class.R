@@ -10,7 +10,8 @@ new_gibclust <- function(
     kernels = list(cont = NA_character_,
                    nom = NA_character_,
                    ord = NA_character_),
-    nystrom_landmarks = NULL
+    nystrom_landmarks = NULL,
+    scale = TRUE
 ) {
   cl <- cluster  # use local variable 'cl' to avoid confusion
   
@@ -44,7 +45,8 @@ new_gibclust <- function(
     contcols = contcols,
     catcols = catcols,
     kernels = kernels,
-    nystrom_landmarks = nystrom_landmarks
+    nystrom_landmarks = nystrom_landmarks,
+    scale = scale
   )
   validate_gibclust(x)
   class(x) <- "gibclust"

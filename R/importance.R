@@ -3,7 +3,8 @@
 #' @noRd
 .compute_variable_importance <- function(X, cluster, s, lambda,
                                          contcols, catcols, kernels,
-                                         nystrom_landmarks = NULL) {
+                                         nystrom_landmarks = NULL,
+                                         scale = TRUE) {
   n <- nrow(X)
   X <- as.data.frame(X)
   p <- ncol(X)
@@ -14,6 +15,13 @@
   cluster <- as.integer(cluster)
   cluster_ids <- sort(unique(cluster))
   ncl <- length(cluster_ids)
+  
+  if (length(catcols) > 0) {
+    X[, catcols] <- preprocess_cat_data(X[, catcols])
+  }
+  if (length(contcols) > 0 && scale) {
+    X[, contcols] <- as.data.frame(preprocess_cont_data(X[, contcols]))
+  }
   
   # Hard assignment matrix qt_x: ncl x n
   qt_x <- matrix(0, nrow = ncl, ncol = n)

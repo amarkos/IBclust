@@ -110,6 +110,7 @@ An object of class \code{"gibclust"} representing the final clustering result. T
   \item{catcols}{Indices of categorical columns in \code{X}.}
   \item{kernels}{List with names of kernels used for continuous, nominal, and ordinal features.}
   \item{nystrom_landmarks}{Integer vector of observation indices used as landmark points when \code{nystrom = TRUE}; \code{NULL} otherwise.}
+  \item{scale}{Logical indicating whether continuous variables were scaled to unit variance before clustering.}
 
 Objects of class \code{"gibclust"} support the following methods:
   \itemize{

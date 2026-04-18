@@ -267,7 +267,8 @@ plot.aibclust <- function(x, type = c("dendrogram", "info", "importance"),
       contcols = x$contcols,
       catcols = x$catcols,
       kernels = x$kernels,
-      nystrom_landmarks = NULL
+      nystrom_landmarks = NULL,
+      scale = x$scale
     )
     .plot_variable_importance(iyt, X = X,
                               color_by_type = color_by_type,

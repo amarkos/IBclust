@@ -276,7 +276,8 @@ plot.gibclust <- function(x, type = c("sizes", "info", "beta", "importance"),
       contcols = x$contcols,
       catcols = x$catcols,
       kernels = x$kernels,
-      nystrom_landmarks = x$nystrom_landmarks
+      nystrom_landmarks = x$nystrom_landmarks,
+      scale = x$scale
     )
     .plot_variable_importance(iyt, X = X,
                               color_by_type = color_by_type,

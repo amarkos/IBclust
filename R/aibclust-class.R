@@ -16,7 +16,8 @@ new_aibclust <- function(
     kernels  = list(cont = NA_character_,
                     nom = NA_character_,
                     ord = NA_character_),
-    obs_names = NULL
+    obs_names = NULL,
+    scale = TRUE
 ) {
   if (is.null(obs_names)) {
     obs_names <- as.character(seq_len(n))
@@ -35,7 +36,8 @@ new_aibclust <- function(
     contcols = as.integer(contcols),
     catcols = as.integer(catcols),
     kernels = kernels,
-    obs_names = as.character(obs_names)
+    obs_names = as.character(obs_names),
+    scale = scale
   )
   validate_aibclust(x)
   class(x) <- "aibclust"
