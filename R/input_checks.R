@@ -1,7 +1,8 @@
 input_checks_preprocess <- function(X, s, lambda, scale,
                                     contkernel, nomkernel,
                                     ordkernel, cat_first,
-                                    nystrom, n_landmarks){
+                                    nystrom, n_landmarks,
+                                    nystrom_available = TRUE){
   # Validate inputs
   if (!is.data.frame(X)) {
     stop("Input 'X' must be a data frame.")
@@ -11,6 +12,9 @@ input_checks_preprocess <- function(X, s, lambda, scale,
   }
   if (!is.logical(cat_first)) {
     stop("'cat_first' must be a logical value (TRUE or FALSE).")
+  }
+  if (!is.logical(nystrom_available)) {
+    stop("'nystrom_available' must be a logical value (TRUE or FALSE).")
   }
   # Check kernel types
   if (!contkernel %in% c("gaussian", "epanechnikov")){
@@ -22,7 +26,7 @@ input_checks_preprocess <- function(X, s, lambda, scale,
   if (!ordkernel %in% c("liracine", "wangvanryzin")){
     stop("'ordkernel' can only be one of 'liracine' or 'wangvanryzin'")
   }
-  if (nrow(X) > 1000 & nystrom == FALSE){
+  if (nrow(X) > 1000 & nystrom == FALSE & nystrom_available){
     warning("Number of observations exceeds 1000; perhaps consider using the Nystr\u00f6m approximation (nystrom = TRUE).")
   }
   if (nrow(X) <= 1000 & nystrom == TRUE){

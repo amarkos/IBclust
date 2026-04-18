@@ -2,7 +2,6 @@
 #'
 #' @useDynLib IBclust, .registration = TRUE
 #' @import stats
-#' @import RcppEigen
 #' @import np
 #' @import Rdpack
 #' @importFrom utils head flush.console

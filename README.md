@@ -1,7 +1,7 @@
 # IBclust Package
 
-**IBclust** is an R package for clustering datasets using the Information Bottleneck method and its variants. This package supports datasets with mixed-type variables (nominal, ordinal, and continuous), as well as datasets that are purely continuous or categorical. The IB approach preserves the most relevant information while forming concise and interpretable clusters, guided by principles from information theory.
-<!-- , as introduced in [Costa, Papatsouma, and Markos (2024)](https://arxiv.org/abs/2407.03389) -->
+**IBclust** is an R package for clustering datasets using the Information Bottleneck method and its variants. This package supports datasets with mixed-type variables (nominal, ordinal, and continuous), as well as datasets that are purely continuous or categorical. The IB approach preserves the most relevant information while forming concise and interpretable clusters, guided by principles from information theory, as introduced in [Costa, Papatsouma, and Markos (2026)](https://doi.org/10.1016/j.patcog.2026.113580).
+
 ## Installation
 
 You can install the latest version of the package directly from GitHub using `devtools`:
