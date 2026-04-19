@@ -1,5 +1,8 @@
 AIB <- function(p_xy){
   n_x <- nrow(p_xy)
+  
+  pb <- txtProgressBar(style = 3, min = 0, max = n_x - 1)
+  on.exit(close(pb), add = TRUE)
   # initial clusters & active clusters
   clusters <- lapply(1:n_x, function(i) list(
     indices = i,
@@ -80,6 +83,8 @@ AIB <- function(p_xy){
     
     I_ZY_cur <- sum(w*rowSums(Pmat*ratio))
     I_Z_Y[n_x-step] <- I_ZY_cur
+    
+    setTxtProgressBar(pb, step)
   }
   
   I_X_Y <- I_Z_Y[n_x]
