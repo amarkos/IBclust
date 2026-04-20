@@ -278,19 +278,25 @@ plot.aibclust <- function(x, type = c("dendrogram", "info", "importance"),
   }
   
   if (type == "dendrogram") {
-    # rebuild dendrogram at plot time
     lab <- if (isTRUE(labels)) x$obs_names else NULL
     d <- make_dendrogram(x$merges, x$merge_costs, labels = lab)
     if (is.null(main)) main <- "AIBmix dendrogram"
-    plot(d, main = main, ...)
+    # Pass col through only if supplied; dendrogram default styling otherwise
+    if (is.null(col)) {
+      plot(d, main = main, ...)
+    } else {
+      plot(d, main = main, edgePar = list(col = col), ...)
+    }
   } else {  # "info"
-    # plot information retained vs number of clusters m
-    m <- seq_len(x$n) 
+    m <- seq_len(x$n)
     y <- x$info_ret
+    line_col <- if (is.null(col)) "black" else col
     if (is.null(main)) main <- "Information retention curve"
-    plot(m, y, type = "l", xlab = "Number of clusters (m)",
-         ylab = expression(I(T[m] * ";" * Y) / I(X * ";" * Y)), main = main, ...)
-    points(m, y, ...)
+    plot(m, y, type = "l", col = line_col,
+         xlab = "Number of clusters (m)",
+         ylab = expression(I(T[m] * ";" * Y) / I(X * ";" * Y)),
+         main = main, ...)
+    points(m, y, col = line_col, ...)
   }
   invisible(x)
 }

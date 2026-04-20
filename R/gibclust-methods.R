@@ -255,7 +255,6 @@ plot.gibclust <- function(x, type = c("sizes", "info", "beta", "importance"),
                           main = NULL, ...) {
   type <- match.arg(type)
   
-  # helper: harden fuzzy memberships for ncl x n membership matrix
   harden <- function(C) apply(C, 2, which.max)
   
   if (type == "importance") {
@@ -288,17 +287,16 @@ plot.gibclust <- function(x, type = c("sizes", "info", "beta", "importance"),
   
   if (type == "sizes") {
     if (isTRUE(all.equal(x$alpha, 0))) {
-      # DIBmix: hard labels vector
       cl <- x$Cluster
       if (is.vector(cl) && length(cl) == x$n) {
         tab <- table(as.integer(cl))
         if (is.null(main)) main <- "Cluster sizes (DIBmix)"
-        barplot(tab, ylab = "Count", xlab = "Cluster", main = main, ...)
+        barplot(tab, ylab = "Count", xlab = "Cluster", main = main,
+                col = if (is.null(col)) "gray" else col, ...)
       } else {
         warning("Hard labels unavailable or malformed for DIBmix.")
       }
     } else {
-      # IB/GIB: fuzzy membership matrix (ncl x n)
       C <- x$Cluster
       if (is.matrix(C) && nrow(C) == x$ncl && ncol(C) == x$n) {
         lab <- harden(C)
@@ -307,19 +305,21 @@ plot.gibclust <- function(x, type = c("sizes", "info", "beta", "importance"),
           main <- if (isTRUE(all.equal(x$alpha, 1))) "Hardened sizes (IBmix)"
           else "Hardened sizes (GIBmix)"
         }
-        barplot(tab, ylab = "Count", xlab = "Cluster", main = main, ...)
+        barplot(tab, ylab = "Count", xlab = "Cluster", main = main,
+                col = if (is.null(col)) "gray" else col, ...)
       } else {
         warning("Membership matrix unavailable or malformed for IB/GIB.")
       }
     }
     
   } else if (type == "info") {
-    vals <- c(`H(T)` = x$Entropy,
+    vals <- c(`H(T)`   = x$Entropy,
               `H(T|X)` = x$CondEntropy,
-              `I(Y;T)`    = x$MutualInfo)
+              `I(Y;T)` = x$MutualInfo)
     vals[!is.finite(vals)] <- NA_real_
     if (is.null(main)) main <- "Information summary"
-    barplot(vals, ylab = "Value", main = main, ...)
+    barplot(vals, ylab = "Value", main = main,
+            col = if (is.null(col)) "gray" else col, ...)
     
   } else { # type == "beta"
     if (!isTRUE(all.equal(x$alpha, 0))) {
@@ -331,23 +331,19 @@ plot.gibclust <- function(x, type = c("sizes", "info", "beta", "importance"),
       warning("No beta trajectory available to plot.")
       return(invisible(x))
     }
-    idx <- 0:(length(b) - 1) 
+    idx <- 0:(length(b) - 1)
     logb <- log(b)
+    line_col <- if (is.null(col)) "black" else col
     
     if (is.null(main)) main <- expression(log(beta) ~ " trajectory (DIBmix)")
     
-    if (all(is.finite(logb))) {
-      plot(idx, logb, type = "l",
-           xlab = "Iteration", ylab = expression(log(beta)),
-           main = main, ...)
-      points(idx, logb, ...)
-    } else {
+    if (!all(is.finite(logb))) {
       warning("Non-finite values in log(beta); some points omitted.")
-      plot(idx, logb, type = "l",
-           xlab = "Iteration", ylab = expression(log(beta)),
-           main = main, ...)
-      points(idx, logb, ...)
     }
+    plot(idx, logb, type = "l", col = line_col,
+         xlab = "Iteration", ylab = expression(log(beta)),
+         main = main, ...)
+    points(idx, logb, col = line_col, ...)
   }
   invisible(x)
 }
