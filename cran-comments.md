@@ -1,7 +1,9 @@
 ## Submission 1.4
-* Added `fitted`, `info_metrics`, and `coef` methods for objects of both `aibclust` and `giclust` class.
-* Added `predict` methods for `gibclust` class objects.
-* Object of class `aibclust` can now be converted to `hclust` objects through `as.hclust`.
+* Added `fitted`, `info_metrics`, and `coef` methods for objects of both `aibclust` and `gibclust` class.
+* Added `predict` method for `gibclust` class objects.
+* Objects of class `aibclust` can now be converted to `hclust` objects through `as.hclust`.
+* Added optional `keep_data` argument to all clustering functions; when `TRUE`, the input data is stored in the returned object.
+* Added new information-theoretic metrics (H(T), H(T|X), I(T;X)) to `aibclust` objects, accessible via `info_metrics`.
 
 ## Submission 1.3
 * Added an implementation of the Nyström approximation for large kernel Gram matrices.
