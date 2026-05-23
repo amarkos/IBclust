@@ -7,6 +7,9 @@ new_aibclust <- function(
     I_T_Y,
     I_X_Y,
     info_ret,
+    H_T,
+    H_T_X,
+    I_T_X,
     s,
     lambda,
     call,
@@ -29,6 +32,9 @@ new_aibclust <- function(
     I_T_Y = I_T_Y,
     I_X_Y = I_X_Y,
     info_ret = info_ret,
+    H_T = H_T,
+    H_T_X = H_T_X,
+    I_T_X = I_T_X,
     s = s,
     lambda = lambda,
     call = call,
@@ -65,6 +71,9 @@ validate_aibclust <- function(x) {
   stopifnot(is.numeric(x$I_T_Y), length(x$I_T_Y) == n)
   stopifnot(is.numeric(x$I_X_Y), length(x$I_X_Y) == 1L)
   stopifnot(is.numeric(x$info_ret), length(x$info_ret) == n)
+  stopifnot(is.numeric(x$H_T), length(x$H_T)   == n)
+  stopifnot(is.numeric(x$H_T_X), length(x$H_T_X) == n)
+  stopifnot(is.numeric(x$I_T_X), length(x$I_T_X) == n)
   
   # bandwidths
   stopifnot(is.numeric(x$s), is.numeric(x$lambda))

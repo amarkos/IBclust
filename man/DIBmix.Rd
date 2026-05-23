@@ -20,7 +20,8 @@ DIBmix(
   verbose = FALSE,
   nystrom = FALSE,
   n_landmarks = NULL,
-  landmark_indices = NULL
+  landmark_indices = NULL,
+  keep_data = TRUE
 )
 }
 \arguments{
@@ -77,35 +78,34 @@ random landmark sampling; if \code{n_landmarks} is also supplied, its
 value must equal \code{length(landmark_indices)}. Defaults to \code{NULL},
 in which case landmarks are sampled randomly. Argument is ignored if
 \code{nystrom = FALSE}.}
-}
-\value{
-An object of class \code{"gibclust"} representing the final clustering result. The returned object is a list with the following components:
-  \item{Cluster}{An integer vector giving the cluster assignments for each data point.}
-  \item{Entropy}{A numeric value representing the entropy of the cluster assignments at convergence.}
-  \item{CondEntropy}{A numeric value representing the conditional entropy of cluster assignment, given the observation weights \eqn{H(T \mid X)}.}
-  \item{MutualInfo}{A numeric value representing the mutual information, \eqn{I(Y;T)}, between the original labels (\eqn{Y}) and the cluster assignments (\eqn{T}).}
-  \item{InfoXT}{A numeric value representing the mutual information, \eqn{I(X;T)}, between the original observations weights (\eqn{X}) and the cluster assignments (\eqn{T}).}
-  \item{beta}{A numeric vector of the final beta values used in the iterative procedure.}
-  \item{alpha}{A numeric value of the strength of conditional entropy used, controlling fuzziness of the solution. This is by default equal to \eqn{0} for \code{DIBmix}.}
-  \item{s}{A numeric vector of bandwidth parameters used for the continuous variables. A value of \eqn{-1} is returned if all variables are categorical.}
-  \item{lambda}{A numeric vector of bandwidth parameters used for the categorical variables. A value of \eqn{-1} is returned if all variables are continuous.}
-  \item{call}{The matched call.}
-  \item{ncl}{Number of clusters.}
-  \item{n}{Number of observations.}
-  \item{iters}{Number of iterations used to obtain the returned solution.}
-  \item{converged}{Logical indicating whether convergence was reached before \code{maxiter}.}
-  \item{conv_tol}{Numeric convergence tolerance; by default \eqn{0} for \code{DIBmix}.}
-  \item{contcols}{Indices of continuous columns in \code{X}.}
-  \item{catcols}{Indices of categorical columns in \code{X}.}
-  \item{kernels}{List with names of kernels used for continuous, nominal, and ordinal features.}
-  \item{nystrom_landmarks}{Integer vector of observation indices used as landmark points when \code{nystrom = TRUE}; \code{NULL} otherwise.}
-  \item{scale}{Logical indicating whether continuous variables were scaled to unit variance before clustering.}
+
+\item{keep_data}{Logical; if \code{TRUE}, the original input data \code{X}
+  is stored in the returned object as \code{training_data}, enabling the
+  use of \code{predict()} and certain plotting methods without re-passing
+  the data. Defaults to \code{FALSE} to keep returned objects lightweight.
 
 Objects of class \code{"gibclust"} support the following methods:
   \itemize{
     \item \code{print.gibclust}: Display a concise description of the cluster assignment.
     \item \code{summary.gibclust}: Show detailed information including cluster sizes,
           information-theoretic metrics, hyperparameters, and convergence details.
+    \item \code{fitted.gibclust}: Extract cluster assignments. The argument
+          \code{method = "classes"} (default) returns hard cluster labels;
+          \code{method = "soft"} returns the membership matrix (one-hot for
+          DIBmix; soft for IBmix and GIBmix).
+    \item \code{coef.gibclust}: Extract the model's hyperparameters as a list,
+          including bandwidths (\code{s}, \code{lambda}) and IB parameters
+          (\code{beta}, \code{alpha}). Entries for variable types not present
+          in the data are omitted.
+    \item \code{info_metrics.gibclust}: Extract information-theoretic
+          quantities: \eqn{H(T)}, \eqn{H(T \mid X)}, \eqn{I(T; X)}, and
+          \eqn{I(T; Y)}.
+    \item \code{predict.gibclust}: Assign new observations to clusters.
+          For DIBmix fits, returns hard cluster labels and for IBmix and
+          GIBmix fits, returns a soft membership matrix. Requires the
+          training data \code{X}, either via the \code{X} argument or
+          automatically from \code{object$training_data} if the fit was
+          constructed with \code{keep_data = TRUE}.
     \item \code{plot.gibclust}: Produce diagnostic plots:
       \itemize{
         \item \code{type = "sizes"}: barplot of cluster sizes or hardened sizes (IB/GIB).
@@ -113,7 +113,7 @@ Objects of class \code{"gibclust"} support the following methods:
         \item \code{type = "beta"}: trajectory of \eqn{\log \beta} over iterations (only available for hard clustering outputs obtained using \code{DIBmix}).
         \item \code{type = "importance"}: barplot of variable importance \eqn{I(T; Y_j)}, measuring how much each variable contributes to the cluster structure. Requires \code{X} (the original data frame) to be passed.
     }
-  }
+  }}
 }
 \description{
 The \code{DIBmix} function implements the Deterministic Information Bottleneck (DIB) algorithm

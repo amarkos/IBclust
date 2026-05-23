@@ -1,3 +1,8 @@
+## Submission 1.4
+* Added `fitted`, `info_metrics`, and `coef` methods for objects of both `aibclust` and `giclust` class.
+* Added `predict` methods for `gibclust` class objects.
+* Object of class `aibclust` can now be converted to `hclust` objects through `as.hclust`.
+
 ## Submission 1.3
 * Added an implementation of the Nyström approximation for large kernel Gram matrices.
 * Optimised continuous bandwidth search based on average nearest and furthest neighbour heuristics.

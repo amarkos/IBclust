@@ -3,7 +3,8 @@ input_checks_preprocess <- function(X, s, lambda, scale,
                                     ordkernel, cat_first,
                                     nystrom, n_landmarks,
                                     landmark_indices = NULL,
-                                    nystrom_available = TRUE){
+                                    nystrom_available = TRUE,
+                                    keep_data){
   # Validate inputs
   if (!is.data.frame(X)) {
     stop("Input 'X' must be a data frame.")
@@ -56,6 +57,9 @@ input_checks_preprocess <- function(X, s, lambda, scale,
         stop("'n_landmarks' must be a positive integer smaller than the number of observations.")
       }
     }
+  }
+  if (!is.logical(keep_data)) {
+    stop("'keep_data' must be a logical (TRUE or FALSE).")
   }
   X <- data.frame(X)
   # Check catcols/contcols

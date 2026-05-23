@@ -3,27 +3,30 @@ AIB <- function(p_xy){
   
   pb <- txtProgressBar(style = 3, min = 0, max = n_x - 1)
   on.exit(close(pb), add = TRUE)
-  # initial clusters & active clusters
   clusters <- lapply(1:n_x, function(i) list(
     indices = i,
     p_z = p_xy[i,]/sum(p_xy[i,]),
     prob = sum(p_xy[i,])
   ))
   active <- rep(TRUE, n_x)
-  # precompute full distance matrix with JS divergences
   D <- make_IB_distmat(p_xy)
   
   merges <- matrix(NA_integer_, n_x-1, 2)
   merge_costs <- numeric(n_x-1)
   partitions <- vector("list", n_x)
   I_Z_Y <- numeric(n_x)
+  H_T   <- numeric(n_x)
+  H_T_X <- numeric(n_x)
+  I_T_X <- numeric(n_x)
   
-  # record the "all-singletons" step (step 1)
+  p_y <- colSums(p_xy)
+  px  <- rowSums(p_xy)
+  
   partitions[[n_x]] <- seq_len(n_x)
   I_Z_Y[n_x] <- mutual_information(p_xy)
-  
-  # precompute p(Y)
-  p_y <- colSums(p_xy)
+  H_T[n_x]   <- entropy(px)
+  H_T_X[n_x] <- 0
+  I_T_X[n_x] <- H_T[n_x]
   
   for(step in seq_len(n_x-1)) {
     act_ids <- which(active)
@@ -57,32 +60,41 @@ AIB <- function(p_xy){
     for(k in act_ids) if(k != i_idx){
       D[i_idx, k] <- D[k, i_idx] <-
         (clusters[[i_idx]]$prob + clusters[[k]]$prob) *
-        # Rcpp wrapper for JS‐divergence
         js_divergence(clusters[[i_idx]]$p_z,
                       clusters[[k]]$p_z)
     }
     
     # record partition at this step
     part <- integer(n_x)
-    cid  <- 1
+    cid <- 1
     for(idx in which(active)){
       part[ clusters[[idx]]$indices ] <- cid
       cid <- cid + 1
     }
     partitions[[n_x - step]] <- part
     
-    # compute I(Z;Y)
-    # build p(Y|Z) matrix
+    # build p(Y|T) matrix and cluster marginals
     active_ids <- which(active)
     Pmat <- t(sapply(active_ids, function(i) clusters[[i]]$p_z))
-    w <- sapply(active_ids, function(i) clusters[[i]]$prob)
+    qt <- sapply(active_ids, function(i) clusters[[i]]$prob)
     
-    # ratio matrix log2(p(y|z) / p(y))
+    # compute I(Z;Y)
     ratio <- log2(Pmat/matrix(p_y, nrow(Pmat), ncol(Pmat), byrow=TRUE))
     ratio[is.infinite(ratio)] <- 0
-    
-    I_ZY_cur <- sum(w*rowSums(Pmat*ratio))
+    I_ZY_cur <- sum(qt*rowSums(Pmat*ratio))
     I_Z_Y[n_x-step] <- I_ZY_cur
+    
+    # compute info metrics
+    ncl_now <- length(active_ids)
+    qt_x <- matrix(0, nrow = ncl_now, ncol = n_x)
+    for (k in seq_len(ncl_now)) {
+      qt_x[k, part == k] <- 1
+    }
+    ht  <- entropy(qt)
+    ht_x <- as.numeric(crossprod(px, entropy(qt_x)))
+    H_T[n_x - step] <- ht
+    H_T_X[n_x - step] <- ht_x
+    I_T_X[n_x - step] <- ht - ht_x
     
     setTxtProgressBar(pb, step)
   }
@@ -97,7 +109,10 @@ AIB <- function(p_xy){
     partitions = partitions,
     I_Z_Y = I_Z_Y,
     I_X_Y = I_X_Y,
-    info_ret = info_ret
+    info_ret = info_ret,
+    H_T = H_T,
+    H_T_X = H_T_X,
+    I_T_X = I_T_X
   )
   return(res_list)
 }

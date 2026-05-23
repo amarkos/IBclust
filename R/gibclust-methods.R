@@ -4,7 +4,7 @@
 #' and \code{plot()}.
 #'
 #' @name gibclust-methods
-#' @aliases print.gibclust summary.gibclust print.summary.gibclust plot.gibclust
+#' @aliases print.gibclust summary.gibclust print.summary.gibclust plot.gibclust fitted.gibclust coef.gibclust predict.gibclust
 #' @keywords methods
 #' @seealso \code{\link{DIBmix}}, \code{\link{IBmix}}, \code{\link{GIBmix}}
 #' @importFrom graphics barplot points
@@ -346,4 +346,182 @@ plot.gibclust <- function(x, type = c("sizes", "info", "beta", "importance"),
     points(idx, logb, col = line_col, ...)
   }
   invisible(x)
+}
+
+#' @rdname gibclust-methods
+#' @param object A gibclust object.
+#' @param method For fuzzy fits (IBmix/GIBmix), either \code{"classes"}
+#'   (default; hard cluster labels obtained via argmax of the membership
+#'   matrix) or \code{"soft"} (the raw fuzzy membership matrix). For hard
+#'   fits (DIBmix), \code{"classes"} returns the integer label vector and
+#'   \code{"soft"} returns the equivalent one-hot binary matrix.
+#' @keywords internal
+#' @noRd
+#' @method fitted gibclust
+#' @exportS3Method
+fitted.gibclust <- function(object, method = c("classes", "soft"), ...) {
+  method <- match.arg(method)
+  cl <- object$Cluster
+  
+  if (is.matrix(cl)) {
+    if (method == "soft") return(cl)
+    return(apply(cl, 2, which.max))
+  }
+  
+  if (method == "classes") return(as.integer(cl))
+  
+  cl <- as.integer(cl)
+  ncl <- object$ncl
+  M <- matrix(0, nrow = ncl, ncol = length(cl))
+  for (k in seq_len(ncl)) {
+    M[k, cl == k] <- 1
+  }
+  M
+}
+
+#' @rdname gibclust-methods
+#' @param object A gibclust object.
+#' @keywords internal
+#' @noRd
+#' @method coef gibclust
+#' @exportS3Method
+coef.gibclust <- function(object, ...) {
+  out <- list()
+  if (length(object$contcols) > 0L) out$s <- object$s
+  if (length(object$catcols)  > 0L) out$lambda <- object$lambda
+  out$beta  <- object$beta
+  out$alpha <- object$alpha
+  out
+}
+
+#' Predict cluster assignments for new observations
+#'
+#' Assigns new observations to clusters using a fitted \code{gibclust} model.
+#' For hard fits (\code{DIBmix}, \code{alpha = 0}), returns integer cluster
+#' labels via argmin Kullback--Leibler divergence between the new
+#' observation's conditional distribution and each cluster's profile. For
+#' soft fits (\code{IBmix}, \code{GIBmix}), returns the full membership
+#' matrix via Boltzmann weighting with the fitted \eqn{\beta}.
+#'
+#' @param object A fitted \code{gibclust} object.
+#' @param newdata A data frame of new observations to be assigned. If
+#'   \code{NULL} (default), predictions are returned for the training data
+#'   \code{X}. Must have the same columns as \code{X} otherwise.
+#' @param X The original training data frame used to fit \code{object}.
+#'   Optional if \code{object} was constructed with \code{keep_data = TRUE};
+#'   in that case the stored training data is used automatically. Required
+#'   otherwise.
+#' @param ... Additional arguments (currently ignored).
+#'
+#' @return For DIBmix fits, an integer vector of length \code{nrow(newdata)}.
+#'   For IBmix and GIBmix fits, a numeric matrix of dimension
+#'   \code{object$ncl} by \code{nrow(newdata)} containing soft memberships
+#'   (columns sum to 1).
+#'
+#' @method predict gibclust
+#' @exportS3Method
+predict.gibclust <- function(object, newdata = NULL, X = NULL, ...) {
+  if (is.null(X)) {
+    if (is.null(object$training_data)) {
+      stop("'X' (the training data) must be supplied. Alternatively, refit with keep_data = TRUE to store training data in the model object.")
+    }
+    X <- object$training_data
+  }
+  if (is.null(newdata)) {
+    newdata <- X
+  }
+  if (missing(newdata) || is.null(newdata)) {
+    stop("'newdata' must be supplied.")
+  }
+  if (missing(X) || is.null(X)) {
+    stop("'X' (the training data) must be supplied.")
+  }
+  if (!is.data.frame(newdata)) newdata <- as.data.frame(newdata)
+  if (!is.data.frame(X)) X <- as.data.frame(X)
+  
+  if (!identical(names(newdata), names(X))) {
+    stop("Columns of 'newdata' must match columns of 'X' exactly (same names, same order).")
+  }
+  if (nrow(X) != object$n) {
+    stop(sprintf("nrow(X) = %d does not match the fitted model's n = %d.",
+                 nrow(X), object$n))
+  }
+  
+  contcols <- object$contcols
+  catcols  <- object$catcols
+  
+  if (length(contcols) > 0L && isTRUE(object$scale)) {
+    train_means <- colMeans(X[, contcols, drop = FALSE])
+    train_sds <- apply(X[, contcols, drop = FALSE], 2, stats::sd)
+    X[, contcols] <- scale(X[, contcols, drop = FALSE],
+                           center = train_means, scale = train_sds)
+    newdata[, contcols] <- scale(newdata[, contcols, drop = FALSE],
+                                 center = train_means, scale = train_sds)
+  }
+  if (length(catcols) > 0L) {
+    for (j in catcols) {
+      lev <- levels(factor(X[[j]]))
+      X[[j]] <- as.integer(factor(X[[j]], levels = lev))
+      newdata[[j]] <- as.integer(factor(newdata[[j]], levels = lev))
+    }
+  }
+  
+  bws_vec <- numeric(ncol(X))
+  if (length(contcols) > 0L) bws_vec[contcols] <- object$s
+  if (length(catcols)  > 0L) bws_vec[catcols]  <- object$lambda
+  
+  eval_list <- coord_to_pxy_eval_R(
+    X_train = X,
+    X_new = newdata,
+    s = if (length(contcols) > 0L) object$s else -1,
+    lambda = if (length(catcols)  > 0L) object$lambda else -1,
+    cat_cols = catcols,
+    cont_cols = contcols,
+    contkernel = object$kernels$cont,
+    nomkernel = object$kernels$nom,
+    ordkernel = object$kernels$ord
+  )
+  py_x_new <- eval_list$py_x_new
+  pxy_train <- coord_to_pxy_R(
+    X = X,
+    s = if (length(contcols) > 0L) object$s      else -1,
+    lambda = if (length(catcols)  > 0L) object$lambda else -1,
+    cat_cols = catcols,
+    cont_cols = contcols,
+    contkernel = object$kernels$cont,
+    nomkernel = object$kernels$nom,
+    ordkernel = object$kernels$ord
+  )
+  py_x_train <- pxy_train$py_x
+  px_train <- pxy_train$px
+  
+  qy_t <- .reconstruct_qy_t(py_x_train, object$Cluster, px_train, object$ncl)
+  n_new <- ncol(py_x_new)
+  ncl <- object$ncl
+  kl_mat <- matrix(0, nrow = ncl, ncol = n_new)
+  log_p_new <- log(py_x_new)
+  log_p_new[!is.finite(log_p_new)] <- 0
+  
+  for (t in seq_len(ncl)) {
+    log_qy_t <- log(qy_t[, t])
+    log_qy_t[!is.finite(log_qy_t)] <- 0
+    diff_log <- log_p_new - log_qy_t
+    kl_mat[t, ] <- colSums(py_x_new * diff_log)
+  }
+  if (isTRUE(all.equal(object$alpha, 0))) {
+    return(apply(kl_mat, 2, which.min))
+  }
+  qt <- as.numeric(table(factor(object$Cluster, levels = seq_len(ncl))) / object$n)
+  if (is.matrix(object$Cluster)) {
+    qt <- as.numeric(object$Cluster %*% as.numeric(px_train))
+  }
+  beta_val <- if (length(object$beta) > 1L) tail(object$beta, 1) else object$beta
+  log_qt <- log(qt)
+  log_qt[!is.finite(log_qt)] <- -Inf
+  log_qt_x <- sweep(-beta_val * kl_mat, 1, log_qt, "+")
+  log_qt_x <- sweep(log_qt_x, 2, apply(log_qt_x, 2, max), "-")
+  qt_x_new <- exp(log_qt_x)
+  qt_x_new <- sweep(qt_x_new, 2, colSums(qt_x_new), "/")
+  
+  qt_x_new
 }

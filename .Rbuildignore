@@ -7,3 +7,5 @@
 ^.*\.Rproj$
 ^LICENSE\.md$
 ^cran-comments\.md$
+^\.positai$
+^\.claude$

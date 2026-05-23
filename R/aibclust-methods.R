@@ -4,7 +4,7 @@
 #' \code{print.summary()}, and \code{plot()}.
 #'
 #' @name aibclust-methods
-#' @aliases print.aibclust summary.aibclust print.summary.aibclust plot.aibclust
+#' @aliases print.aibclust summary.aibclust print.summary.aibclust plot.aibclust fitted.aibclust coef.aibclust
 #' @keywords methods
 #' @importFrom graphics plot points barplot
 #' @keywords internal
@@ -299,4 +299,58 @@ plot.aibclust <- function(x, type = c("dendrogram", "info", "importance"),
     points(m, y, col = line_col, ...)
   }
   invisible(x)
+}
+
+#' @rdname aibclust-methods
+#' @param object an \code{aibclust} object.
+#' @param ncl integer; the number of clusters at which to cut the hierarchy.
+#'   Required.
+#' @keywords internal
+#' @noRd
+#' @method fitted aibclust
+#' @exportS3Method
+fitted.aibclust <- function(object, ncl, ...) {
+  if (missing(ncl) || is.null(ncl)) {
+    stop("Number of clusters 'ncl' must be supplied for aibclust objects.")
+  }
+  if (!is.numeric(ncl) || length(ncl) != 1L || ncl != round(ncl)) {
+    stop("'ncl' must be a single integer.")
+  }
+  ncl <- as.integer(ncl)
+  if (ncl < 1L || ncl > length(object$partitions)) {
+    stop(sprintf("'ncl' must be between 1 and %d.", length(object$partitions)))
+  }
+  object$partitions[[ncl]]
+}
+
+#' @rdname aibclust-methods
+#' @param object An aibclust object.
+#' @keywords internal
+#' @noRd
+#' @method coef aibclust
+#' @exportS3Method
+coef.aibclust <- function(object, ...) {
+  out <- list()
+  if (length(object$contcols) > 0L) out$s <- object$s
+  if (length(object$catcols)  > 0L) out$lambda <- object$lambda
+  out
+}
+
+info_metrics.aibclust <- function(object, ncl = NULL, ...) {
+  if (is.null(ncl)) {
+    return(list(
+      I_X_Y = object$I_X_Y,
+      I_T_Y = object$I_T_Y,
+      info_ret = object$info_ret
+    ))
+  }
+  if (!is.numeric(ncl) || ncl < 1 || ncl > length(object$I_T_Y)) {
+    stop(sprintf("Number of clusters 'ncl' must be between 1 and %d.", length(object$I_T_Y)))
+  }
+  ncl <- as.integer(ncl)
+  list(
+    I_X_Y = object$I_X_Y,
+    I_T_Y = object$I_T_Y[ncl],
+    info_ret = object$info_ret[ncl]
+  )
 }

@@ -4,7 +4,7 @@
 #' @import stats
 #' @import np
 #' @import Rdpack
-#' @importFrom utils head flush.console txtProgressBar setTxtProgressBar
+#' @importFrom utils head flush.console txtProgressBar setTxtProgressBar tail
 #' @importFrom Rcpp evalCpp
 #' @importFrom rje powerSet
 #' @importFrom graphics barplot points

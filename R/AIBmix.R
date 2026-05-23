@@ -25,7 +25,11 @@
 #' @param cat_first A logical value indicating whether bandwidth selection is prioritised for the categorical variables, instead of the continuous.
 #'   Defaults to \code{FALSE}. Set to \code{TRUE} if you suspect that the continuous variables are not informative of the cluster structure. Can only
 #'   be \code{TRUE} when all bandwidths are selected automatically (i.e. \code{s = -1}, \code{lambda = -1}).
-#'
+#' @param keep_data Logical; if \code{TRUE}, the original input data \code{X}
+#'   is stored in the returned object as \code{training_data}, enabling the
+#'   use of \code{predict()} and certain plotting methods without re-passing
+#'   the data. Defaults to \code{FALSE} to keep returned objects lightweight.
+
 #' @return An object of class \code{"aibclust"} representing the final clustering result. The returned object is a list with the following components:
 #'   \item{merges}{A data frame with 2 columns and \eqn{n} rows, showing which observations are merged at each step.}
 #'   \item{merge_costs}{A numeric vector tracking the cost incurred by each merge \eqn{I(T_{m} ; Y) - I(T_{m-1} ; Y)}.}
@@ -33,6 +37,9 @@
 #'   \item{I_T_Y}{A numeric vector including the mutual information \eqn{I(T_{m}; Y)} as the number of clusters \eqn{m} increases.}
 #'   \item{I_X_Y}{A numeric value of the mutual information \eqn{I(X; Y)} between observation indices and location.}
 #'   \item{info_ret}{A numeric vector of length \eqn{n} including the fraction of the original information retained after each merge.}
+#'   \item{H_T}{A numeric vector of length \eqn{n}; the entropy \eqn{H(T_m)} at each cluster count \eqn{m}.}
+#'   \item{H_T_X}{A numeric vector of length \eqn{n}; the conditional entropy \eqn{H(T_m | X)} at each cluster count. For agglomerative hard clustering this is zero throughout, since \eqn{T_m} is a deterministic function of \eqn{X}.}
+#'   \item{I_T_X}{A numeric vector of length \eqn{n}; the mutual information \eqn{I(T_m; X)} at each cluster count. Equals \eqn{H(T_m)} for hard clustering.}
 #'   \item{s}{A numeric vector of bandwidth parameters used for the continuous variables. A value of \eqn{-1} is returned if all variables are categorical.}
 #'   \item{lambda}{A numeric vector of bandwidth parameters used for the categorical variables. A value of \eqn{-1} is returned if all variables are continuous.}
 #'   \item{call}{The matched call.}
@@ -42,12 +49,26 @@
 #'   \item{kernels}{List with names of kernels used for continuous, nominal, and ordinal features.}
 #'   \item{obs_names}{Names of rows in \code{X}; used for plotting the cluster hierarchy using a dendrogram.}
 #'   \item{scale}{Logical indicating whether continuous variables were scaled to unit variance before clustering.}
-#'
+#'   \item{training_data}{The original input data \code{X}, included only when \code{keep_data = TRUE}; \code{NULL} or absent otherwise.}
+#'   
 #' Objects of class \code{"aibclust"} support the following methods:
 #'   \itemize{
 #'     \item \code{print.aibclust}: Display a concise description of the cluster hierarchy.
 #'     \item \code{summary.aibclust}: Show detailed information including cluster sizes for 2, 3, and 5 clusters,
 #'           information-theoretic metrics, and hyperparameters.
+#'     \item \code{fitted.aibclust}: Extract the cluster partition at a
+#'           requested number of clusters via the \code{ncl} argument.
+#'     \item \code{coef.aibclust}: Extract the model's bandwidth
+#'           hyperparameters (\code{s}, \code{lambda}). Entries for variable
+#'           types not present in the data are omitted.
+#'     \item \code{info_metrics.aibclust}: Extract information-theoretic
+#'           quantities (\eqn{H(T)}, \eqn{H(T \mid X)}, \eqn{I(T; X)},
+#'           \eqn{I(T; Y)}, \eqn{I(X; Y)}, and the information retained ratio).
+#'           Optional \code{ncl} argument returns scalar values at the chosen
+#'           cluster count; otherwise returns vectors over all cluster counts.
+#'     \item \code{as.hclust.aibclust}, \code{as.dendrogram.aibclust}:
+#'           Convert to standard \code{hclust} and dendrogram objects,
+#'           enabling use of \code{cutree()} and dendrogram-based tools.
 #'     \item \code{plot.aibclust}: Produce diagnostic plots:
 #'       \itemize{
 #'         \item \code{type = "dendrogram"}: dendrogram visualising the hierarchy of partitions obtained.
@@ -186,12 +207,15 @@ AIBmix <- function(X, s = -1, lambda = -1,
                    contkernel = "gaussian",
                    nomkernel = "aitchisonaitken",
                    ordkernel = "liracine",
-                   cat_first = FALSE) {
+                   cat_first = FALSE,
+                   keep_data = TRUE) {
+  X_original <- X
   prep_list <- input_checks_preprocess(X, s, lambda,
                                        scale, contkernel, nomkernel,
                                        ordkernel, cat_first, nystrom = FALSE,
                                        n_landmarks = NULL,
-                                       nystrom_available = FALSE)
+                                       nystrom_available = FALSE,
+                                       keep_data = keep_data)
   X <- prep_list$X
   bws_vec <- prep_list$bws_vec
   contcols <- prep_list$contcols
@@ -249,6 +273,9 @@ AIBmix <- function(X, s = -1, lambda = -1,
     I_T_Y = best_clust$I_Z_Y,
     I_X_Y = best_clust$I_X_Y,
     info_ret = best_clust$info_ret,
+    H_T = best_clust$H_T,
+    H_T_X = best_clust$H_T_X,
+    I_T_X = best_clust$I_T_X,
     s = if (length(contcols) == 0) -1 else as.vector(bws_vec[contcols]),
     lambda = if (length(catcols) == 0) -1 else as.vector(bws_vec[catcols]),
     call = match.call(),
@@ -256,7 +283,11 @@ AIBmix <- function(X, s = -1, lambda = -1,
     contcols = contcols,
     catcols = catcols,
     kernels = list(cont = contkernel, nom = nomkernel, ord = ordkernel),
-    obs_names = obs_names
+    obs_names = obs_names,
+    scale = scale
   )
+  if (isTRUE(keep_data)) {
+    res$training_data <- X_original
+  }
   return(res)
 }

@@ -22,7 +22,8 @@ IBmix(
   verbose = FALSE,
   nystrom = FALSE,
   n_landmarks = NULL,
-  landmark_indices = NULL
+  landmark_indices = NULL,
+  keep_data = TRUE
 )
 }
 \arguments{
@@ -84,6 +85,11 @@ random landmark sampling; if \code{n_landmarks} is also supplied, its
 value must equal \code{length(landmark_indices)}. Defaults to \code{NULL},
 in which case landmarks are sampled randomly. Argument is ignored if
 \code{nystrom = FALSE}.}
+
+\item{keep_data}{Logical; if \code{TRUE}, the original input data \code{X}
+is stored in the returned object as \code{training_data}, enabling the
+use of \code{predict()} and certain plotting methods without re-passing
+the data. Defaults to \code{FALSE} to keep returned objects lightweight.}
 }
 \value{
 An object of class \code{"gibclust"} representing the final clustering result. The returned object is a list with the following components:
@@ -107,12 +113,30 @@ An object of class \code{"gibclust"} representing the final clustering result. T
   \item{kernels}{List with names of kernels used for continuous, nominal, and ordinal features.}
   \item{nystrom_landmarks}{Integer vector of observation indices used as landmark points when \code{nystrom = TRUE}; \code{NULL} otherwise.}
   \item{scale}{Logical indicating whether continuous variables were scaled to unit variance before clustering.}
+  \item{training_data}{The original input data \code{X}, included only when \code{keep_data = TRUE}; \code{NULL} or absent otherwise.}
 
 Objects of class \code{"gibclust"} support the following methods:
   \itemize{
     \item \code{print.gibclust}: Display a concise description of the cluster assignment.
     \item \code{summary.gibclust}: Show detailed information including cluster sizes,
           information-theoretic metrics, hyperparameters, and convergence details.
+    \item \code{fitted.gibclust}: Extract cluster assignments. The argument
+          \code{method = "classes"} (default) returns hard cluster labels;
+          \code{method = "soft"} returns the membership matrix (one-hot for
+          DIBmix; soft for IBmix and GIBmix).
+    \item \code{coef.gibclust}: Extract the model's hyperparameters as a list,
+          including bandwidths (\code{s}, \code{lambda}) and IB parameters
+          (\code{beta}, \code{alpha}). Entries for variable types not present
+          in the data are omitted.
+    \item \code{info_metrics.gibclust}: Extract information-theoretic
+          quantities: \eqn{H(T)}, \eqn{H(T \mid X)}, \eqn{I(T; X)}, and
+          \eqn{I(T; Y)}.
+    \item \code{predict.gibclust}: Assign new observations to clusters.
+          For DIBmix fits, returns hard cluster labels and for IBmix and
+          GIBmix fits, returns a soft membership matrix. Requires the
+          training data \code{X}, either via the \code{X} argument or
+          automatically from \code{object$training_data} if the fit was
+          constructed with \code{keep_data = TRUE}.
     \item \code{plot.gibclust}: Produce diagnostic plots:
       \itemize{
         \item \code{type = "sizes"}: barplot of cluster sizes or hardened sizes (IB/GIB).
