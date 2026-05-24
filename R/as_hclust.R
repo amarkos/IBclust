@@ -1,4 +1,5 @@
-# Helper function to convert aibclust merge encoding to hclust convention
+#' @keywords internal
+#' @noRd
 .aib_to_hclust_merge <- function(merges, n) {
   m <- nrow(merges)
   hc_merge <- matrix(0L, m, 2)
@@ -13,7 +14,8 @@
   hc_merge
 }
 
-# Helper function to compute leaf order via tree traversal
+#' @keywords internal
+#' @noRd
 .aib_compute_order <- function(hc_merge, n) {
   m <- nrow(hc_merge)
   leaves_at_step <- vector("list", m)
@@ -27,16 +29,18 @@
   leaves_at_step[[m]]
 }
 
-#' Convert an aibclust object to hclust
+#' Convert an aibclust object to hclust or dendrogram
 #'
 #' Enables use of standard hierarchical-clustering methods
 #' (e.g., \code{\link[stats]{cutree}}, \code{\link[stats]{as.dendrogram}})
 #' on AIBmix output.
 #'
 #' @param x An \code{aibclust} object.
+#' @param object An \code{aibclust} object.
 #' @param ... Ignored.
 #'
-#' @return An object of class \code{"hclust"}.
+#' @return For \code{as.hclust.aibclust}, an object of class \code{"hclust"}.
+#'   For \code{as.dendrogram.aibclust}, an object of class \code{"dendrogram"}.
 #'
 #' @method as.hclust aibclust
 #' @exportS3Method
@@ -53,12 +57,13 @@ as.hclust.aibclust <- function(x, ...) {
       labels = x$obs_names,
       method = "aib",
       call = match.call(),
-      dist.method = "information-bottleneck"
+      dist.method = "Jensen-Shannon divergence"
     ),
     class = "hclust"
   )
 }
 
+#' @rdname as.hclust.aibclust
 #' @method as.dendrogram aibclust
 #' @exportS3Method
 as.dendrogram.aibclust <- function(object, ...) {

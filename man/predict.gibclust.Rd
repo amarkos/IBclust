@@ -7,11 +7,13 @@
 \method{predict}{gibclust}(object, newdata = NULL, X = NULL, ...)
 }
 \arguments{
-\item{object}{A fitted \code{gibclust} object.}
+\item{object}{A fitted \code{gibclust} object produced by \code{\link{DIBmix}},
+\code{\link{IBmix}}, or \code{\link{GIBmix}}.}
 
-\item{newdata}{A data frame of new observations to be assigned. If
-\code{NULL} (default), predictions are returned for the training data
-\code{X}. Must have the same columns as \code{X} otherwise.}
+\item{newdata}{A data frame of new observations to be assigned. Must have
+the same columns (with matching names and order) as the training data.
+If \code{NULL} (default), predictions are returned for the training data
+itself, providing a self-consistency check against \code{fitted(object)}.}
 
 \item{X}{The original training data frame used to fit \code{object}.
 Optional if \code{object} was constructed with \code{keep_data = TRUE};
@@ -21,16 +23,60 @@ otherwise.}
 \item{...}{Additional arguments (currently ignored).}
 }
 \value{
-For DIBmix fits, an integer vector of length \code{nrow(newdata)}.
-  For IBmix and GIBmix fits, a numeric matrix of dimension
-  \code{object$ncl} by \code{nrow(newdata)} containing soft memberships
-  (columns sum to 1).
+For DIBmix fits, an integer vector of length \code{nrow(newdata)}
+  giving the predicted cluster label for each new observation. For IBmix
+  and GIBmix fits, a numeric matrix of dimension \code{object$ncl} by
+  \code{nrow(newdata)} containing soft membership probabilities, with
+  columns summing to 1.
 }
 \description{
 Assigns new observations to clusters using a fitted \code{gibclust} model.
 For hard fits (\code{DIBmix}, \code{alpha = 0}), returns integer cluster
-labels via argmin Kullback--Leibler divergence between the new
-observation's conditional distribution and each cluster's profile. For
-soft fits (\code{IBmix}, \code{GIBmix}), returns the full membership
-matrix via Boltzmann weighting with the fitted \eqn{\beta}.
+labels based on the minimisation of the Kullback--Leibler divergence between the new
+observation's conditional distribution and each cluster conditional density. For
+soft fits (\code{IBmix}, \code{GIBmix}), returns the full membership matrix
+based on the (G)IB update, with the fitted \eqn{\beta}.
+}
+\details{
+Prediction consists of three steps. First, the conditional distribution
+\eqn{p(y \mid x_{\text{new}})} of each new observation over the training
+data is computed using the same kernel and bandwidths as the fit. Second,
+the cluster profiles \eqn{q(y \mid t)} are reconstructed from the training
+data and the stored cluster assignments. Third, the Kullback--Leibler
+divergence \eqn{D_{KL}(p(y \mid x_{\text{new}}) \,||\, q(y \mid t))} is
+computed for each (new observation, cluster) pair. New observations are
+then assigned via argmin (DIBmix) or via the soft assignment rule
+\eqn{q(t \mid x_{\text{new}}) \propto q(t) \exp(-\beta \, D_{KL})}
+(IBmix and GIBmix). 
+
+Continuous variables in \code{newdata} are scaled using the means and
+standard deviations of the training data \code{X} when \code{object$scale}
+is \code{TRUE}. Categorical variables are relabelled to match the encoding
+used at fit time. New observations containing categorical levels not seen
+in the training data will produce an error.
+}
+\examples{
+# Hold-out prediction on the iris data
+set.seed(1)
+test_idx  <- sample(seq_len(nrow(iris)), 30)
+train_idx <- setdiff(seq_len(nrow(iris)), test_idx)
+
+fit <- DIBmix(iris[train_idx, -5], ncl = 3, nstart = 5, keep_data = TRUE)
+preds <- predict(fit, newdata = iris[test_idx, -5])
+table(preds, iris$Species[test_idx])
+
+# Grid prediction for visualising the decision boundary
+fit2 <- DIBmix(faithful, ncl = 3, nstart = 5, keep_data = TRUE)
+grid <- expand.grid(
+  eruptions = seq(min(faithful$eruptions), max(faithful$eruptions), length = 50),
+  waiting = seq(min(faithful$waiting), max(faithful$waiting), length = 50)
+)
+grid_pred <- predict(fit2, newdata = grid)
+plot(grid, col = grid_pred + 1, pch = 15, cex = 0.6)
+points(faithful, pch = fit2$Cluster, col = "black")
+
+}
+\seealso{
+\code{\link{DIBmix}}, \code{\link{IBmix}}, \code{\link{GIBmix}},
+  \code{\link[stats]{fitted}}.
 }

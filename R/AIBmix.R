@@ -51,31 +51,11 @@
 #'   \item{scale}{Logical indicating whether continuous variables were scaled to unit variance before clustering.}
 #'   \item{training_data}{The original input data \code{X}, included only when \code{keep_data = TRUE}; \code{NULL} or absent otherwise.}
 #'   
-#' Objects of class \code{"aibclust"} support the following methods:
-#'   \itemize{
-#'     \item \code{print.aibclust}: Display a concise description of the cluster hierarchy.
-#'     \item \code{summary.aibclust}: Show detailed information including cluster sizes for 2, 3, and 5 clusters,
-#'           information-theoretic metrics, and hyperparameters.
-#'     \item \code{fitted.aibclust}: Extract the cluster partition at a
-#'           requested number of clusters via the \code{ncl} argument.
-#'     \item \code{coef.aibclust}: Extract the model's bandwidth
-#'           hyperparameters (\code{s}, \code{lambda}). Entries for variable
-#'           types not present in the data are omitted.
-#'     \item \code{info_metrics.aibclust}: Extract information-theoretic
-#'           quantities (\eqn{H(T)}, \eqn{H(T \mid X)}, \eqn{I(T; X)},
-#'           \eqn{I(T; Y)}, \eqn{I(X; Y)}, and the information retained ratio).
-#'           Optional \code{ncl} argument returns scalar values at the chosen
-#'           cluster count; otherwise returns vectors over all cluster counts.
-#'     \item \code{as.hclust.aibclust}, \code{as.dendrogram.aibclust}:
-#'           Convert to standard \code{hclust} and dendrogram objects,
-#'           enabling use of \code{cutree()} and dendrogram-based tools.
-#'     \item \code{plot.aibclust}: Produce diagnostic plots:
-#'       \itemize{
-#'         \item \code{type = "dendrogram"}: dendrogram visualising the hierarchy of partitions obtained.
-#'         \item \code{type = "info"}: information retention curve; the proportion of information preserved \eqn{I(T_m;Y)/I(X;Y)} by the clustering \eqn{T_m} is plotted against the number of clusters \eqn{m}.
-#'         \item \code{type = "importance"}: barplot of variable importance \eqn{I(T_m; Y_j)} at a chosen number of clusters \eqn{m}. Requires \code{X} (the original data frame) and \code{ncl} (the number of clusters at which to cut the hierarchy).
-#'     }
-#'   }
+#' @return An object of class \code{"aibclust"}. See
+#'   \code{\link{aibclust-methods}} for the available S3 methods
+#'   (\code{print}, \code{summary}, \code{plot}, \code{fitted},
+#'   \code{coef}, \code{info_metrics}, \code{as.hclust},
+#'   \code{as.dendrogram}).
 #'
 #' @details
 #' The \code{AIBmix} function produces a hierarchical agglomerative clustering of the data while retaining maximal information about the original variable
@@ -85,50 +65,9 @@
 #' controlling complexity. The method is well-suited for datasets with mixed-type variables and integrates
 #' information from all variable types effectively.
 #'
-#' The following kernel functions can be used to estimate densities for the clustering procedure. For continuous variables:
-#'
-#' \itemize{
-#'   \item \emph{Gaussian (RBF) kernel \insertCite{silverman_density_1998}{IBclust}:}
-#'   \deqn{K_c\left(\frac{x - x'}{s}\right) = \frac{1}{\sqrt{2\pi}} \exp\left\{-\frac{\left(x - x'\right)^2}{2s^2}\right\}, \quad s > 0.}
-#'   \item \emph{Epanechnikov kernel \insertCite{epanechnikov1969non}{IBclust}:}
-#'   \deqn{K_c(x - x'; s) = \begin{cases}
-#'     \frac{3}{4\sqrt{5}}\left(1 - \frac{(x-x')^2}{5s^2} \right), & \text{if } \frac{(x - x')^2}{s^2} < 5 \\
-#'     0, & \text{otherwise}
-#' \end{cases}, \quad s > 0.}
-#' }
-#'
-#' For nominal (unordered categorical variables):
-#'
-#' \itemize{
-#' \item \emph{Aitchison & Aitken kernel \insertCite{aitchison_kernel_1976}{IBclust}:}
-#' \deqn{K_u(x = x'; \lambda) = \begin{cases}
-#'     1 - \lambda, & \text{if } x = x' \\
-#'     \frac{\lambda}{\ell - 1}, & \text{otherwise}
-#' \end{cases}, \quad 0 \leq \lambda \leq \frac{\ell - 1}{\ell}.}
-#' \item \emph{Li & Racine kernel \insertCite{ouyang2006cross}{IBclust}:}
-#' \deqn{K_u(x = x'; \lambda) = \begin{cases}
-#'     1, & \text{if } x = x' \\
-#'     \lambda, & \text{otherwise}
-#' \end{cases}, \quad 0 \leq \lambda \leq 1.}
-#' }
-#'
-#' For ordinal (ordered categorical) variables:
-#'
-#' \itemize{
-#' \item \emph{Li & Racine kernel \insertCite{li_nonparametric_2003}{IBclust}:}
-#' \deqn{K_o(x = x'; \nu) = \begin{cases}
-#'     1, & \text{if } x = x' \\
-#'     \nu^{|x - x'|}, & \text{otherwise}
-#' \end{cases}, \quad 0 \leq \nu \leq 1.}
-#' \item \emph{Wang & van Ryzin kernel \insertCite{wang1981class}{IBclust}:}
-#' \deqn{K_o(x = x'; \nu) = \begin{cases}
-#'     1 - \nu, & \text{if } x = x' \\
-#'     \frac{1-\nu}{2}\nu^{|x - x'|}, & \text{otherwise}
-#' \end{cases}, \quad 0 \leq \nu \leq 1.}
-#' }
-#'
-#' The bandwidth parameters \eqn{s}, \eqn{\lambda}, and \eqn{\nu} control the smoothness of the density estimate and are automatically determined by the algorithm if not provided by the user using the approach in \insertCite{costa_dib_2025;textual}{IBclust}. \eqn{\ell} is the number of levels of the categorical variable. For ordinal variables, the lambda parameter of the function is used to define \eqn{\nu}.
-#'
+#' See \code{\link{IBclust-package}} for details on the available kernel
+#' functions and their bandwidth parameters.
+#' 
 #' @examples
 #' # Example dataset with categorical, ordinal, and continuous variables
 #' set.seed(123)
@@ -184,20 +123,6 @@
 #'
 #' @references
 #' \insertRef{slonim_aib_1999}{IBclust}
-#'
-#' \insertRef{aitchison_kernel_1976}{IBclust}
-#'
-#' \insertRef{li_nonparametric_2003}{IBclust}
-#'
-#' \insertRef{silverman_density_1998}{IBclust}
-#'
-#' \insertRef{ouyang2006cross}{IBclust}
-#'
-#' \insertRef{wang1981class}{IBclust}
-#'
-#' \insertRef{epanechnikov1969non}{IBclust}
-#'
-#' \insertRef{costa_dib_2025}{IBclust}
 #'
 #' @keywords clustering
 #' @export

@@ -80,101 +80,35 @@ in which case landmarks are sampled randomly. Argument is ignored if
 \code{nystrom = FALSE}.}
 
 \item{keep_data}{Logical; if \code{TRUE}, the original input data \code{X}
-  is stored in the returned object as \code{training_data}, enabling the
-  use of \code{predict()} and certain plotting methods without re-passing
-  the data. Defaults to \code{FALSE} to keep returned objects lightweight.
-
-Objects of class \code{"gibclust"} support the following methods:
-  \itemize{
-    \item \code{print.gibclust}: Display a concise description of the cluster assignment.
-    \item \code{summary.gibclust}: Show detailed information including cluster sizes,
-          information-theoretic metrics, hyperparameters, and convergence details.
-    \item \code{fitted.gibclust}: Extract cluster assignments. The argument
-          \code{method = "classes"} (default) returns hard cluster labels;
-          \code{method = "soft"} returns the membership matrix (one-hot for
-          DIBmix; soft for IBmix and GIBmix).
-    \item \code{coef.gibclust}: Extract the model's hyperparameters as a list,
-          including bandwidths (\code{s}, \code{lambda}) and IB parameters
-          (\code{beta}, \code{alpha}). Entries for variable types not present
-          in the data are omitted.
-    \item \code{info_metrics.gibclust}: Extract information-theoretic
-          quantities: \eqn{H(T)}, \eqn{H(T \mid X)}, \eqn{I(T; X)}, and
-          \eqn{I(T; Y)}.
-    \item \code{predict.gibclust}: Assign new observations to clusters.
-          For DIBmix fits, returns hard cluster labels and for IBmix and
-          GIBmix fits, returns a soft membership matrix. Requires the
-          training data \code{X}, either via the \code{X} argument or
-          automatically from \code{object$training_data} if the fit was
-          constructed with \code{keep_data = TRUE}.
-    \item \code{plot.gibclust}: Produce diagnostic plots:
-      \itemize{
-        \item \code{type = "sizes"}: barplot of cluster sizes or hardened sizes (IB/GIB).
-        \item \code{type = "info"}: barplot of entropy, conditional entropy, and mutual information.
-        \item \code{type = "beta"}: trajectory of \eqn{\log \beta} over iterations (only available for hard clustering outputs obtained using \code{DIBmix}).
-        \item \code{type = "importance"}: barplot of variable importance \eqn{I(T; Y_j)}, measuring how much each variable contributes to the cluster structure. Requires \code{X} (the original data frame) to be passed.
-    }
-  }}
+is stored in the returned object as \code{training_data}, enabling the
+use of \code{predict()} and certain plotting methods without re-passing
+the data. Defaults to \code{FALSE} to keep returned objects lightweight.}
+}
+\value{
+An object of class \code{"gibclust"}. See
+  \code{\link{gibclust-methods}} for the available S3 methods
+  (\code{print}, \code{summary}, \code{plot}, \code{fitted},
+  \code{coef}, \code{info_metrics}, \code{predict}).
 }
 \description{
 The \code{DIBmix} function implements the Deterministic Information Bottleneck (DIB) algorithm
 for clustering datasets containing continuous, categorical (nominal and ordinal), and mixed-type variables.
-This method optimizes an information-theoretic objective to preserve
+This method optimises an information-theoretic objective to preserve
 relevant information in the cluster assignments while achieving effective data compression
 \insertCite{costa_dib_2025}{IBclust}.
 }
 \details{
 The \code{DIBmix} function clusters data while retaining maximal information about the original variable
-distributions. The Deterministic Information Bottleneck algorithm optimizes an information-theoretic
+distributions. The Deterministic Information Bottleneck algorithm optimises an information-theoretic
 objective that balances information preservation and compression. Bandwidth parameters for categorical
 (nominal, ordinal) and continuous variables are adaptively determined if not provided. This iterative
-process identifies stable and interpretable cluster assignments by maximizing mutual information while
+process identifies stable and interpretable cluster assignments by maximising mutual information while
 controlling complexity. The method is well-suited for datasets with mixed-type variables and integrates
 information from all variable types effectively. For data sets with over a thousand observations (\eqn{n > 1000}),
-a Nystr\enc{ö}{o}m approximation of the kernel Gram matrix can be used for a quicker implementation \insertCite{williams2000using}{IBclust}.
+a Nystr\enc{ö}{o}m approximation of the kernel Gram matrix can be enabled via \code{nystrom = TRUE}; see \code{\link{IBclust-package}} for details.
 
-The following kernel functions can be used to estimate densities for the clustering procedure. For continuous variables:
-
-\itemize{
-  \item \emph{Gaussian (RBF) kernel \insertCite{silverman_density_1998}{IBclust}:}
-  \deqn{K_c\left(\frac{x - x'}{s}\right) = \frac{1}{\sqrt{2\pi}} \exp\left\{-\frac{\left(x - x'\right)^2}{2s^2}\right\}, \quad s > 0.}
-  \item \emph{Epanechnikov kernel \insertCite{epanechnikov1969non}{IBclust}:}
-  \deqn{K_c(x - x'; s) = \begin{cases}
-    \frac{3}{4\sqrt{5}}\left(1 - \frac{(x-x')^2}{5s^2} \right), & \text{if } \frac{(x - x')^2}{s^2} < 5 \\
-    0, & \text{otherwise}
-\end{cases}, \quad s > 0.}
-}
-
-For nominal (unordered categorical variables):
-
-\itemize{
-\item \emph{Aitchison & Aitken kernel \insertCite{aitchison_kernel_1976}{IBclust}:}
-\deqn{K_u(x = x'; \lambda) = \begin{cases}
-    1 - \lambda, & \text{if } x = x' \\
-    \frac{\lambda}{\ell - 1}, & \text{otherwise}
-\end{cases}, \quad 0 \leq \lambda \leq \frac{\ell - 1}{\ell}.}
-\item \emph{Li & Racine kernel \insertCite{ouyang2006cross}{IBclust}:}
-\deqn{K_u(x = x'; \lambda) = \begin{cases}
-    1, & \text{if } x = x' \\
-    \lambda, & \text{otherwise}
-\end{cases}, \quad 0 \leq \lambda \leq 1.}
-}
-
-For ordinal (ordered categorical) variables:
-
-\itemize{
-\item \emph{Li & Racine kernel \insertCite{li_nonparametric_2003}{IBclust}:}
-\deqn{K_o(x = x'; \nu) = \begin{cases}
-    1, & \text{if } x = x' \\
-    \nu^{|x - x'|}, & \text{otherwise}
-\end{cases}, \quad 0 \leq \nu \leq 1.}
-\item \emph{Wang & van Ryzin kernel \insertCite{wang1981class}{IBclust}:}
-\deqn{K_o(x = x'; \nu) = \begin{cases}
-    1 - \nu, & \text{if } x = x' \\
-    \frac{1-\nu}{2}\nu^{|x - x'|}, & \text{otherwise}
-\end{cases}, \quad 0 \leq \nu \leq 1.}
-}
-
-The bandwidth parameters \eqn{s}, \eqn{\lambda}, and \eqn{\nu} control the smoothness of the density estimate and are automatically determined by the algorithm if not provided by the user using the approach in \insertCite{costa_dib_2025;textual}{IBclust}. \eqn{\ell} is the number of levels of the categorical variable. For ordinal variables, the lambda parameter of the function is used to define \eqn{\nu}.
+See \code{\link{IBclust-package}} for details on the available kernel
+functions and their bandwidth parameters.
 }
 \examples{
 # Example 1: Basic Mixed-Type Clustering
@@ -265,20 +199,6 @@ summary(result_cont)
 }
 \references{
 \insertRef{costa_dib_2025}{IBclust}
-
-\insertRef{aitchison_kernel_1976}{IBclust}
-
-\insertRef{li_nonparametric_2003}{IBclust}
-
-\insertRef{silverman_density_1998}{IBclust}
-
-\insertRef{ouyang2006cross}{IBclust}
-
-\insertRef{wang1981class}{IBclust}
-
-\insertRef{epanechnikov1969non}{IBclust}
-
-\insertRef{williams2000using}{IBclust}
 }
 \author{
 Efthymios Costa, Ioanna Papatsouma, Angelos Markos

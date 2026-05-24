@@ -1,17 +1,43 @@
 #' Methods for gibclust objects
 #'
-#' S3 methods available for \code{"gibclust"} objects: \code{print()}, \code{summary()},
-#' and \code{plot()}.
+#' S3 methods available for \code{"gibclust"} objects, including extractors
+#' for the cluster assignments and model parameters, an information-metrics
+#' accessor, a prediction method for new data, and diagnostic plotting.
+#'
+#' @details
+#' The following methods are available:
+#' \itemize{
+#'   \item \code{\link[=print.gibclust]{print}} and \code{\link[=summary.gibclust]{summary}}:
+#'     concise and detailed descriptions of the cluster solution.
+#'   \item \code{\link[=fitted.gibclust]{fitted}}: extract cluster assignments.
+#'     The argument \code{method = "classes"} (default) returns hard cluster
+#'     labels; \code{method = "soft"} returns the membership matrix (one-hot
+#'     for DIBmix; fuzzy for IBmix and GIBmix).
+#'   \item \code{\link[=coef.gibclust]{coef}}: extract the model's
+#'     hyperparameters as a list, including bandwidths (\code{s},
+#'     \code{lambda}) and IB parameters (\code{beta}, \code{alpha}).
+#'   \item \code{\link[=info_metrics]{info_metrics}}: extract
+#'     information-theoretic quantities \eqn{H(T)}, \eqn{H(T \mid X)},
+#'     \eqn{I(T; X)}, and \eqn{I(T; Y)}.
+#'   \item \code{\link[=predict.gibclust]{predict}}: assign new observations to
+#'     clusters. For DIBmix fits, returns hard labels via the minimisation of
+#'     Kullback--Leibler divergence; for IBmix and GIBmix fits, returns a
+#'     soft membership matrix via the soft IB assignment rule.
+#'   \item \code{\link[=plot.gibclust]{plot}}: produce diagnostic plots
+#'     (\code{type = "sizes"}, \code{"info"}, \code{"beta"},
+#'     \code{"importance"}, or \code{"similarity"}).
+#' }
 #'
 #' @name gibclust-methods
-#' @aliases print.gibclust summary.gibclust print.summary.gibclust plot.gibclust fitted.gibclust coef.gibclust predict.gibclust
-#' @keywords methods
+#' @aliases print.gibclust summary.gibclust print.summary.gibclust plot.gibclust fitted.gibclust coef.gibclust
 #' @seealso \code{\link{DIBmix}}, \code{\link{IBmix}}, \code{\link{GIBmix}}
 #' @importFrom graphics barplot points
-#' @keywords internal
-#' @noRd
-#' 
+NULL
 
+#' @rdname gibclust-methods
+#' @param x a \code{gibclust} object.
+#' @param object a \code{gibclust} object.
+#' @param ... additional arguments passed to or from other methods.
 #' @method print gibclust
 #' @exportS3Method
 print.gibclust <- function(x, ...) {
@@ -31,13 +57,13 @@ print.gibclust <- function(x, ...) {
   cat(sprintf("Continuous variables: %d   Categorical variables: %d\n",
               length(x$contcols), length(x$catcols)))
   
-  mi   <- x$MutualInfo
-  ent  <- x$Entropy
+  mi <- x$MutualInfo
+  ent <- x$Entropy
   cent <- x$CondEntropy
   
   cat(sprintf("Mutual information I(Y;T): %s\n",
               if (is.finite(mi)) sprintf("%.6f", mi) else "Inf"))
-  cat(sprintf("Entropy H(T): %s   Conditional entropy H(T|X): %s\n",
+  cat(sprintf("Entropy H(T): %s Conditional entropy H(T|X): %s\n",
               if (is.finite(ent)) sprintf("%.6f", ent) else "NA",
               if (is.finite(cent)) sprintf("%.6f", cent) else "NA"))
   
@@ -81,9 +107,6 @@ print.gibclust <- function(x, ...) {
 }
 
 #' @rdname gibclust-methods
-#' @param object A gibclust object
-#' @keywords internal
-#' @noRd
 #' @method summary gibclust
 #' @exportS3Method
 summary.gibclust <- function(object, ...) {
@@ -162,8 +185,6 @@ summary.gibclust <- function(object, ...) {
 }
 
 #' @rdname gibclust-methods
-#' @keywords internal
-#' @noRd
 #' @method print summary.gibclust
 #' @exportS3Method
 print.summary.gibclust <- function(x, ...) {
@@ -233,30 +254,27 @@ print.summary.gibclust <- function(x, ...) {
   invisible(x)
 }
 
-#' Plot a gibclust object
-#'
-#' @param x A gibclust object.
-#' @param type Plot type: \code{"sizes"} (cluster sizes), \code{"info"} (information metrics), \code{"beta"} (log(beta) trajectory; DIBmix only), or \code{"importance"} (variable importance bar chart).
+#' @rdname gibclust-methods
+#' @param type Plot type: \code{"sizes"} (cluster sizes), \code{"info"} (information metrics), \code{"beta"} (log(beta) trajectory; DIBmix only), \code{"importance"} (variable importance bar chart), or \code{"similarity"} (heatmap of the kernel similarity matrix \eqn{P_{Y|X}}).
 #' @param main Optional title.
-#' @param col Optional color.
+#' @param col Optional color (or, for \code{type = "similarity"}, a colour palette vector).
 #' @param X Original data frame used to fit \code{x}; required for
-#'   \code{type = "importance"}.
-#' @param ncl Number of clusters at which to cut the hierarchy; required
-#'   for \code{type = "importance"} on \code{aibclust} objects.
+#'   \code{type = "importance"} and \code{type = "similarity"} unless the
+#'   fit was constructed with \code{keep_data = TRUE}.
 #' @param color_by_type Logical; if \code{TRUE}, colour bars by variable type
-#'   (continuous / nominal / ordinal). Defaults to \code{TRUE}.
-#' @param ... Additional arguments passed to base plotting functions.
-#' @keywords internal
-#' @noRd
+#'   (continuous / nominal / ordinal). Defaults to \code{TRUE}. Used only by
+#'   \code{type = "importance"}.
+#' @param order_by_cluster Logical; if \code{TRUE} (default), rows and columns
+#'   of the similarity matrix are reordered by cluster assignment and cluster-boundary
+#'   boxes are drawn. Used only by \code{type = "similarity"}.
 #' @method plot gibclust
 #' @exportS3Method
-plot.gibclust <- function(x, type = c("sizes", "info", "beta", "importance"),
+plot.gibclust <- function(x, type = c("sizes", "info", "beta", "importance", "similarity"),
                           X = NULL, color_by_type = TRUE, col = NULL,
+                          order_by_cluster = TRUE,
                           main = NULL, ...) {
   type <- match.arg(type)
-  
   harden <- function(C) apply(C, 2, which.max)
-  
   if (type == "importance") {
     if (is.null(X)) {
       stop("Argument 'X' (the original data frame) is required for type = 'importance'.")
@@ -285,6 +303,89 @@ plot.gibclust <- function(x, type = c("sizes", "info", "beta", "importance"),
     return(invisible(x))
   }
   
+  if (type == "similarity") {
+    if (is.null(X)) {
+      if (is.null(x$training_data)) {
+        stop("Argument 'X' (the original data frame) is required for type = 'similarity', or refit with keep_data = TRUE.")
+      }
+      X <- x$training_data
+    }
+    if (nrow(X) != x$n) {
+      stop(sprintf("nrow(X) = %d does not match the fitted model's n = %d.",
+                   nrow(X), x$n))
+    }
+    # Apply same preprocessing used at fit
+    contcols <- x$contcols
+    catcols <- x$catcols
+    X <- as.data.frame(X)
+    if (length(contcols) > 0 && isTRUE(x$scale)) {
+      X[, contcols] <- scale(X[, contcols, drop = FALSE])
+    }
+    if (length(catcols) > 0) {
+      X[, catcols] <- preprocess_cat_data(X[, catcols, drop = FALSE])
+    }
+    # Build P_{Y|X}
+    if (!is.null(x$nystrom_landmarks)) {
+      pxy_list <- coord_to_pxy_nystrom_R(
+        X = X,
+        s = if (length(contcols) > 0) x$s else -1,
+        lambda = if (length(catcols)  > 0) x$lambda else -1,
+        cat_cols = catcols,
+        cont_cols = contcols,
+        contkernel = x$kernels$cont,
+        nomkernel = x$kernels$nom,
+        ordkernel = x$kernels$ord,
+        n_landmarks = length(x$nystrom_landmarks),
+        landmark_indices = x$nystrom_landmarks
+      )
+      C <- pxy_list$py_x$C
+      W <- pxy_list$py_x$W
+      M <- C %*% W %*% t(C)
+    } else {
+      pxy_list <- coord_to_pxy_R(
+        X = X,
+        s = if (length(contcols) > 0L) x$s      else -1,
+        lambda = if (length(catcols)  > 0L) x$lambda else -1,
+        cat_cols = catcols,
+        cont_cols = contcols,
+        contkernel = x$kernels$cont,
+        nomkernel = x$kernels$nom,
+        ordkernel = x$kernels$ord
+      )
+      M <- pxy_list$py_x
+    }
+    # Reorder by cluster
+    cluster_sizes <- NULL
+    if (isTRUE(order_by_cluster)) {
+      cl <- if (is.matrix(x$Cluster)) harden(x$Cluster) else as.integer(x$Cluster)
+      ord <- order(cl)
+      M <- M[ord, ord, drop = FALSE]
+      cluster_sizes <- as.integer(table(cl))   # in cluster-label order, matches ord
+    }
+    zmax <- quantile(M[M > 0], 0.99, na.rm = TRUE)
+    plot_col <- if (is.null(col)) colorRampPalette(c("white", "steelblue"))(100) else col
+    if (is.null(main)) main <- expression("Similarity matrix " * P[Y * "|" * X])
+    image(t(M)[, nrow(M):1],
+          col = plot_col,
+          zlim = c(0, zmax),
+          main = main,
+          xlab = "", ylab = "", axes = FALSE,
+          ...)
+    box(lwd = 1, col = "black")
+    if (!is.null(cluster_sizes)) {
+      n <- nrow(M)
+      ends <- cumsum(cluster_sizes)
+      starts <- c(1, head(ends, -1) + 1)
+      for (k in seq_along(cluster_sizes)) {
+        x0 <- (starts[k] - 1) / n
+        x1 <- ends[k] / n
+        y0 <- 1 - ends[k] / n
+        y1 <- 1 - (starts[k] - 1) / n
+        rect(x0, y0, x1, y1, border = "black", lwd = 1)
+      }
+    }
+    return(invisible(x))
+  }
   if (type == "sizes") {
     if (isTRUE(all.equal(x$alpha, 0))) {
       cl <- x$Cluster
@@ -311,7 +412,6 @@ plot.gibclust <- function(x, type = c("sizes", "info", "beta", "importance"),
         warning("Membership matrix unavailable or malformed for IB/GIB.")
       }
     }
-    
   } else if (type == "info") {
     vals <- c(`H(T)`   = x$Entropy,
               `H(T|X)` = x$CondEntropy,
@@ -321,7 +421,7 @@ plot.gibclust <- function(x, type = c("sizes", "info", "beta", "importance"),
     barplot(vals, ylab = "Value", main = main,
             col = if (is.null(col)) "gray" else col, ...)
     
-  } else { # type == "beta"
+  } else {
     if (!isTRUE(all.equal(x$alpha, 0))) {
       warning("type='beta' is available only for DIBmix (alpha = 0).")
       return(invisible(x))
@@ -349,14 +449,11 @@ plot.gibclust <- function(x, type = c("sizes", "info", "beta", "importance"),
 }
 
 #' @rdname gibclust-methods
-#' @param object A gibclust object.
-#' @param method For fuzzy fits (IBmix/GIBmix), either \code{"classes"}
+#' @param method For \code{fitted}: either \code{"classes"}
 #'   (default; hard cluster labels obtained via argmax of the membership
 #'   matrix) or \code{"soft"} (the raw fuzzy membership matrix). For hard
 #'   fits (DIBmix), \code{"classes"} returns the integer label vector and
 #'   \code{"soft"} returns the equivalent one-hot binary matrix.
-#' @keywords internal
-#' @noRd
 #' @method fitted gibclust
 #' @exportS3Method
 fitted.gibclust <- function(object, method = c("classes", "soft"), ...) {
@@ -380,9 +477,6 @@ fitted.gibclust <- function(object, method = c("classes", "soft"), ...) {
 }
 
 #' @rdname gibclust-methods
-#' @param object A gibclust object.
-#' @keywords internal
-#' @noRd
 #' @method coef gibclust
 #' @exportS3Method
 coef.gibclust <- function(object, ...) {
@@ -398,25 +492,68 @@ coef.gibclust <- function(object, ...) {
 #'
 #' Assigns new observations to clusters using a fitted \code{gibclust} model.
 #' For hard fits (\code{DIBmix}, \code{alpha = 0}), returns integer cluster
-#' labels via argmin Kullback--Leibler divergence between the new
-#' observation's conditional distribution and each cluster's profile. For
-#' soft fits (\code{IBmix}, \code{GIBmix}), returns the full membership
-#' matrix via Boltzmann weighting with the fitted \eqn{\beta}.
+#' labels based on the minimisation of the Kullback--Leibler divergence between the new
+#' observation's conditional distribution and each cluster conditional density. For
+#' soft fits (\code{IBmix}, \code{GIBmix}), returns the full membership matrix
+#' based on the (G)IB update, with the fitted \eqn{\beta}.
 #'
-#' @param object A fitted \code{gibclust} object.
-#' @param newdata A data frame of new observations to be assigned. If
-#'   \code{NULL} (default), predictions are returned for the training data
-#'   \code{X}. Must have the same columns as \code{X} otherwise.
+#' Prediction consists of three steps. First, the conditional distribution
+#' \eqn{p(y \mid x_{\text{new}})} of each new observation over the training
+#' data is computed using the same kernel and bandwidths as the fit. Second,
+#' the cluster profiles \eqn{q(y \mid t)} are reconstructed from the training
+#' data and the stored cluster assignments. Third, the Kullback--Leibler
+#' divergence \eqn{D_{KL}(p(y \mid x_{\text{new}}) \,||\, q(y \mid t))} is
+#' computed for each (new observation, cluster) pair. New observations are
+#' then assigned via argmin (DIBmix) or via the soft assignment rule
+#' \eqn{q(t \mid x_{\text{new}}) \propto q(t) \exp(-\beta \, D_{KL})}
+#' (IBmix and GIBmix). 
+#'
+#' Continuous variables in \code{newdata} are scaled using the means and
+#' standard deviations of the training data \code{X} when \code{object$scale}
+#' is \code{TRUE}. Categorical variables are relabelled to match the encoding
+#' used at fit time. New observations containing categorical levels not seen
+#' in the training data will produce an error.
+#'
+#' @param object A fitted \code{gibclust} object produced by \code{\link{DIBmix}},
+#'   \code{\link{IBmix}}, or \code{\link{GIBmix}}.
+#' @param newdata A data frame of new observations to be assigned. Must have
+#'   the same columns (with matching names and order) as the training data.
+#'   If \code{NULL} (default), predictions are returned for the training data
+#'   itself, providing a self-consistency check against \code{fitted(object)}.
 #' @param X The original training data frame used to fit \code{object}.
 #'   Optional if \code{object} was constructed with \code{keep_data = TRUE};
 #'   in that case the stored training data is used automatically. Required
 #'   otherwise.
 #' @param ... Additional arguments (currently ignored).
 #'
-#' @return For DIBmix fits, an integer vector of length \code{nrow(newdata)}.
-#'   For IBmix and GIBmix fits, a numeric matrix of dimension
-#'   \code{object$ncl} by \code{nrow(newdata)} containing soft memberships
-#'   (columns sum to 1).
+#' @return For DIBmix fits, an integer vector of length \code{nrow(newdata)}
+#'   giving the predicted cluster label for each new observation. For IBmix
+#'   and GIBmix fits, a numeric matrix of dimension \code{object$ncl} by
+#'   \code{nrow(newdata)} containing soft membership probabilities, with
+#'   columns summing to 1.
+#'
+#' @seealso \code{\link{DIBmix}}, \code{\link{IBmix}}, \code{\link{GIBmix}},
+#'   \code{\link[stats]{fitted}}.
+#'
+#' @examples
+#' # Hold-out prediction on the iris data
+#' set.seed(1)
+#' test_idx  <- sample(seq_len(nrow(iris)), 30)
+#' train_idx <- setdiff(seq_len(nrow(iris)), test_idx)
+#'
+#' fit <- DIBmix(iris[train_idx, -5], ncl = 3, nstart = 5, keep_data = TRUE)
+#' preds <- predict(fit, newdata = iris[test_idx, -5])
+#' table(preds, iris$Species[test_idx])
+#'
+#' # Grid prediction for visualising the decision boundary
+#' fit2 <- DIBmix(faithful, ncl = 3, nstart = 5, keep_data = TRUE)
+#' grid <- expand.grid(
+#'   eruptions = seq(min(faithful$eruptions), max(faithful$eruptions), length = 50),
+#'   waiting = seq(min(faithful$waiting), max(faithful$waiting), length = 50)
+#' )
+#' grid_pred <- predict(fit2, newdata = grid)
+#' plot(grid, col = grid_pred + 1, pch = 15, cex = 0.6)
+#' points(faithful, pch = fit2$Cluster, col = "black")
 #'
 #' @method predict gibclust
 #' @exportS3Method

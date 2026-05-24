@@ -1,24 +1,64 @@
 #' Extract information-theoretic metrics from an IBclust fit
 #'
 #' Returns the entropy, conditional entropy, and mutual information quantities
-#' computed by the chosen IB variant. Methods are provided for both
-#' \code{gibclust} and \code{aibclust} objects.
+#' computed by the chosen Information Bottleneck variant. Methods are provided
+#' for both \code{gibclust} and \code{aibclust} objects, returning a parallel
+#' set of quantities with class-specific extras.
 #'
-#' For \code{gibclust} objects, a single value of each quantity is returned
-#' corresponding to the fitted partition. For \code{aibclust} objects, the
-#' quantities are returned as vectors indexed by the number of clusters
-#' \eqn{m}, unless \code{ncl} is supplied (in which case scalar values at
-#' the requested cluster count are returned). The \code{aibclust} output
-#' additionally includes \code{I_X_Y} (a scalar baseline) and \code{info_ret}
-#' (the fraction of baseline information retained at each cut).
+#' The shared quantities across both classes are:
+#' \itemize{
+#'   \item \code{H_T}: the entropy \eqn{H(T)} of the cluster assignment.
+#'   \item \code{H_T_X}: the conditional entropy \eqn{H(T \mid X)} of the cluster
+#'     assignment given the observation weights. This is \eqn{0} for hard
+#'     partitions, since \eqn{T} is a deterministic function of \eqn{X}.
+#'   \item \code{I_T_X}: the mutual information \eqn{I(T; X)} between the
+#'     cluster assignment and the observation weights. Equals \code{H_T} for
+#'     hard partitions.
+#'   \item \code{I_T_Y}: the mutual information \eqn{I(T; Y)} between the
+#'     cluster assignment and the joint distribution \eqn{Y}.
+#' }
+#'
+#' For \code{gibclust} objects, each quantity is a single numeric value
+#' corresponding to the fitted partition. For \code{aibclust} objects, each
+#' quantity is a numeric vector indexed by the number of clusters \eqn{m},
+#' from \eqn{m = 1} (a single cluster) to \eqn{m = n} (all singletons).
+#' Supplying \code{ncl} extracts the scalar values at the chosen cut.
+#'
+#' The \code{aibclust} output additionally includes:
+#' \itemize{
+#'   \item \code{I_X_Y}: the scalar baseline \eqn{I(X; Y)}, the mutual
+#'     information between observation weights and the joint distribution.
+#'   \item \code{info_ret}: the proportion of baseline information retained,
+#'     \eqn{I(T_m; Y) / I(X; Y)}. Either a vector over \eqn{m} or a scalar at
+#'     the requested cut.
+#' }
 #'
 #' @param object A \code{gibclust} or \code{aibclust} object.
 #' @param ncl For \code{aibclust} objects, the number of clusters at which to
-#'   evaluate the metrics. If \code{NULL} (default), returns the full vector
+#'   evaluate the metrics. If \code{NULL} (default), returns the full vectors
 #'   of metrics over all cluster counts. Ignored for \code{gibclust} objects.
-#' @param ... Additional arguments (currently ignored).
+#' @param ... Additional arguments.
 #'
-#' @return A named list of information-theoretic quantities.
+#' @return A named list of information-theoretic quantities. For
+#'   \code{gibclust}, contains \code{H_T}, \code{H_T_X}, \code{I_T_X},
+#'   \code{I_T_Y}. For \code{aibclust}, contains those four quantities plus
+#'   \code{I_X_Y} and \code{info_ret}.
+#'
+#' @seealso \code{\link{DIBmix}}, \code{\link{IBmix}}, \code{\link{GIBmix}},
+#'   \code{\link{AIBmix}}.
+#'
+#' @examples
+#' # gibclust: single values per quantity
+#' fit_dib <- DIBmix(iris[, -5], ncl = 3, nstart = 5)
+#' info_metrics(fit_dib)
+#'
+#' # aibclust: full vectors over cluster counts
+#' fit_aib <- AIBmix(iris[, -5])
+#' metrics_all <- info_metrics(fit_aib)
+#' str(metrics_all)
+#'
+#' # aibclust: scalar values at a specific cut
+#' info_metrics(fit_aib, ncl = 3)
 #'
 #' @export
 info_metrics <- function(object, ...) UseMethod("info_metrics")
@@ -49,11 +89,11 @@ info_metrics.aibclust <- function(object, ncl = NULL, ...) {
       info_ret = object$info_ret
     ))
   }
-  if (!is.numeric(ncl) || length(ncl) != 1L || ncl != round(ncl)) {
+  if (!is.numeric(ncl) || length(ncl) != 1 || ncl != round(ncl)) {
     stop("Number of clusters 'ncl' must be a single integer.")
   }
   ncl <- as.integer(ncl)
-  if (ncl < 1L || ncl > length(object$I_T_Y)) {
+  if (ncl < 1 || ncl > length(object$I_T_Y)) {
     stop(sprintf("Number of clusters 'ncl' must be between 1 and %d.", length(object$I_T_Y)))
   }
   list(

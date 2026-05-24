@@ -2,17 +2,23 @@
 % Please edit documentation in R/as_hclust.R
 \name{as.hclust.aibclust}
 \alias{as.hclust.aibclust}
-\title{Convert an aibclust object to hclust}
+\alias{as.dendrogram.aibclust}
+\title{Convert an aibclust object to hclust or dendrogram}
 \usage{
 \method{as.hclust}{aibclust}(x, ...)
+
+\method{as.dendrogram}{aibclust}(object, ...)
 }
 \arguments{
 \item{x}{An \code{aibclust} object.}
 
 \item{...}{Ignored.}
+
+\item{object}{An \code{aibclust} object.}
 }
 \value{
-An object of class \code{"hclust"}.
+For \code{as.hclust.aibclust}, an object of class \code{"hclust"}.
+  For \code{as.dendrogram.aibclust}, an object of class \code{"dendrogram"}.
 }
 \description{
 Enables use of standard hierarchical-clustering methods

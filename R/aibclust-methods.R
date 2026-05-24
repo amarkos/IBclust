@@ -1,15 +1,41 @@
 #' Methods for aibclust objects
 #'
-#' S3 methods available for \code{"aibclust"} objects: \code{print()}, \code{summary()},
-#' \code{print.summary()}, and \code{plot()}.
+#' S3 methods available for \code{"aibclust"} objects, including extractors
+#' for the cluster assignments and model parameters, an information-metrics
+#' accessor, conversion methods to \code{hclust} and \code{dendrogram}, and
+#' diagnostic plotting.
+#'
+#' @details
+#' The following methods are available:
+#' \itemize{
+#'   \item \code{\link[=print.aibclust]{print}} and \code{\link[=summary.aibclust]{summary}}:
+#'     concise and detailed descriptions of the cluster hierarchy.
+#'   \item \code{\link[=fitted.aibclust]{fitted}}: extract the cluster
+#'     partition at a requested number of clusters via the \code{ncl}
+#'     argument.
+#'   \item \code{\link[=coef.aibclust]{coef}}: extract the model's
+#'     bandwidth hyperparameters (\code{s}, \code{lambda}).
+#'   \item \code{\link[=info_metrics]{info_metrics}}: extract
+#'     information-theoretic quantities. Optional \code{ncl} argument
+#'     returns scalar values at the chosen cluster count.
+#'   \item \code{\link[=as.hclust.aibclust]{as.hclust}} and
+#'     \code{\link[=as.dendrogram.aibclust]{as.dendrogram}}: convert to
+#'     standard \code{hclust} and dendrogram objects, enabling
+#'     \code{cutree()} and dendrogram-based tools.
+#'   \item \code{\link[=plot.aibclust]{plot}}: produce diagnostic plots
+#'     (\code{type = "dendrogram"}, \code{"info"}, \code{"importance"}, or \code{"similarity"}).
+#' }
 #'
 #' @name aibclust-methods
 #' @aliases print.aibclust summary.aibclust print.summary.aibclust plot.aibclust fitted.aibclust coef.aibclust
-#' @keywords methods
+#' @seealso \code{\link{AIBmix}}
 #' @importFrom graphics plot points barplot
-#' @keywords internal
-#' @noRd
+NULL
 
+#' @rdname aibclust-methods
+#' @param x an \code{aibclust} object.
+#' @param object an \code{aibclust} object.
+#' @param ... additional arguments passed to or from other methods.
 #' @method print aibclust
 #' @exportS3Method
 print.aibclust <- function(x, ...) {
@@ -56,11 +82,9 @@ print.aibclust <- function(x, ...) {
   invisible(x)
 }
 
+#' @rdname aibclust-methods
 #' @param k Optional integer vector of cluster counts (cuts) to summarise (same as \code{m}).
 #' @param m Optional synonym for \code{k}; the number of clusters.
-#' @param object An aibclust object
-#' @keywords internal
-#' @noRd
 #' @method summary aibclust
 #' @exportS3Method
 summary.aibclust <- function(object, k = NULL, m = NULL, ...) {
@@ -155,9 +179,6 @@ summary.aibclust <- function(object, k = NULL, m = NULL, ...) {
 }
 
 #' @rdname aibclust-methods
-#' @param x an \code{aibclust} object.
-#' @keywords internal
-#' @noRd
 #' @method print summary.aibclust
 #' @exportS3Method
 print.summary.aibclust <- function(x, ...) {
@@ -219,25 +240,25 @@ print.summary.aibclust <- function(x, ...) {
   invisible(x)
 }
 
-#' Plot an aibclust object
-#'
-#' @param x an \code{aibclust} object.
-#' @param type \code{"dendrogram"} (default), \code{"info"} (information retained curve), or \code{"importance"} (variable importance bar chart).
+#' @rdname aibclust-methods
+#' @param type Plot type: \code{"dendrogram"} (default), \code{"info"} (information retained curve), \code{"importance"} (variable importance bar chart), or \code{"similarity"} (heatmap of the kernel similarity matrix \eqn{P_{Y|X}}).
 #' @param main Optional title.
-#' @param col Optional color
-#' @param labels logical; show labels on dendrogram.
+#' @param col Optional color (or, for \code{type = "similarity"}, a colour palette vector).
+#' @param labels Logical; show labels on dendrogram.
 #' @param X Original data frame used to fit \code{x}; required for
-#'   \code{type = "importance"}.
-#' @param ncl Number of clusters at which to cut the hierarchy; required
-#'   for \code{type = "importance"} on \code{aibclust} objects.
+#'   \code{type = "importance"} and \code{type = "similarity"} unless the
+#'   fit was constructed with \code{keep_data = TRUE}.
+#' @param ncl Number of clusters to use. Required for \code{fitted} (cut
+#'   the hierarchy) and \code{plot} with \code{type = "importance"}. For
+#'   \code{type = "similarity"}, used (if supplied) to reorder rows and
+#'   columns of the similarity matrix by the partition at the chosen cut
+#'   and to draw cluster-boundary boxes.
 #' @param color_by_type Logical; if \code{TRUE}, colour bars by variable type
-#'   (continuous / nominal / ordinal). Defaults to \code{TRUE}.
-#' @param ... passed to graphics.
-#' @keywords internal
-#' @noRd
+#'   (continuous / nominal / ordinal). Defaults to \code{TRUE}. Used only by
+#'   \code{type = "importance"}.
 #' @method plot aibclust
 #' @exportS3Method
-plot.aibclust <- function(x, type = c("dendrogram", "info", "importance"),
+plot.aibclust <- function(x, type = c("dendrogram", "info", "importance", "similarity"),
                           X = NULL, ncl = NULL, color_by_type = TRUE, col = NULL,
                           main = NULL, labels = TRUE, ...) {
   type <- match.arg(type)
@@ -277,17 +298,85 @@ plot.aibclust <- function(x, type = c("dendrogram", "info", "importance"),
     return(invisible(x))
   }
   
+  if (type == "similarity") {
+    if (is.null(X)) {
+      if (is.null(x$training_data)) {
+        stop("Argument 'X' (the original data frame) is required for type = 'similarity', or refit with keep_data = TRUE.")
+      }
+      X <- x$training_data
+    }
+    if (nrow(X) != x$n) {
+      stop(sprintf("nrow(X) = %d does not match the fitted model's n = %d.",
+                   nrow(X), x$n))
+    }
+    # Apply same preprocessing used at fit
+    contcols <- x$contcols
+    catcols <- x$catcols
+    X <- as.data.frame(X)
+    if (length(contcols) > 0 && isTRUE(x$scale)) {
+      X[, contcols] <- scale(X[, contcols, drop = FALSE])
+    }
+    if (length(catcols) > 0) {
+      X[, catcols] <- preprocess_cat_data(X[, catcols, drop = FALSE])
+    }
+    # Build P_{Y|X}
+    pxy_list <- coord_to_pxy_R(
+      X = X,
+      s = if (length(contcols) > 0L) x$s      else -1,
+      lambda = if (length(catcols)  > 0L) x$lambda else -1,
+      cat_cols = catcols,
+      cont_cols = contcols,
+      contkernel = x$kernels$cont,
+      nomkernel = x$kernels$nom,
+      ordkernel = x$kernels$ord
+    )
+    M <- pxy_list$py_x
+    # Reorder by cluster if ncl is supplied
+    cluster_sizes <- NULL
+    if (!is.null(ncl)) {
+      if (ncl < 1 || ncl > length(x$partitions)) {
+        stop(sprintf("'ncl' must be between 1 and %d.", length(x$partitions)))
+      }
+      cl <- as.integer(x$partitions[[ncl]])
+      ord <- order(cl)
+      M <- M[ord, ord, drop = FALSE]
+      cluster_sizes <- as.integer(table(cl))
+    }
+    zmax <- quantile(M[M > 0], 0.99, na.rm = TRUE)
+    plot_col <- if (is.null(col)) colorRampPalette(c("white", "steelblue"))(100) else col
+    if (is.null(main)) main <- expression("Similarity matrix " * P[Y * "|" * X])
+    image(t(M)[, nrow(M):1],
+          col = plot_col,
+          zlim = c(0, zmax),
+          main = main,
+          xlab = "", ylab = "", axes = FALSE,
+          ...)
+    box(lwd = 1, col = "black")
+    if (!is.null(cluster_sizes)) {
+      n <- nrow(M)
+      ends <- cumsum(cluster_sizes)
+      starts <- c(1, head(ends, -1) + 1)
+      for (k in seq_along(cluster_sizes)) {
+        x0 <- (starts[k] - 1) / n
+        x1 <- ends[k] / n
+        y0 <- 1 - ends[k] / n
+        y1 <- 1 - (starts[k] - 1) / n
+        rect(x0, y0, x1, y1, border = "black", lwd = 1)
+      }
+    }
+    return(invisible(x))
+  }
+  
   if (type == "dendrogram") {
     lab <- if (isTRUE(labels)) x$obs_names else NULL
     d <- make_dendrogram(x$merges, x$merge_costs, labels = lab)
     if (is.null(main)) main <- "AIBmix dendrogram"
-    # Pass col through only if supplied; dendrogram default styling otherwise
     if (is.null(col)) {
       plot(d, main = main, ...)
     } else {
       plot(d, main = main, edgePar = list(col = col), ...)
     }
-  } else {  # "info"
+  } else { 
     m <- seq_len(x$n)
     y <- x$info_ret
     line_col <- if (is.null(col)) "black" else col
@@ -302,11 +391,6 @@ plot.aibclust <- function(x, type = c("dendrogram", "info", "importance"),
 }
 
 #' @rdname aibclust-methods
-#' @param object an \code{aibclust} object.
-#' @param ncl integer; the number of clusters at which to cut the hierarchy.
-#'   Required.
-#' @keywords internal
-#' @noRd
 #' @method fitted aibclust
 #' @exportS3Method
 fitted.aibclust <- function(object, ncl, ...) {
@@ -324,9 +408,6 @@ fitted.aibclust <- function(object, ncl, ...) {
 }
 
 #' @rdname aibclust-methods
-#' @param object An aibclust object.
-#' @keywords internal
-#' @noRd
 #' @method coef aibclust
 #' @exportS3Method
 coef.aibclust <- function(object, ...) {
@@ -334,23 +415,4 @@ coef.aibclust <- function(object, ...) {
   if (length(object$contcols) > 0L) out$s <- object$s
   if (length(object$catcols)  > 0L) out$lambda <- object$lambda
   out
-}
-
-info_metrics.aibclust <- function(object, ncl = NULL, ...) {
-  if (is.null(ncl)) {
-    return(list(
-      I_X_Y = object$I_X_Y,
-      I_T_Y = object$I_T_Y,
-      info_ret = object$info_ret
-    ))
-  }
-  if (!is.numeric(ncl) || ncl < 1 || ncl > length(object$I_T_Y)) {
-    stop(sprintf("Number of clusters 'ncl' must be between 1 and %d.", length(object$I_T_Y)))
-  }
-  ncl <- as.integer(ncl)
-  list(
-    I_X_Y = object$I_X_Y,
-    I_T_Y = object$I_T_Y[ncl],
-    info_ret = object$info_ret[ncl]
-  )
 }

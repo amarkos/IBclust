@@ -2,17 +2,17 @@
 #'
 #' The \code{GIBmix} function implements the Generalised Information Bottleneck (GIB) algorithm
 #' for clustering datasets containing continuous, categorical (nominal and ordinal), and mixed-type variables.
-#' This method optimizes an information-theoretic objective to preserve
+#' This method optimises an information-theoretic objective to preserve
 #' relevant information in the cluster assignments while achieving effective data compression
 #' \insertCite{strouse_dib_2017}{IBclust}.
 #'
 #' @param X A data frame containing the input data to be clustered. It should include categorical variables
 #'   (\code{factor} for nominal and \code{ordered} for ordinal) and continuous variables (\code{numeric}).
 #' @param ncl An integer specifying the number of clusters.
-#' @param beta Regularisation strength characterizing the tradeoff between compression and relevance. Must be non-negative.
+#' @param beta Regularisation strength characterising the tradeoff between compression and relevance. Must be non-negative.
 #' @param alpha Strength of conditional entropy term. Must be in the range \eqn{[0, 1]}. Setting \code{alpha = 0} calls the \code{DIBmix} function
 #'   and ignores the value of \code{beta}, while \code{alpha = 1} calls \code{IBmix} instead.
-#' @param randinit An optional vector specifying the initial cluster assignments. If \code{NULL}, cluster assignments are initialized randomly.
+#' @param randinit An optional vector specifying the initial cluster assignments. If \code{NULL}, cluster assignments are initialised randomly.
 #' @param s A numeric value or vector specifying the bandwidth parameter(s) for continuous variables. The values must be greater than \eqn{0}.
 #'   The default value is \eqn{-1}, which enables the automatic selection of optimal bandwidth(s). Argument is ignored when no variables are continuous.
 #' @param lambda A numeric value or vector specifying the bandwidth parameter for categorical variables. The default value is \eqn{-1}, which enables
@@ -23,7 +23,7 @@
 #' @param scale A logical value indicating whether the continuous variables should be scaled to have unit variance before clustering. Defaults to
 #'   \code{TRUE}. Argument is ignored when all variables are categorical.
 #' @param maxiter The maximum number of iterations allowed for the clustering algorithm. Defaults to \eqn{100}.
-#' @param nstart The number of random initializations to run. The best clustering solution is returned. Defaults to \eqn{100}.
+#' @param nstart The number of random initialisations to run. The best clustering solution is returned. Defaults to \eqn{100}.
 #' @param conv_tol Convergence tolerance level; for a cluster membership matrix \eqn{U^{(m)}} at iteration \eqn{m}, convergence is achieved if
 #'   \eqn{\sum_{i,j}\lvert U_{i,j}^{m+1} - U_{i,j}^m \rvert \le } \code{conv_tol}. Must be in range \eqn{[0, 1]}. Defaults to \code{1e-5}.
 #' @param contkernel Kernel used for continuous variables. Can be one of \code{gaussian} (default) or \code{epanechnikov}. Argument is ignored when no
@@ -77,92 +77,25 @@
 #'   \item{scale}{Logical indicating whether continuous variables were scaled to unit variance before clustering.}
 #'   \item{training_data}{The original input data \code{X}, included only when \code{keep_data = TRUE}; \code{NULL} or absent otherwise.}
 #'
-#' Objects of class \code{"gibclust"} support the following methods:
-#'   \itemize{
-#'     \item \code{print.gibclust}: Display a concise description of the cluster assignment.
-#'     \item \code{summary.gibclust}: Show detailed information including cluster sizes,
-#'           information-theoretic metrics, hyperparameters, and convergence details.
-#'     \item \code{fitted.gibclust}: Extract cluster assignments. The argument
-#'           \code{method = "classes"} (default) returns hard cluster labels;
-#'           \code{method = "soft"} returns the membership matrix (one-hot for
-#'           DIBmix; soft for IBmix and GIBmix).
-#'     \item \code{coef.gibclust}: Extract the model's hyperparameters as a list,
-#'           including bandwidths (\code{s}, \code{lambda}) and IB parameters
-#'           (\code{beta}, \code{alpha}). Entries for variable types not present
-#'           in the data are omitted.
-#'     \item \code{info_metrics.gibclust}: Extract information-theoretic
-#'           quantities: \eqn{H(T)}, \eqn{H(T \mid X)}, \eqn{I(T; X)}, and
-#'           \eqn{I(T; Y)}.
-#'     \item \code{predict.gibclust}: Assign new observations to clusters.
-#'           For DIBmix fits, returns hard cluster labels and for IBmix and
-#'           GIBmix fits, returns a soft membership matrix. Requires the
-#'           training data \code{X}, either via the \code{X} argument or
-#'           automatically from \code{object$training_data} if the fit was
-#'           constructed with \code{keep_data = TRUE}.
-#'     \item \code{plot.gibclust}: Produce diagnostic plots:
-#'       \itemize{
-#'         \item \code{type = "sizes"}: barplot of cluster sizes or hardened sizes (IB/GIB).
-#'         \item \code{type = "info"}: barplot of entropy, conditional entropy, and mutual information.
-#'         \item \code{type = "beta"}: trajectory of \eqn{\log \beta} over iterations (only available for hard clustering outputs obtained using \code{DIBmix}).
-#'         \item \code{type = "importance"}: barplot of variable importance \eqn{I(T; Y_j)}, measuring how much each variable contributes to the cluster structure. Requires \code{X} (the original data frame) to be passed.
-#'     }
-#'   }
+#' @return An object of class \code{"gibclust"}. See
+#'   \code{\link{gibclust-methods}} for the available S3 methods
+#'   (\code{print}, \code{summary}, \code{plot}, \code{fitted},
+#'   \code{coef}, \code{info_metrics}, \code{predict}).
 #'
 #' @details
 #' The \code{GIBmix} function produces a fuzzy clustering of the data while retaining maximal information about the original variable
-#' distributions. The Generalised Information Bottleneck algorithm optimizes an information-theoretic
+#' distributions. The Generalised Information Bottleneck algorithm optimises an information-theoretic
 #' objective that balances information preservation and compression. Bandwidth parameters for categorical
 #' (nominal, ordinal) and continuous variables are adaptively determined if not provided. This iterative
-#' process identifies stable and interpretable cluster assignments by maximizing mutual information while
+#' process identifies stable and interpretable cluster assignments by maximising mutual information while
 #' controlling complexity. The method is well-suited for datasets with mixed-type variables and integrates
 #' information from all variable types effectively. Set \eqn{\alpha = 1} and \eqn{\alpha = 0} to recover the
 #' Information Bottleneck and its Deterministic variant, respectively. If \eqn{\alpha = 0}, the algorithm ignores
 #' the value of the regularisation parameter \eqn{\beta}. For data sets with over a thousand observations (\eqn{n > 1000}),
-#' a Nystr\enc{ö}{o}m approximation of the kernel Gram matrix can be used for a quicker implementation \insertCite{williams2000using}{IBclust}.
+#' a Nystr\enc{ö}{o}m approximation of the kernel Gram matrix can be enabled via \code{nystrom = TRUE}; see \code{\link{IBclust-package}} for details.
 #'
-#' The following kernel functions can be used to estimate densities for the clustering procedure. For continuous variables:
-#'
-#' \itemize{
-#'   \item \emph{Gaussian (RBF) kernel \insertCite{silverman_density_1998}{IBclust}:}
-#'   \deqn{K_c\left(\frac{x - x'}{s}\right) = \frac{1}{\sqrt{2\pi}} \exp\left\{-\frac{\left(x - x'\right)^2}{2s^2}\right\}, \quad s > 0.}
-#'   \item \emph{Epanechnikov kernel \insertCite{epanechnikov1969non}{IBclust}:}
-#'   \deqn{K_c(x - x'; s) = \begin{cases}
-#'     \frac{3}{4\sqrt{5}}\left(1 - \frac{(x-x')^2}{5s^2} \right), & \text{if } \frac{(x - x')^2}{s^2} < 5 \\
-#'     0, & \text{otherwise}
-#' \end{cases}, \quad s > 0.}
-#' }
-#'
-#' For nominal (unordered categorical variables):
-#'
-#' \itemize{
-#' \item \emph{Aitchison & Aitken kernel \insertCite{aitchison_kernel_1976}{IBclust}:}
-#' \deqn{K_u(x = x'; \lambda) = \begin{cases}
-#'     1 - \lambda, & \text{if } x = x' \\
-#'     \frac{\lambda}{\ell - 1}, & \text{otherwise}
-#' \end{cases}, \quad 0 \leq \lambda \leq \frac{\ell - 1}{\ell}.}
-#' \item \emph{Li & Racine kernel \insertCite{ouyang2006cross}{IBclust}:}
-#' \deqn{K_u(x = x'; \lambda) = \begin{cases}
-#'     1, & \text{if } x = x' \\
-#'     \lambda, & \text{otherwise}
-#' \end{cases}, \quad 0 \leq \lambda \leq 1.}
-#' }
-#'
-#' For ordinal (ordered categorical) variables:
-#'
-#' \itemize{
-#' \item \emph{Li & Racine kernel \insertCite{li_nonparametric_2003}{IBclust}:}
-#' \deqn{K_o(x = x'; \nu) = \begin{cases}
-#'     1, & \text{if } x = x' \\
-#'     \nu^{|x - x'|}, & \text{otherwise}
-#' \end{cases}, \quad 0 \leq \nu \leq 1.}
-#' \item \emph{Wang & van Ryzin kernel \insertCite{wang1981class}{IBclust}:}
-#' \deqn{K_o(x = x'; \nu) = \begin{cases}
-#'     1 - \nu, & \text{if } x = x' \\
-#'     \frac{1-\nu}{2}\nu^{|x - x'|}, & \text{otherwise}
-#' \end{cases}, \quad 0 \leq \nu \leq 1.}
-#' }
-#'
-#' The bandwidth parameters \eqn{s}, \eqn{\lambda}, and \eqn{\nu} control the smoothness of the density estimate and are automatically determined by the algorithm if not provided by the user using the approach in \insertCite{costa_dib_2025;textual}{IBclust}. \eqn{\ell} is the number of levels of the categorical variable. For ordinal variables, the lambda parameter of the function is used to define \eqn{\nu}.
+#' See \code{\link{IBclust-package}} for details on the available kernel
+#' functions and their bandwidth parameters.
 #'
 #' @examples
 #' # Example dataset with categorical, ordinal, and continuous variables
@@ -229,20 +162,6 @@
 #'
 #' @references
 #' \insertRef{strouse_dib_2017}{IBclust}
-#'
-#' \insertRef{aitchison_kernel_1976}{IBclust}
-#'
-#' \insertRef{li_nonparametric_2003}{IBclust}
-#'
-#' \insertRef{silverman_density_1998}{IBclust}
-#'
-#' \insertRef{ouyang2006cross}{IBclust}
-#'
-#' \insertRef{wang1981class}{IBclust}
-#'
-#' \insertRef{epanechnikov1969non}{IBclust}
-#'
-#' \insertRef{williams2000using}{IBclust}
 #'
 #' @keywords clustering
 #' @export
