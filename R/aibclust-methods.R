@@ -246,8 +246,10 @@ print.summary.aibclust <- function(x, ...) {
 #' @param col Optional color (or, for \code{type = "similarity"}, a colour palette vector).
 #' @param labels Logical; show labels on dendrogram.
 #' @param X Original data frame used to fit \code{x}; required for
-#'   \code{type = "importance"} and \code{type = "similarity"} unless the
-#'   fit was constructed with \code{keep_data = TRUE}.
+#'   \code{type = "importance"} and \code{type = "similarity"} when the
+#'   fit was constructed with \code{keep_data = FALSE}. If the fit already
+#'   contains the training data (\code{keep_data = TRUE}), any supplied
+#'   \code{X} is ignored with a warning.
 #' @param ncl Number of clusters to use. Required for \code{fitted} (cut
 #'   the hierarchy) and \code{plot} with \code{type = "importance"}. For
 #'   \code{type = "similarity"}, used (if supplied) to reorder rows and
@@ -264,8 +266,13 @@ plot.aibclust <- function(x, type = c("dendrogram", "info", "importance", "simil
   type <- match.arg(type)
   
   if (type == "importance") {
-    if (is.null(X)) {
-      stop("Argument 'X' (the original data frame) is required for type = 'importance'.")
+    if (!is.null(x$training_data)) {
+      if (!is.null(X)) {
+        warning("Argument 'X' was supplied but the fitted object already contains the training data (keep_data = TRUE). Using the stored training data; the supplied 'X' will be ignored.")
+      }
+      X <- x$training_data
+    } else if (is.null(X)) {
+      stop("Argument 'X' (the original data frame) is required for type = 'importance', or refit with keep_data = TRUE.")
     }
     if (is.null(ncl)) {
       stop("Argument 'ncl' (number of clusters to cut at) is required for type = 'importance'.")
@@ -299,17 +306,19 @@ plot.aibclust <- function(x, type = c("dendrogram", "info", "importance", "simil
   }
   
   if (type == "similarity") {
-    if (is.null(X)) {
-      if (is.null(x$training_data)) {
-        stop("Argument 'X' (the original data frame) is required for type = 'similarity', or refit with keep_data = TRUE.")
+    if (!is.null(x$training_data)) {
+      if (!is.null(X)) {
+        warning("Argument 'X' was supplied but the fitted object already contains the training data (keep_data = TRUE). Using the stored training data; the supplied 'X' will be ignored.")
       }
       X <- x$training_data
+    } else if (is.null(X)) {
+      stop("Argument 'X' (the original data frame) is required for type = 'similarity', or refit with keep_data = TRUE.")
     }
     if (nrow(X) != x$n) {
       stop(sprintf("nrow(X) = %d does not match the fitted model's n = %d.",
                    nrow(X), x$n))
     }
-    # Apply same preprocessing used at fit
+    # Apply preprocessing used at fit
     contcols <- x$contcols
     catcols <- x$catcols
     X <- as.data.frame(X)

@@ -41,8 +41,10 @@
 \item{type}{Plot type: \code{"sizes"} (cluster sizes), \code{"info"} (information metrics), \code{"beta"} (log(beta) trajectory; DIBmix only), \code{"importance"} (variable importance bar chart), or \code{"similarity"} (heatmap of the kernel similarity matrix \eqn{P_{Y|X}}).}
 
 \item{X}{Original data frame used to fit \code{x}; required for
-\code{type = "importance"} and \code{type = "similarity"} unless the
-fit was constructed with \code{keep_data = TRUE}.}
+\code{type = "importance"} and \code{type = "similarity"} when the
+fit was constructed with \code{keep_data = FALSE}. If the fit already
+contains the training data (\code{keep_data = TRUE}), any supplied
+\code{X} is ignored with a warning.}
 
 \item{color_by_type}{Logical; if \code{TRUE}, colour bars by variable type
 (continuous / nominal / ordinal). Defaults to \code{TRUE}. Used only by

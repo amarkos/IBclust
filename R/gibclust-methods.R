@@ -259,8 +259,10 @@ print.summary.gibclust <- function(x, ...) {
 #' @param main Optional title.
 #' @param col Optional color (or, for \code{type = "similarity"}, a colour palette vector).
 #' @param X Original data frame used to fit \code{x}; required for
-#'   \code{type = "importance"} and \code{type = "similarity"} unless the
-#'   fit was constructed with \code{keep_data = TRUE}.
+#'   \code{type = "importance"} and \code{type = "similarity"} when the
+#'   fit was constructed with \code{keep_data = FALSE}. If the fit already
+#'   contains the training data (\code{keep_data = TRUE}), any supplied
+#'   \code{X} is ignored with a warning.
 #' @param color_by_type Logical; if \code{TRUE}, colour bars by variable type
 #'   (continuous / nominal / ordinal). Defaults to \code{TRUE}. Used only by
 #'   \code{type = "importance"}.
@@ -275,16 +277,21 @@ plot.gibclust <- function(x, type = c("sizes", "info", "beta", "importance", "si
                           main = NULL, ...) {
   type <- match.arg(type)
   harden <- function(C) apply(C, 2, which.max)
+  
   if (type == "importance") {
-    if (is.null(X)) {
-      stop("Argument 'X' (the original data frame) is required for type = 'importance'.")
+    if (!is.null(x$training_data)) {
+      if (!is.null(X)) {
+        warning("Argument 'X' was supplied but the fitted object already contains the training data (keep_data = TRUE). Using the stored training data; the supplied 'X' will be ignored.")
+      }
+      X <- x$training_data
+    } else if (is.null(X)) {
+      stop("Argument 'X' (the original data frame) is required for type = 'importance', or refit with keep_data = TRUE.")
     }
     if (nrow(X) != x$n) {
       stop(sprintf("nrow(X) = %d does not match the fitted model's n = %d.",
                    nrow(X), x$n))
     }
     cluster <- if (is.matrix(x$Cluster)) harden(x$Cluster) else x$Cluster
-    
     iyt <- .compute_variable_importance(
       X = X,
       cluster = cluster,
@@ -304,17 +311,19 @@ plot.gibclust <- function(x, type = c("sizes", "info", "beta", "importance", "si
   }
   
   if (type == "similarity") {
-    if (is.null(X)) {
-      if (is.null(x$training_data)) {
-        stop("Argument 'X' (the original data frame) is required for type = 'similarity', or refit with keep_data = TRUE.")
+    if (!is.null(x$training_data)) {
+      if (!is.null(X)) {
+        warning("Argument 'X' was supplied but the fitted object already contains the training data (keep_data = TRUE). Using the stored training data; the supplied 'X' will be ignored.")
       }
       X <- x$training_data
+    } else if (is.null(X)) {
+      stop("Argument 'X' (the original data frame) is required for type = 'similarity', or refit with keep_data = TRUE.")
     }
     if (nrow(X) != x$n) {
       stop(sprintf("nrow(X) = %d does not match the fitted model's n = %d.",
                    nrow(X), x$n))
     }
-    # Apply same preprocessing used at fit
+    # Apply preprocessing used at fit
     contcols <- x$contcols
     catcols <- x$catcols
     X <- as.data.frame(X)
@@ -360,7 +369,7 @@ plot.gibclust <- function(x, type = c("sizes", "info", "beta", "importance", "si
       cl <- if (is.matrix(x$Cluster)) harden(x$Cluster) else as.integer(x$Cluster)
       ord <- order(cl)
       M <- M[ord, ord, drop = FALSE]
-      cluster_sizes <- as.integer(table(cl))   # in cluster-label order, matches ord
+      cluster_sizes <- as.integer(table(cl))
     }
     zmax <- quantile(M[M > 0], 0.99, na.rm = TRUE)
     plot_col <- if (is.null(col)) colorRampPalette(c("white", "steelblue"))(100) else col
@@ -386,6 +395,7 @@ plot.gibclust <- function(x, type = c("sizes", "info", "beta", "importance", "si
     }
     return(invisible(x))
   }
+  
   if (type == "sizes") {
     if (isTRUE(all.equal(x$alpha, 0))) {
       cl <- x$Cluster
@@ -434,9 +444,7 @@ plot.gibclust <- function(x, type = c("sizes", "info", "beta", "importance", "si
     idx <- 0:(length(b) - 1)
     logb <- log(b)
     line_col <- if (is.null(col)) "black" else col
-    
     if (is.null(main)) main <- expression(log(beta) ~ " trajectory (DIBmix)")
-    
     if (!all(is.finite(logb))) {
       warning("Non-finite values in log(beta); some points omitted.")
     }

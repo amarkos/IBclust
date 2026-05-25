@@ -46,8 +46,10 @@
 \item{type}{Plot type: \code{"dendrogram"} (default), \code{"info"} (information retained curve), \code{"importance"} (variable importance bar chart), or \code{"similarity"} (heatmap of the kernel similarity matrix \eqn{P_{Y|X}}).}
 
 \item{X}{Original data frame used to fit \code{x}; required for
-\code{type = "importance"} and \code{type = "similarity"} unless the
-fit was constructed with \code{keep_data = TRUE}.}
+\code{type = "importance"} and \code{type = "similarity"} when the
+fit was constructed with \code{keep_data = FALSE}. If the fit already
+contains the training data (\code{keep_data = TRUE}), any supplied
+\code{X} is ignored with a warning.}
 
 \item{ncl}{Number of clusters to use. Required for \code{fitted} (cut
 the hierarchy) and \code{plot} with \code{type = "importance"}. For
