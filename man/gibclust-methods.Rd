@@ -18,11 +18,12 @@
 
 \method{plot}{gibclust}(
   x,
-  type = c("sizes", "info", "beta", "importance", "similarity"),
+  type = c("sizes", "info", "beta", "importance", "similarity", "membership"),
   X = NULL,
   color_by_type = TRUE,
   col = NULL,
   order_by_cluster = TRUE,
+  groups = NULL,
   main = NULL,
   ...
 )
@@ -38,7 +39,7 @@
 
 \item{object}{a \code{gibclust} object.}
 
-\item{type}{Plot type: \code{"sizes"} (cluster sizes), \code{"info"} (information metrics), \code{"beta"} (log(beta) trajectory; DIBmix only), \code{"importance"} (variable importance bar chart), or \code{"similarity"} (heatmap of the kernel similarity matrix \eqn{P_{Y|X}}).}
+\item{type}{Plot type: \code{"sizes"} (cluster sizes), \code{"info"} (information metrics), \code{"beta"} (log(beta) trajectory; DIBmix only), \code{"importance"} (variable importance bar chart), \code{"similarity"} (heatmap of the kernel similarity matrix \eqn{P_{Y|X}}), or \code{"membership"} (parallel coordinates plot illustrating cluster membership).}
 
 \item{X}{Original data frame used to fit \code{x}; required for
 \code{type = "importance"} and \code{type = "similarity"} when the
@@ -50,11 +51,16 @@ contains the training data (\code{keep_data = TRUE}), any supplied
 (continuous / nominal / ordinal). Defaults to \code{TRUE}. Used only by
 \code{type = "importance"}.}
 
-\item{col}{Optional color (or, for \code{type = "similarity"}, a colour palette vector).}
+\item{col}{Optional color (or, for type = "similarity" and type = "membership", a colour palette vector).}
 
 \item{order_by_cluster}{Logical; if \code{TRUE} (default), rows and columns
 of the similarity matrix are reordered by cluster assignment and cluster-boundary
 boxes are drawn. Used only by \code{type = "similarity"}.}
+
+\item{groups}{Optional grouping vector of length \eqn{n} used to colour
+the lines in \code{type = "membership"} (e.g. an external class label).
+If \code{NULL} (default), lines are coloured by the dominant (argmax)
+cluster. Used only by \code{type = "membership"}.}
 
 \item{main}{Optional title.}
 
@@ -90,7 +96,7 @@ The following methods are available:
     soft membership matrix via the soft IB assignment rule.
   \item \code{\link[=plot.gibclust]{plot}}: produce diagnostic plots
     (\code{type = "sizes"}, \code{"info"}, \code{"beta"},
-    \code{"importance"}, or \code{"similarity"}).
+    \code{"importance"}, \code{"similarity"}, or \code{"membership"}).
 }
 }
 \seealso{

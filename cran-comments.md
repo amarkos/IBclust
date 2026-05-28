@@ -5,6 +5,7 @@
 * Added optional `keep_data` argument to all clustering functions; when `TRUE`, the input data is stored in the returned object.
 * Added new information-theoretic metrics (H(T), H(T|X), I(T;X)) to `aibclust` objects, accessible via `info_metrics`.
 * Included a new type of plot for both `aibclust` and `gibclust` objects that draws the similarity matrix.
+* Included a parallel coordinates membership plot for `gibclust` objects to visualise fuzzy cluster memberships.
 * Added the function `find_elbow` that detects the knee/elbow of a curve (useful for information retention curves).
 * Updated documentation to avoid repetitions.
 

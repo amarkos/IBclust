@@ -25,7 +25,7 @@
 #'     soft membership matrix via the soft IB assignment rule.
 #'   \item \code{\link[=plot.gibclust]{plot}}: produce diagnostic plots
 #'     (\code{type = "sizes"}, \code{"info"}, \code{"beta"},
-#'     \code{"importance"}, or \code{"similarity"}).
+#'     \code{"importance"}, \code{"similarity"}, or \code{"membership"}).
 #' }
 #'
 #' @name gibclust-methods
@@ -255,9 +255,9 @@ print.summary.gibclust <- function(x, ...) {
 }
 
 #' @rdname gibclust-methods
-#' @param type Plot type: \code{"sizes"} (cluster sizes), \code{"info"} (information metrics), \code{"beta"} (log(beta) trajectory; DIBmix only), \code{"importance"} (variable importance bar chart), or \code{"similarity"} (heatmap of the kernel similarity matrix \eqn{P_{Y|X}}).
+#' @param type Plot type: \code{"sizes"} (cluster sizes), \code{"info"} (information metrics), \code{"beta"} (log(beta) trajectory; DIBmix only), \code{"importance"} (variable importance bar chart), \code{"similarity"} (heatmap of the kernel similarity matrix \eqn{P_{Y|X}}), or \code{"membership"} (parallel coordinates plot illustrating cluster membership).
 #' @param main Optional title.
-#' @param col Optional color (or, for \code{type = "similarity"}, a colour palette vector).
+#' @param col Optional color (or, for type = "similarity" and type = "membership", a colour palette vector).
 #' @param X Original data frame used to fit \code{x}; required for
 #'   \code{type = "importance"} and \code{type = "similarity"} when the
 #'   fit was constructed with \code{keep_data = FALSE}. If the fit already
@@ -269,11 +269,15 @@ print.summary.gibclust <- function(x, ...) {
 #' @param order_by_cluster Logical; if \code{TRUE} (default), rows and columns
 #'   of the similarity matrix are reordered by cluster assignment and cluster-boundary
 #'   boxes are drawn. Used only by \code{type = "similarity"}.
+#' @param groups Optional grouping vector of length \eqn{n} used to colour
+#'   the lines in \code{type = "membership"} (e.g. an external class label).
+#'   If \code{NULL} (default), lines are coloured by the dominant (argmax)
+#'   cluster. Used only by \code{type = "membership"}.
 #' @method plot gibclust
 #' @exportS3Method
-plot.gibclust <- function(x, type = c("sizes", "info", "beta", "importance", "similarity"),
+plot.gibclust <- function(x, type = c("sizes", "info", "beta", "importance", "similarity", "membership"),
                           X = NULL, color_by_type = TRUE, col = NULL,
-                          order_by_cluster = TRUE,
+                          order_by_cluster = TRUE, groups = NULL,
                           main = NULL, ...) {
   type <- match.arg(type)
   harden <- function(C) apply(C, 2, which.max)
@@ -307,6 +311,51 @@ plot.gibclust <- function(x, type = c("sizes", "info", "beta", "importance", "si
                               color_by_type = color_by_type,
                               col = col,
                               main = main, ...)
+    return(invisible(x))
+  }
+  
+  if (type == "membership") {
+    C <- x$Cluster
+    if (is.matrix(C)) {
+      U <- t(C)
+    } else {
+      warning("Membership plot is most informative for fuzzy fits (IBmix / GIBmix). For a hard (DIBmix) fit the memberships are binary.")
+      cl_int <- as.integer(C)
+      k <- if (!is.null(x$ncl)) x$ncl else max(cl_int)
+      U <- matrix(0, nrow = length(cl_int), ncol = k)
+      U[cbind(seq_along(cl_int), cl_int)] <- 1
+    }
+    k <- ncol(U)
+    n <- nrow(U)
+    dom <- max.col(U, ties.method = "first")
+    
+    if (!is.null(groups)) {
+      if (length(groups) != n) {
+        stop(sprintf("'groups' must have length n = %d.", n))
+      }
+      grp <- as.factor(groups)
+    } else {
+      grp <- factor(dom, levels = seq_len(k))
+    }
+    n_grp <- nlevels(grp)
+    if (is.null(col)) {
+      base_palette <- grDevices::hcl.colors(max(n_grp, 2), palette = "Dynamic")
+      line_cols <- base_palette[as.integer(grp)]
+    } else {
+      line_cols <- rep_len(col, n_grp)[as.integer(grp)]
+    }
+    if (is.null(main)){
+      main <- "Cluster membership probabilities"
+    }
+    plot(NA, xlim = c(1, k), ylim = c(0, 1),
+         xlab = "Cluster", ylab = "Membership probability",
+         main = main, xaxt = "n", ...)
+    axis(1, at = seq_len(k), labels = seq_len(k))
+    alpha_lines <- grDevices::adjustcolor(line_cols, alpha.f = 0.4)
+    xs <- seq_len(k)
+    for (i in seq_len(nrow(U))) {
+      lines(xs, U[i, ], col = alpha_lines[i], lwd = 1)
+    }
     return(invisible(x))
   }
   
