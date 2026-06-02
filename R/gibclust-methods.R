@@ -396,13 +396,14 @@ plot.gibclust <- function(x, type = c("sizes", "info", "beta", "importance", "si
         n_landmarks = length(x$nystrom_landmarks),
         landmark_indices = x$nystrom_landmarks
       )
-      C <- pxy_list$py_x$C
-      W <- pxy_list$py_x$W
-      M <- C %*% W %*% t(C)
+      B <- pxy_list$py_x$B
+      cs <- pxy_list$py_x$col_sums
+      M <- tcrossprod(B)
+      M <- sweep(M, 2, cs, FUN = "/")
     } else {
       pxy_list <- coord_to_pxy_R(
         X = X,
-        s = if (length(contcols) > 0L) x$s      else -1,
+        s = if (length(contcols) > 0L) x$s else -1,
         lambda = if (length(catcols)  > 0L) x$lambda else -1,
         cat_cols = catcols,
         cont_cols = contcols,
