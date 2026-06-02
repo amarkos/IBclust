@@ -92,13 +92,11 @@
 }
 
 
-# Internal helper: plot variable importance using base graphics
 #' @keywords internal
 #' @importFrom graphics par barplot legend
 #' @noRd
 .plot_variable_importance <- function(iyt, X, color_by_type = TRUE,
                                       col = NULL, main = NULL, ...) {
-  # Ascending sort so largest ends up at top in horizontal barplot
   iyt_sorted <- iyt[order(iyt, decreasing = FALSE)]
   
   type_colors <- c(Continuous = "blue",
@@ -110,9 +108,9 @@
     show_legend <- FALSE
   } else if (color_by_type) {
     var_types <- vapply(X[names(iyt_sorted)], function(column) {
-      if (is.ordered(column))      "Ordinal"
-      else if (is.factor(column))  "Nominal"
-      else                         "Continuous"
+      if (is.ordered(column))"Ordinal"
+      else if (is.factor(column)) "Nominal"
+      else "Continuous"
     }, character(1))
     cols <- unname(type_colors[var_types])
     show_legend <- TRUE
@@ -123,10 +121,9 @@
   
   if (is.null(main)) main <- "Variable Importance"
   
-  # Left margin sized for variable name lengths
   name_width <- max(nchar(names(iyt_sorted)))
   old_par <- graphics::par(
-    mar = c(5, min(20, max(6, name_width * 0.45)), 4, 2) + 0.1
+    mar = c(5, min(20, max(6, name_width * 0.45)), 4, 6) + 0.1
   )
   on.exit(graphics::par(old_par), add = TRUE)
   
@@ -147,7 +144,9 @@
                      legend = used_types,
                      fill = unname(type_colors[used_types]),
                      bty = "n",
-                     title = "Variable Type")
+                     title = "Variable Type",
+                     inset = c(-0.2, 0),
+                     xpd = TRUE)
   }
   
   invisible(iyt_sorted)
