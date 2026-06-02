@@ -23,6 +23,7 @@
   ncl = NULL,
   color_by_type = TRUE,
   col = NULL,
+  colorbar = TRUE,
   main = NULL,
   labels = TRUE,
   ...
@@ -62,6 +63,10 @@ and to draw cluster-boundary boxes.}
 \code{type = "importance"}.}
 
 \item{col}{Optional color (or, for \code{type = "similarity"}, a colour palette vector).}
+
+\item{colorbar}{Logical; if \code{TRUE} (default), draw a horizontal
+colour scale below the similarity heatmap. Used only by
+\code{type = "similarity"}.}
 
 \item{main}{Optional title.}
 

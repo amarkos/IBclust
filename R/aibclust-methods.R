@@ -258,10 +258,14 @@ print.summary.aibclust <- function(x, ...) {
 #' @param color_by_type Logical; if \code{TRUE}, colour bars by variable type
 #'   (continuous / nominal / ordinal). Defaults to \code{TRUE}. Used only by
 #'   \code{type = "importance"}.
+#' @param colorbar Logical; if \code{TRUE} (default), draw a horizontal
+#'   colour scale below the similarity heatmap. Used only by
+#'   \code{type = "similarity"}.
 #' @method plot aibclust
 #' @exportS3Method
 plot.aibclust <- function(x, type = c("dendrogram", "info", "importance", "similarity"),
                           X = NULL, ncl = NULL, color_by_type = TRUE, col = NULL,
+                          colorbar = TRUE,
                           main = NULL, labels = TRUE, ...) {
   type <- match.arg(type)
   
@@ -318,7 +322,6 @@ plot.aibclust <- function(x, type = c("dendrogram", "info", "importance", "simil
       stop(sprintf("nrow(X) = %d does not match the fitted model's n = %d.",
                    nrow(X), x$n))
     }
-    # Apply preprocessing used at fit
     contcols <- x$contcols
     catcols <- x$catcols
     X <- as.data.frame(X)
@@ -328,7 +331,6 @@ plot.aibclust <- function(x, type = c("dendrogram", "info", "importance", "simil
     if (length(catcols) > 0) {
       X[, catcols] <- preprocess_cat_data(X[, catcols, drop = FALSE])
     }
-    # Build P_{Y|X}
     pxy_list <- coord_to_pxy_R(
       X = X,
       s = if (length(contcols) > 0L) x$s      else -1,
@@ -340,7 +342,6 @@ plot.aibclust <- function(x, type = c("dendrogram", "info", "importance", "simil
       ordkernel = x$kernels$ord
     )
     M <- pxy_list$py_x
-    # Reorder by cluster if ncl is supplied
     cluster_sizes <- NULL
     if (!is.null(ncl)) {
       if (ncl < 1 || ncl > length(x$partitions)) {
@@ -354,6 +355,13 @@ plot.aibclust <- function(x, type = c("dendrogram", "info", "importance", "simil
     zmax <- quantile(M[M > 0], 0.99, na.rm = TRUE)
     plot_col <- if (is.null(col)) colorRampPalette(c("white", "steelblue"))(100) else col
     if (is.null(main)) main <- expression("Similarity matrix " * P[Y * "|" * X])
+    
+    if (isTRUE(colorbar)) {
+      old_mar <- par("mar")
+      on.exit(par(mar = old_mar), add = TRUE)
+      par(mar = c(5, 2, 4, 2) + 0.1)
+    }
+    
     image(t(M)[, nrow(M):1],
           col = plot_col,
           zlim = c(0, zmax),
@@ -370,8 +378,30 @@ plot.aibclust <- function(x, type = c("dendrogram", "info", "importance", "simil
         x1 <- ends[k] / n
         y0 <- 1 - ends[k] / n
         y1 <- 1 - (starts[k] - 1) / n
-        rect(x0, y0, x1, y1, border = "black", lwd = 1)
+        rect(x0, y0, x1, y1, border = "black", lwd = 2.5)
       }
+    }
+    
+    if (isTRUE(colorbar)) {
+      usr <- par("usr")
+      bar_x <- seq(usr[1], usr[2], length.out = length(plot_col) + 1)
+      bar_y_top <- usr[3] - 0.04 * (usr[4] - usr[3])
+      bar_y_bot <- usr[3] - 0.10 * (usr[4] - usr[3])
+      for (i in seq_along(plot_col)) {
+        rect(bar_x[i], bar_y_bot, bar_x[i + 1], bar_y_top,
+             col = plot_col[i], border = NA, xpd = NA)
+      }
+      rect(usr[1], bar_y_bot, usr[2], bar_y_top,
+           border = "black", lwd = 1, xpd = NA)
+      tick_vals <- pretty(c(0, zmax), n = 5)
+      tick_vals <- tick_vals[tick_vals > 0 & tick_vals < zmax]
+      tick_vals <- c(0, tick_vals, zmax)
+      tick_x <- usr[1] + (tick_vals / zmax) * (usr[2] - usr[1])
+      text(tick_x, bar_y_bot - 0.025 * (usr[4] - usr[3]),
+           labels = formatC(tick_vals, format = "g", digits = 2),
+           cex = 0.7, xpd = NA, adj = c(0.5, 1))
+      segments(tick_x, bar_y_bot, tick_x, bar_y_bot - 0.01 * (usr[4] - usr[3]),
+               xpd = NA)
     }
     return(invisible(x))
   }

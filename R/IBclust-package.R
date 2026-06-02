@@ -126,6 +126,6 @@
 #' @importFrom utils head flush.console txtProgressBar setTxtProgressBar tail
 #' @importFrom Rcpp evalCpp
 #' @importFrom rje powerSet
-#' @importFrom graphics barplot points box image rect axis lines
+#' @importFrom graphics barplot points box image rect axis lines segments text
 #' @importFrom grDevices colorRampPalette hcl.colors adjustcolor
 "_PACKAGE"

@@ -273,11 +273,15 @@ print.summary.gibclust <- function(x, ...) {
 #'   the lines in \code{type = "membership"} (e.g. an external class label).
 #'   If \code{NULL} (default), lines are coloured by the dominant (argmax)
 #'   cluster. Used only by \code{type = "membership"}.
+#' @param colorbar Logical; if \code{TRUE} (default), draw a horizontal
+#'   colour scale below the similarity heatmap. Used only by
+#'   \code{type = "similarity"}.
 #' @method plot gibclust
 #' @exportS3Method
 plot.gibclust <- function(x, type = c("sizes", "info", "beta", "importance", "similarity", "membership"),
                           X = NULL, color_by_type = TRUE, col = NULL,
                           order_by_cluster = TRUE, groups = NULL,
+                          colorbar = TRUE,
                           main = NULL, ...) {
   type <- match.arg(type)
   harden <- function(C) apply(C, 2, which.max)
@@ -372,7 +376,6 @@ plot.gibclust <- function(x, type = c("sizes", "info", "beta", "importance", "si
       stop(sprintf("nrow(X) = %d does not match the fitted model's n = %d.",
                    nrow(X), x$n))
     }
-    # Apply preprocessing used at fit
     contcols <- x$contcols
     catcols <- x$catcols
     X <- as.data.frame(X)
@@ -382,7 +385,6 @@ plot.gibclust <- function(x, type = c("sizes", "info", "beta", "importance", "si
     if (length(catcols) > 0) {
       X[, catcols] <- preprocess_cat_data(X[, catcols, drop = FALSE])
     }
-    # Build P_{Y|X}
     if (!is.null(x$nystrom_landmarks)) {
       pxy_list <- coord_to_pxy_nystrom_R(
         X = X,
@@ -413,7 +415,6 @@ plot.gibclust <- function(x, type = c("sizes", "info", "beta", "importance", "si
       )
       M <- pxy_list$py_x
     }
-    # Reorder by cluster
     cluster_sizes <- NULL
     if (isTRUE(order_by_cluster)) {
       cl <- if (is.matrix(x$Cluster)) harden(x$Cluster) else as.integer(x$Cluster)
@@ -424,6 +425,12 @@ plot.gibclust <- function(x, type = c("sizes", "info", "beta", "importance", "si
     zmax <- quantile(M[M > 0], 0.99, na.rm = TRUE)
     plot_col <- if (is.null(col)) colorRampPalette(c("white", "steelblue"))(100) else col
     if (is.null(main)) main <- expression("Similarity matrix " * P[Y * "|" * X])
+    
+    if (isTRUE(colorbar)) {
+      old_mar <- par("mar")
+      on.exit(par(mar = old_mar), add = TRUE)
+      par(mar = c(5, 2, 4, 2) + 0.1)
+    }
     image(t(M)[, nrow(M):1],
           col = plot_col,
           zlim = c(0, zmax),
@@ -440,8 +447,29 @@ plot.gibclust <- function(x, type = c("sizes", "info", "beta", "importance", "si
         x1 <- ends[k] / n
         y0 <- 1 - ends[k] / n
         y1 <- 1 - (starts[k] - 1) / n
-        rect(x0, y0, x1, y1, border = "black", lwd = 1)
+        rect(x0, y0, x1, y1, border = "black", lwd = 2.5)
       }
+    }
+    if (isTRUE(colorbar)) {
+      usr <- par("usr")
+      bar_x <- seq(usr[1], usr[2], length.out = length(plot_col) + 1)
+      bar_y_top <- usr[3] - 0.04 * (usr[4] - usr[3])
+      bar_y_bot <- usr[3] - 0.10 * (usr[4] - usr[3])
+      for (i in seq_along(plot_col)) {
+        rect(bar_x[i], bar_y_bot, bar_x[i + 1], bar_y_top,
+             col = plot_col[i], border = NA, xpd = NA)
+      }
+      rect(usr[1], bar_y_bot, usr[2], bar_y_top,
+           border = "black", lwd = 1, xpd = NA)
+      tick_vals <- pretty(c(0, zmax), n = 5)
+      tick_vals <- tick_vals[tick_vals > 0 & tick_vals < zmax]
+      tick_vals <- c(0, tick_vals, zmax)
+      tick_x <- usr[1] + (tick_vals / zmax) * (usr[2] - usr[1])
+      text(tick_x, bar_y_bot - 0.025 * (usr[4] - usr[3]),
+           labels = formatC(tick_vals, format = "g", digits = 2),
+           cex = 0.7, xpd = NA, adj = c(0.5, 1))
+      segments(tick_x, bar_y_bot, tick_x, bar_y_bot - 0.01 * (usr[4] - usr[3]),
+               xpd = NA)
     }
     return(invisible(x))
   }

@@ -24,6 +24,7 @@
   col = NULL,
   order_by_cluster = TRUE,
   groups = NULL,
+  colorbar = TRUE,
   main = NULL,
   ...
 )
@@ -61,6 +62,10 @@ boxes are drawn. Used only by \code{type = "similarity"}.}
 the lines in \code{type = "membership"} (e.g. an external class label).
 If \code{NULL} (default), lines are coloured by the dominant (argmax)
 cluster. Used only by \code{type = "membership"}.}
+
+\item{colorbar}{Logical; if \code{TRUE} (default), draw a horizontal
+colour scale below the similarity heatmap. Used only by
+\code{type = "similarity"}.}
 
 \item{main}{Optional title.}
 
