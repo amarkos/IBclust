@@ -94,6 +94,7 @@ sIBmix <- function(X, ncl, randinit = NULL,
                                        nystrom = FALSE,
                                        n_landmarks = NULL,
                                        landmark_indices = NULL,
+                                       nystrom_available = FALSE,
                                        keep_data = keep_data)
   X <- prep_list$X
   bws_vec <- prep_list$bws_vec
