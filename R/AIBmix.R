@@ -98,8 +98,10 @@
 #'
 #' # Run AIBmix with automatic lambda selection
 #' result_cat <- AIBmix(X = data_cat, lambda = -1)
-#'
-#' # Print clustering results
+#' coef(result_cat)                       # Check bandwidths chosen
+#' fitted(result_cat, ncl = 3)            # Partition at the 3-cluster cut
+#' info_metrics(result_cat, ncl = 3)      # Information-theoretic quantities at 3 clusters
+#' plot(result_cat, ncl = 3, type = "similarity") # Plot of similarity matrix at 3 clusters
 #' plot(result_cat, type = "dendrogram", xlab = "", sub = "", cex = 0.5)  # Plot dendrogram
 #'
 #' # Results summary
@@ -116,8 +118,9 @@
 #' # Print concise summary of output
 #' print(result_cont)
 #'
-#' # Print clustering results
-#' plot(result_cont, type = "dendrogram", xlab = "", sub = "", cex = 0.5)  # Plot dendrogram
+#' # Convert to hclust for standard tree tools
+#' hc <- as.hclust(result_cont)
+#' cutree(hc, k = 3)
 #'
 #' @author Efthymios Costa, Ioanna Papatsouma, Angelos Markos
 #'

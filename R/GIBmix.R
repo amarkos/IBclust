@@ -113,10 +113,9 @@
 #' result_mix <- GIBmix(X = data_mix, ncl = 3, beta = 2, alpha = 0.5, nstart = 5)
 #'
 #' # Print clustering results
-#' print(result_mix$Cluster)       # Cluster membership matrix
-#' print(result_mix$Entropy)       # Entropy of final clustering
-#' print(result_mix$CondEntropy)   # Conditional entropy of final clustering
-#' print(result_mix$MutualInfo)    # Mutual information between Y and T
+#' fitted(result_mix, method = "soft")  # Cluster membership matrix
+#' info_metrics(result_mix)             # Information-theoretic quantities
+#' coef(result_mix)                     # Hyperperameters used
 #'
 #' # Summary of output
 #' summary(result_mix)
@@ -134,10 +133,8 @@
 #' result_cat <- GIBmix(X = data_cat, ncl = 2, beta = 25, alpha = 0.75, lambda = -1, nstart = 5)
 #'
 #' # Print clustering results
-#' print(result_cat$Cluster)       # Cluster membership matrix
-#' print(result_cat$Entropy)       # Entropy of final clustering
-#' print(result_cat$CondEntropy)   # Conditional entropy of final clustering
-#' print(result_cat$MutualInfo)    # Mutual information between Y and T
+#' fitted(result_cat, method = "soft")       # Cluster membership matrix
+#' fitted(result_cat, method = "classes")    # Hardened cluster memberships
 #'
 #' # Simulated continuous data example
 #' set.seed(123)
@@ -148,15 +145,14 @@
 #' result_cont <- GIBmix(X = data_cont, ncl = 2, beta = 50, alpha = 0.75, s = -1, nstart = 5)
 #'
 #' # Print clustering results
-#' print(result_cont$Cluster)       # Cluster membership matrix
-#' print(result_cont$Entropy)       # Entropy of final clustering
-#' print(result_cont$CondEntropy)   # Conditional entropy of final clustering
-#' print(result_cont$MutualInfo)    # Mutual information between Y and T
+#' print(result_cont) 
 #'
 #' plot(result_cont, type = "sizes") # Bar plot of cluster sizes (hardened assignments)
 #' plot(result_cont, type = "info")  # Information-theoretic quantities plot
 #' # Variable importance plot (hardened assignments)
-#' plot(result_cont, type = "importance", X = data_cont)
+#' plot(result_cont, type = "importance")
+#' plot(result_cont, type = "membership") # Cluster membership plot
+#' plot(result_cont, type = "similarity") # Similarity matrix plot
 #'
 #' @author Efthymios Costa, Ioanna Papatsouma, Angelos Markos
 #'
@@ -309,7 +305,8 @@ GIBmix <- function(X, ncl, beta, alpha, randinit = NULL,
     kernels = list(cont = contkernel,
                    nom = nomkernel,
                    ord = ordkernel),
-    nystrom_landmarks = nystrom_landmarks
+    nystrom_landmarks = nystrom_landmarks,
+    scale = scale
   )
   if (isTRUE(keep_data)) {
     res$training_data <- X_original

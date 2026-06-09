@@ -109,12 +109,12 @@
 #' result_mix <- IBmix(X = data_mix, ncl = 3, beta = 2, nstart = 1)
 #'
 #' # Print clustering results
-#' print(result_mix$Cluster)       # Cluster membership matrix
-#' print(result_mix$InfoXT)        # Mutual information between X and T
-#' print(result_mix$MutualInfo)    # Mutual information between Y and T
+#' summary(result_mix)                    # Output summary
+#' fitted(result_mix, method = "soft")    # Fuzzy clustering output
+#' fitted(result_mix, method = "classes") # Hardened classes
+#' coef(result_mix)                       # Hyperparameter values used
+#' info_metrics(result_mix)               # Information-theoretic quantities
 #'
-#' # Summary of output
-#' summary(result_mix)
 #'
 #' # Simulated categorical data example
 #' set.seed(123)
@@ -128,15 +128,15 @@
 #' # Perform fuzzy clustering on categorical data with standard IB
 #' result_cat <- IBmix(X = data_cat, ncl = 3, beta = 15, lambda = -1, nstart = 2, maxiter = 200)
 #'
-#' # Print clustering results
-#' print(result_cat$Cluster)       # Cluster membership matrix
-#' print(result_cat$InfoXT)        # Mutual information between X and T
-#' print(result_cat$MutualInfo)    # Mutual information between Y and T
 #'
 #' plot(result_cat, type = "sizes") # Bar plot of cluster sizes (hardened assignments)
 #' plot(result_cat, type = "info")  # Information-theoretic quantities plot
 #' # Variable importance plot (hardened assignments)
-#' plot(result_cat, type = "importance", X = data_cat)
+#' plot(result_cat, type = "importance")
+#' # Similarity plot
+#' plot(result_cat, type = "similarity")
+#' # Cluster membership plot
+#' plot(result_cat, type = "membership")
 #'
 #' # Simulated continuous data example
 #' set.seed(123)
@@ -147,9 +147,7 @@
 #' result_cont <- IBmix(X = data_cont, ncl = 3, beta = 50, s = -1, nstart = 2)
 #'
 #' # Print clustering results
-#' print(result_cont$Cluster)       # Cluster membership matrix
-#' print(result_cont$InfoXT)        # Mutual information between X and T
-#' print(result_cont$MutualInfo)    # Mutual information between Y and T
+#' print(result_cont) 
 #'
 #' @author Efthymios Costa, Ioanna Papatsouma, Angelos Markos
 #'
@@ -283,7 +281,8 @@ IBmix <- function(X, ncl, beta, randinit = NULL,
     kernels = list(cont = contkernel,
                    nom = nomkernel,
                    ord = ordkernel),
-    nystrom_landmarks = nystrom_landmarks
+    nystrom_landmarks = nystrom_landmarks,
+    scale = scale
   )
   if (isTRUE(keep_data)) {
     res$training_data <- X_original

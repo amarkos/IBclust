@@ -1,5 +1,3 @@
-# R/internal_functions.R
-
 #' Internal Function: DIBmix_iterate
 #'
 #' Performs iterative clustering for the DIBmix algorithm.

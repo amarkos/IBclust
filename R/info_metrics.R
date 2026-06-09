@@ -105,3 +105,15 @@ info_metrics.aibclust <- function(object, ncl = NULL, ...) {
     info_ret = object$info_ret[ncl]
   )
 }
+
+#' @rdname info_metrics
+#' @method info_metrics sibclust
+#' @exportS3Method
+info_metrics.sibclust <- function(object, ...) {
+  list(
+    H_T = object$Entropy,
+    H_T_X = object$CondEntropy,
+    I_T_X = object$InfoXT,
+    I_T_Y = object$MutualInfo
+  )
+}

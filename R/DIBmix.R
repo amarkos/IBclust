@@ -93,9 +93,9 @@
 #' result_mix <- DIBmix(X = data_mix, ncl = 3, nstart = 5)
 #'
 #' # View results
-#' print(paste("Number of clusters found:", length(unique(result_mix$Cluster))))
-#' print(paste("Mutual Information:", round(result_mix$MutualInfo, 3)))
-#' table(result_mix$Cluster)
+#' print(result_mix)
+#' summary(result_mix)
+#' table(fitted(result_mix))
 #'
 #' # Example 2: Comparing cat_first parameter
 #' # When categorical variables are more informative
@@ -111,14 +111,15 @@
 #' # Compare clustering performance
 #' if (requireNamespace("mclust", quietly = TRUE)){  # For adjustedRandIndex
 #'   print(paste("Agreement between approaches:",
-#'               round(mclust::adjustedRandIndex(result_cat_first$Cluster,
-#'                     result_cont_first$Cluster), 3)))
+#'               round(mclust::adjustedRandIndex(fitted(result_cat_first),
+#'                     fitted(result_cont_first)), 3)))
 #'   }
 #'
 #' plot(result_cat_first, type = "sizes") # Bar plot of cluster sizes
 #' plot(result_cat_first, type = "info")  # Information-theoretic quantities plot
 #' plot(result_cat_first, type = "beta")  # Plot of evolution of beta
-#' plot(result_cat_first, type = "importance", X = data_mix) # Variable importance plot
+#' plot(result_cat_first, type = "importance") # Variable importance plot
+#' plot(result_cat_first, type = "similarity") # Similarity matrix plot
 #'
 #' # Simulated categorical data example
 #' data_cat <- data.frame(
@@ -132,9 +133,9 @@
 #' result_cat <- DIBmix(X = data_cat, ncl = 3, lambda = -1, nstart = 5)
 #'
 #' # Print clustering results
-#' print(result_cat$Cluster)       # Cluster assignments
-#' print(result_cat$Entropy)       # Final entropy
-#' print(result_cat$MutualInfo)    # Mutual information
+#' fitted(result_cat)        # Cluster assignments
+#' info_metrics(result_cat)  # Information-theoretic quantities
+#' coef(result_cat)          # Hyperparameter values
 #'
 #' # Simulated continuous data example
 #' set.seed(123)
@@ -145,9 +146,7 @@
 #' result_cont <- DIBmix(X = data_cont, ncl = 3, s = -1, nstart = 5)
 #'
 #' # Print clustering results
-#' print(result_cont$Cluster)       # Cluster assignments
-#' print(result_cont$Entropy)       # Final entropy
-#' print(result_cont$MutualInfo)    # Mutual information
+#' fitted(result_cont)       # Cluster assignments
 #'
 #' # Summary of output
 #' print(result_cont)
@@ -279,7 +278,8 @@ DIBmix <- function(X, ncl, randinit = NULL,
     kernels = list(cont = contkernel,
                    nom = nomkernel,
                    ord = ordkernel),
-    nystrom_landmarks = nystrom_landmarks
+    nystrom_landmarks = nystrom_landmarks,
+    scale = scale
   )
   if (isTRUE(keep_data)) {
     res$training_data <- X_original

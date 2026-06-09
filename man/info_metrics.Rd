@@ -4,6 +4,7 @@
 \alias{info_metrics}
 \alias{info_metrics.gibclust}
 \alias{info_metrics.aibclust}
+\alias{info_metrics.sibclust}
 \title{Extract information-theoretic metrics from an IBclust fit}
 \usage{
 info_metrics(object, ...)
@@ -11,6 +12,8 @@ info_metrics(object, ...)
 \method{info_metrics}{gibclust}(object, ...)
 
 \method{info_metrics}{aibclust}(object, ncl = NULL, ...)
+
+\method{info_metrics}{sibclust}(object, ...)
 }
 \arguments{
 \item{object}{A \code{gibclust} or \code{aibclust} object.}

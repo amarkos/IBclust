@@ -671,7 +671,7 @@ predict.gibclust <- function(object, newdata = NULL, X = NULL, ...) {
   }
   
   contcols <- object$contcols
-  catcols  <- object$catcols
+  catcols <- object$catcols
   
   if (length(contcols) > 0L && isTRUE(object$scale)) {
     train_means <- colMeans(X[, contcols, drop = FALSE])
