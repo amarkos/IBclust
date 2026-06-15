@@ -76,7 +76,7 @@ fits (DIBmix), \code{"classes"} returns the integer label vector and
 \code{"soft"} returns the equivalent one-hot binary matrix.}
 }
 \description{
-S3 methods available for \code{"gibclust"} objects, including extractors
+S3 methods available for \code{gibclust} objects, including extractors
 for the cluster assignments and model parameters, an information-metrics
 accessor, a prediction method for new data, and diagnostic plotting.
 }

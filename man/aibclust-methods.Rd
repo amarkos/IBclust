@@ -73,7 +73,7 @@ colour scale below the similarity heatmap. Used only by
 \item{labels}{Logical; show labels on dendrogram.}
 }
 \description{
-S3 methods available for \code{"aibclust"} objects, including extractors
+S3 methods available for \code{aibclust} objects, including extractors
 for the cluster assignments and model parameters, an information-metrics
 accessor, conversion methods to \code{hclust} and \code{dendrogram}, and
 diagnostic plotting.

@@ -52,7 +52,7 @@
 #'   use of \code{predict()} and certain plotting methods without re-passing
 #'   the data. Defaults to \code{FALSE} to keep returned objects lightweight.
 #'
-#' @return An object of class \code{"gibclust"} representing the final clustering result. The returned object is a list with the following components:
+#' @return An object of class \code{gibclust} representing the final clustering result. The returned object is a list with the following components:
 #'   \item{Cluster}{An integer vector giving the cluster assignments for each data point.}
 #'   \item{Entropy}{A numeric value representing the entropy of the cluster assignments at convergence.}
 #'   \item{CondEntropy}{A numeric value representing the conditional entropy of cluster assignment, given the observation weights \eqn{H(T \mid X)}.}
@@ -75,7 +75,7 @@
 #'   \item{scale}{Logical indicating whether continuous variables were scaled to unit variance before clustering.}
 #'   \item{training_data}{The original input data \code{X}, included only when \code{keep_data = TRUE}; \code{NULL} or absent otherwise.}
 #'
-#' @return An object of class \code{"gibclust"}. See
+#' @return An object of class \code{gibclust}. See
 #'   \code{\link{gibclust-methods}} for the available S3 methods
 #'   (\code{print}, \code{summary}, \code{plot}, \code{fitted},
 #'   \code{coef}, \code{info_metrics}, \code{predict}).

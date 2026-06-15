@@ -85,7 +85,7 @@ use of \code{predict()} and certain plotting methods without re-passing
 the data. Defaults to \code{FALSE} to keep returned objects lightweight.}
 }
 \value{
-An object of class \code{"gibclust"}. See
+An object of class \code{gibclust}. See
   \code{\link{gibclust-methods}} for the available S3 methods
   (\code{print}, \code{summary}, \code{plot}, \code{fitted},
   \code{coef}, \code{info_metrics}, \code{predict}).

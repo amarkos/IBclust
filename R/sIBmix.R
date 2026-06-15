@@ -12,7 +12,10 @@
 #'   re-assignments declares convergence. Defaults to \eqn{0} (a fully stable
 #'   sweep), consistent with the hard-clustering convention of \code{DIBmix}.
 #'
-#' @return An object of class \code{"sibclust"}.
+#' @return An object of class \code{sibclust}. See
+#'   \code{\link{sibclust-methods}} for the available S3 methods
+#'   (\code{print}, \code{summary}, \code{plot}, \code{fitted},
+#'   \code{coef}, \code{info_metrics}, \code{predict}).
 #'
 #' @details
 #' The \code{sIBmix} function clusters data by maximising the information that the cluster assignments

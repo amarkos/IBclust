@@ -72,7 +72,7 @@ An object of class \code{"aibclust"} representing the final clustering result. T
   \item{scale}{Logical indicating whether continuous variables were scaled to unit variance before clustering.}
   \item{training_data}{The original input data \code{X}, included only when \code{keep_data = TRUE}; \code{NULL} or absent otherwise.}
 
-An object of class \code{"aibclust"}. See
+An object of class \code{aibclust}. See
   \code{\link{aibclust-methods}} for the available S3 methods
   (\code{print}, \code{summary}, \code{plot}, \code{fitted},
   \code{coef}, \code{info_metrics}, \code{as.hclust},

@@ -1,6 +1,6 @@
 #' Methods for sibclust objects
 #'
-#' S3 methods available for \code{"sibclust"} objects, including extractors
+#' S3 methods available for \code{sibclust} objects, including extractors
 #' for the cluster assignments and model parameters, an information-metrics
 #' accessor, a prediction method for new data, and diagnostic plotting.
 #'

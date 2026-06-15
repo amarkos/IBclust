@@ -8,15 +8,17 @@
 \description{
 The \pkg{IBclust} package provides clustering methods based on the
 Information Bottleneck (IB) principle, supporting continuous, categorical
-(nominal and ordinal), and mixed-type data. Four algorithmic variants are
+(nominal and ordinal), and mixed-type data. Five algorithmic variants are
 implemented: \code{\link{AIBmix}} for hierarchical (agglomerative)
 clustering, \code{\link{DIBmix}} for hard partitional clustering,
-\code{\link{IBmix}} for soft (fuzzy) clustering, and \code{\link{GIBmix}}
-for the generalised case interpolating between the two.
+\code{\link{IBmix}} for soft (fuzzy) clustering, \code{\link{GIBmix}}
+for the generalised case interpolating between the two,
+and \code{\link{sIBmix}} for hard partitional clustering hierarchical
+assignment steps (hybrid method).
 }
 \section{Choosing a method}{
 
-All four methods share the same kernel similarity machinery; they
+All methods share the same kernel similarity machinery; they
 differ in the form of the partition produced and the objective optimised:
 
 \itemize{
@@ -33,6 +35,12 @@ differ in the form of the partition produced and the objective optimised:
         fuzziness parameter \eqn{\alpha \in [0, 1]} that interpolates
         between \code{DIBmix} (\eqn{\alpha = 0}) and \code{IBmix}
         (\eqn{\alpha = 1}).
+  \item \code{\link{sIBmix}}: hard partitional clustering for a fixed
+        number of clusters; contrary to \code{\link{DIBmix}}, it does not make use
+        of regularisation but rather starts by a random partition into the
+        required number of clusters and uses the bottom-up approach rule
+        used in \code{\link{AIBmix}} for re-assigning observations into
+        clusters.
 }
 
 For mathematical details of each algorithm, see the references on
@@ -110,7 +118,8 @@ functions; the number of landmark points is controlled via \code{n_landmarks},
 and specific landmark observations can be requested via \code{landmark_indices}.
 The Nystr\enc{ö}{o}m approximation is not available for
 \code{\link{AIBmix}}, since its greedy merging procedure has cost
-\eqn{O(n^3)} regardless of how \eqn{P_{Y|X}} is constructed.
+\eqn{O(n^3)} regardless of how \eqn{P_{Y|X}} is constructed. This is also
+the case for \code{\link{sIBmix}}, where the cost is fixed at \eqn{O(n^2)}.
 }
 
 \references{

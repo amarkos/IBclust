@@ -2,8 +2,8 @@
 #'
 #' Returns the entropy, conditional entropy, and mutual information quantities
 #' computed by the chosen Information Bottleneck variant. Methods are provided
-#' for both \code{gibclust} and \code{aibclust} objects, returning a parallel
-#' set of quantities with class-specific extras.
+#' for \code{gibclust}, \code{aibclust}, and \code{sibclust} objects, returning
+#' a parallel set of quantities with class-specific extras.
 #'
 #' The shared quantities across both classes are:
 #' \itemize{
@@ -18,7 +18,7 @@
 #'     cluster assignment and the joint distribution \eqn{Y}.
 #' }
 #'
-#' For \code{gibclust} objects, each quantity is a single numeric value
+#' For \code{gibclust} and \code{sibclust} objects, each quantity is a single numeric value
 #' corresponding to the fitted partition. For \code{aibclust} objects, each
 #' quantity is a numeric vector indexed by the number of clusters \eqn{m},
 #' from \eqn{m = 1} (a single cluster) to \eqn{m = n} (all singletons).
@@ -33,24 +33,29 @@
 #'     the requested cut.
 #' }
 #'
-#' @param object A \code{gibclust} or \code{aibclust} object.
+#' @param object A \code{gibclust}, \code{sibclust}, or \code{aibclust}object.
 #' @param ncl For \code{aibclust} objects, the number of clusters at which to
 #'   evaluate the metrics. If \code{NULL} (default), returns the full vectors
-#'   of metrics over all cluster counts. Ignored for \code{gibclust} objects.
+#'   of metrics over all cluster counts. Ignored for \code{gibclust} and
+#'   \code{sibclust} objects.
 #' @param ... Additional arguments.
 #'
 #' @return A named list of information-theoretic quantities. For
-#'   \code{gibclust}, contains \code{H_T}, \code{H_T_X}, \code{I_T_X},
+#'   \code{gibclust} and \code{sibclust}, contains \code{H_T}, \code{H_T_X}, \code{I_T_X},
 #'   \code{I_T_Y}. For \code{aibclust}, contains those four quantities plus
 #'   \code{I_X_Y} and \code{info_ret}.
 #'
 #' @seealso \code{\link{DIBmix}}, \code{\link{IBmix}}, \code{\link{GIBmix}},
-#'   \code{\link{AIBmix}}.
+#'   \code{\link{AIBmix}}, \code{\link{sIBmix}}.
 #'
 #' @examples
 #' # gibclust: single values per quantity
 #' fit_dib <- DIBmix(iris[, -5], ncl = 3, nstart = 5)
 #' info_metrics(fit_dib)
+#' 
+#' # sibclust: single values per quantity
+#' fit_sib <- sIBmix(iris[, -5], ncl = 3, nstart = 5)
+#' info_metrics(fit_sib)
 #'
 #' # aibclust: full vectors over cluster counts
 #' fit_aib <- AIBmix(iris[, -5])
@@ -74,6 +79,11 @@ info_metrics.gibclust <- function(object, ...) {
     I_T_Y = object$MutualInfo
   )
 }
+
+#' @rdname info_metrics
+#' @method info_metrics sibclust
+#' @exportS3Method
+info_metrics.sibclust <- info_metrics.gibclust
 
 #' @rdname info_metrics
 #' @method info_metrics aibclust
@@ -103,17 +113,5 @@ info_metrics.aibclust <- function(object, ncl = NULL, ...) {
     I_T_Y = object$I_T_Y[ncl],
     I_X_Y = object$I_X_Y,
     info_ret = object$info_ret[ncl]
-  )
-}
-
-#' @rdname info_metrics
-#' @method info_metrics sibclust
-#' @exportS3Method
-info_metrics.sibclust <- function(object, ...) {
-  list(
-    H_T = object$Entropy,
-    H_T_X = object$CondEntropy,
-    I_T_X = object$InfoXT,
-    I_T_Y = object$MutualInfo
   )
 }

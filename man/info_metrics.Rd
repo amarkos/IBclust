@@ -3,38 +3,39 @@
 \name{info_metrics}
 \alias{info_metrics}
 \alias{info_metrics.gibclust}
-\alias{info_metrics.aibclust}
 \alias{info_metrics.sibclust}
+\alias{info_metrics.aibclust}
 \title{Extract information-theoretic metrics from an IBclust fit}
 \usage{
 info_metrics(object, ...)
 
 \method{info_metrics}{gibclust}(object, ...)
 
-\method{info_metrics}{aibclust}(object, ncl = NULL, ...)
-
 \method{info_metrics}{sibclust}(object, ...)
+
+\method{info_metrics}{aibclust}(object, ncl = NULL, ...)
 }
 \arguments{
-\item{object}{A \code{gibclust} or \code{aibclust} object.}
+\item{object}{A \code{gibclust}, \code{sibclust}, or \code{aibclust}object.}
 
 \item{...}{Additional arguments.}
 
 \item{ncl}{For \code{aibclust} objects, the number of clusters at which to
 evaluate the metrics. If \code{NULL} (default), returns the full vectors
-of metrics over all cluster counts. Ignored for \code{gibclust} objects.}
+of metrics over all cluster counts. Ignored for \code{gibclust} and
+\code{sibclust} objects.}
 }
 \value{
 A named list of information-theoretic quantities. For
-  \code{gibclust}, contains \code{H_T}, \code{H_T_X}, \code{I_T_X},
+  \code{gibclust} and \code{sibclust}, contains \code{H_T}, \code{H_T_X}, \code{I_T_X},
   \code{I_T_Y}. For \code{aibclust}, contains those four quantities plus
   \code{I_X_Y} and \code{info_ret}.
 }
 \description{
 Returns the entropy, conditional entropy, and mutual information quantities
 computed by the chosen Information Bottleneck variant. Methods are provided
-for both \code{gibclust} and \code{aibclust} objects, returning a parallel
-set of quantities with class-specific extras.
+for \code{gibclust}, \code{aibclust}, and \code{sibclust} objects, returning
+a parallel set of quantities with class-specific extras.
 }
 \details{
 The shared quantities across both classes are:
@@ -50,7 +51,7 @@ The shared quantities across both classes are:
     cluster assignment and the joint distribution \eqn{Y}.
 }
 
-For \code{gibclust} objects, each quantity is a single numeric value
+For \code{gibclust} and \code{sibclust} objects, each quantity is a single numeric value
 corresponding to the fitted partition. For \code{aibclust} objects, each
 quantity is a numeric vector indexed by the number of clusters \eqn{m},
 from \eqn{m = 1} (a single cluster) to \eqn{m = n} (all singletons).
@@ -70,6 +71,10 @@ The \code{aibclust} output additionally includes:
 fit_dib <- DIBmix(iris[, -5], ncl = 3, nstart = 5)
 info_metrics(fit_dib)
 
+# sibclust: single values per quantity
+fit_sib <- sIBmix(iris[, -5], ncl = 3, nstart = 5)
+info_metrics(fit_sib)
+
 # aibclust: full vectors over cluster counts
 fit_aib <- AIBmix(iris[, -5])
 metrics_all <- info_metrics(fit_aib)
@@ -81,5 +86,5 @@ info_metrics(fit_aib, ncl = 3)
 }
 \seealso{
 \code{\link{DIBmix}}, \code{\link{IBmix}}, \code{\link{GIBmix}},
-  \code{\link{AIBmix}}.
+  \code{\link{AIBmix}}, \code{\link{sIBmix}}.
 }
