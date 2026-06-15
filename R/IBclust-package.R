@@ -7,7 +7,7 @@
 #' clustering, \code{\link{DIBmix}} for hard partitional clustering,
 #' \code{\link{IBmix}} for soft (fuzzy) clustering, \code{\link{GIBmix}}
 #' for the generalised case interpolating between the two,
-#' and \code{\link{sIBmix}} for hard partitional clustering hierarchical
+#' and \code{\link{sIBmix}} for hard partitional clustering with hierarchical
 #' assignment steps (hybrid method).
 #' 
 #' @section Choosing a method:
