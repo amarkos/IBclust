@@ -3,7 +3,7 @@
 \name{as.hclust.aibclust}
 \alias{as.hclust.aibclust}
 \alias{as.dendrogram.aibclust}
-\title{Convert an aibclust object to hclust or dendrogram}
+\title{Convert an aibclust Object to hclust or dendrogram}
 \usage{
 \method{as.hclust}{aibclust}(x, ...)
 

@@ -1,4 +1,4 @@
-#' Methods for gibclust objects
+#' Methods for gibclust Objects
 #'
 #' S3 methods available for \code{gibclust} objects, including extractors
 #' for the cluster assignments and model parameters, an information-metrics
@@ -574,7 +574,7 @@ coef.gibclust <- function(object, ...) {
   out
 }
 
-#' Predict cluster assignments for new observations
+#' Predict Cluster Assignments for New Observations Based on a gibclust Fit
 #'
 #' Assigns new observations to clusters using a fitted \code{gibclust} model.
 #' For hard fits (\code{DIBmix}, \code{alpha = 0}), returns integer cluster

@@ -8,7 +8,7 @@
 \alias{plot.sibclust}
 \alias{fitted.sibclust}
 \alias{coef.sibclust}
-\title{Methods for sibclust objects}
+\title{Methods for sibclust Objects}
 \usage{
 \method{print}{sibclust}(x, ...)
 

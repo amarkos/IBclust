@@ -1,4 +1,4 @@
-#' Methods for aibclust objects
+#' Methods for aibclust Objects
 #'
 #' S3 methods available for \code{aibclust} objects, including extractors
 #' for the cluster assignments and model parameters, an information-metrics

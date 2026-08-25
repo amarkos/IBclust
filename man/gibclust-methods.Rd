@@ -8,7 +8,7 @@
 \alias{plot.gibclust}
 \alias{fitted.gibclust}
 \alias{coef.gibclust}
-\title{Methods for gibclust objects}
+\title{Methods for gibclust Objects}
 \usage{
 \method{print}{gibclust}(x, ...)
 

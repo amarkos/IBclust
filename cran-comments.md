@@ -1,7 +1,11 @@
+## Submission 1.5
+* Fixed minor bugs and updated documentation to match title and sentence style appropriately.
+* Added a new function.
+
 ## Submission 1.4
 * Implemented the sequential IB algorithm in `sIBmix` and added a new related class `sibclust` and methods.
 * Added `fitted`, `info_metrics`, and `coef` methods for objects of all classes.
-* Added `predict` method for `gibclust` and zsibclust` class objects.
+* Added `predict` method for `gibclust` and `sibclust` class objects.
 * Objects of class `aibclust` can now be converted to `hclust` objects through `as.hclust`.
 * Added optional `keep_data` argument to all clustering functions; when `TRUE`, the input data is stored in the returned object.
 * Added new information-theoretic metrics (H(T), H(T|X), I(T;X)) to `aibclust` objects, accessible via `info_metrics`.

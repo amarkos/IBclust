@@ -1,4 +1,4 @@
-#' Detect a knee/elbow in a monotone curve
+#' Detect a Knee/Elbow in a Monotone Curve
 #'
 #' Identifies the point on a curve that lies at maximum perpendicular distance
 #' from the straight line connecting two endpoints. For information retention

@@ -29,7 +29,7 @@
   leaves_at_step[[m]]
 }
 
-#' Convert an aibclust object to hclust or dendrogram
+#' Convert an aibclust Object to hclust or dendrogram
 #'
 #' Enables use of standard hierarchical-clustering methods
 #' (e.g., \code{\link[stats]{cutree}}, \code{\link[stats]{as.dendrogram}})

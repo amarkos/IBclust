@@ -5,7 +5,7 @@
 \alias{info_metrics.gibclust}
 \alias{info_metrics.sibclust}
 \alias{info_metrics.aibclust}
-\title{Extract information-theoretic metrics from an IBclust fit}
+\title{Extract Information-Theoretic Metrics from an IBclust Fit}
 \usage{
 info_metrics(object, ...)
 

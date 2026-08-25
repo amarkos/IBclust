@@ -1,4 +1,4 @@
-#' Extract information-theoretic metrics from an IBclust fit
+#' Extract Information-Theoretic Metrics from an IBclust Fit
 #'
 #' Returns the entropy, conditional entropy, and mutual information quantities
 #' computed by the chosen Information Bottleneck variant. Methods are provided

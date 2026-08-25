@@ -32,12 +32,12 @@ make_dendrogram <- function(merges, costs, labels = NULL) {
   
   # assemble the hclust object
   hc <- list(
-    merge       = merge_mat,
-    height      = heights,
-    order       = ord,
-    labels      = if (is.null(labels)) seq_len(n) else labels,
-    method      = "IB",
-    call        = match.call(),
+    merge = merge_mat,
+    height = heights,
+    order = ord,
+    labels = if (is.null(labels)) seq_len(n) else labels,
+    method = "IB",
+    call = match.call(),
     dist.method = "information_bottleneck"
   )
   class(hc) <- "hclust"

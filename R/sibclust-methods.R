@@ -1,4 +1,4 @@
-#' Methods for sibclust objects
+#' Methods for sibclust Objects
 #'
 #' S3 methods available for \code{sibclust} objects, including extractors
 #' for the cluster assignments and model parameters, an information-metrics
@@ -342,7 +342,7 @@ coef.sibclust <- function(object, ...) {
   out
 }
 
-#' Predict cluster assignments for new observations
+#' Predict Cluster Assignments for New Observations Based on a sibclust Fit
 #'
 #' Assigns new observations to clusters using a fitted \code{sibclust} model.
 #' Each new observation is assigned to the cluster minimising the sequential

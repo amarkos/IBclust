@@ -2,7 +2,7 @@
 % Please edit documentation in R/find_elbow.R
 \name{find_elbow}
 \alias{find_elbow}
-\title{Detect a knee/elbow in a monotone curve}
+\title{Detect a Knee/Elbow in a Monotone Curve}
 \usage{
 find_elbow(x, y, x_start, x_end)
 }

@@ -8,7 +8,7 @@
 \alias{plot.aibclust}
 \alias{fitted.aibclust}
 \alias{coef.aibclust}
-\title{Methods for aibclust objects}
+\title{Methods for aibclust Objects}
 \usage{
 \method{print}{aibclust}(x, ...)
 
