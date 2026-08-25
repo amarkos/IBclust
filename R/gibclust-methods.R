@@ -25,7 +25,8 @@
 #'     soft membership matrix via the soft IB assignment rule.
 #'   \item \code{\link[=plot.gibclust]{plot}}: produce diagnostic plots
 #'     (\code{type = "sizes"}, \code{"info"}, \code{"beta"},
-#'     \code{"importance"}, \code{"similarity"}, or \code{"membership"}).
+#'     \code{"importance"}, \code{"similarity"}, \code{"membership"}, or
+#'     \code{"decision"}).
 #' }
 #'
 #' @name gibclust-methods
@@ -255,14 +256,14 @@ print.summary.gibclust <- function(x, ...) {
 }
 
 #' @rdname gibclust-methods
-#' @param type Plot type: \code{"sizes"} (cluster sizes), \code{"info"} (information metrics), \code{"beta"} (log(beta) trajectory; DIBmix only), \code{"importance"} (variable importance bar chart), \code{"similarity"} (heatmap of the kernel similarity matrix \eqn{P_{Y|X}}), or \code{"membership"} (parallel coordinates plot illustrating cluster membership).
+#' @param type Plot type: \code{"sizes"} (cluster sizes), \code{"info"} (information metrics), \code{"beta"} (log(beta) trajectory; DIBmix only), \code{"importance"} (variable importance bar chart), \code{"similarity"} (heatmap of the kernel similarity matrix \eqn{P_{Y|X}}), \code{"membership"} (parallel coordinates plot illustrating cluster membership), or \code{"decision"} (cluster decision regions in the first two principal components; continuous data only).
 #' @param main Optional title.
-#' @param col Optional color (or, for type = "similarity" and type = "membership", a colour palette vector).
+#' @param col Optional color (or, for type = "similarity" and type = "membership", a colour palette vector; for type = "decision", a vector of per-cluster colours).
 #' @param X Original data frame used to fit \code{x}; required for
-#'   \code{type = "importance"} and \code{type = "similarity"} when the
-#'   fit was constructed with \code{keep_data = FALSE}. If the fit already
-#'   contains the training data (\code{keep_data = TRUE}), any supplied
-#'   \code{X} is ignored with a warning.
+#'   \code{type = "importance"}, \code{type = "similarity"} and
+#'   \code{type = "decision"} when the fit was constructed with
+#'   \code{keep_data = FALSE}. If the fit already contains the training data
+#'   (\code{keep_data = TRUE}), any supplied \code{X} is ignored with a warning.
 #' @param color_by_type Logical; if \code{TRUE}, colour bars by variable type
 #'   (continuous / nominal / ordinal). Defaults to \code{TRUE}. Used only by
 #'   \code{type = "importance"}.
@@ -276,13 +277,31 @@ print.summary.gibclust <- function(x, ...) {
 #' @param colorbar Logical; if \code{TRUE} (default), draw a horizontal
 #'   colour scale below the similarity heatmap. Used only by
 #'   \code{type = "similarity"}.
+#' @param resolution Integer; number of grid points per axis used to draw
+#'   the decision regions for \code{type = "decision"}. Higher values give
+#'   smoother boundaries at greater computational cost (the grid has
+#'   \code{resolution^2} points, each scored against all \eqn{n} training
+#'   observations). Has to be at least equal to 2 (default 100).
+#' @param expand Numeric; fractional padding added to each side of the
+#'   PC1/PC2 range for \code{type = "decision"}. Must be at least equal to
+#'   \code{0} (default) to span exactly the observed score range;
+#'   e.g. \code{0.1} adds a 10\% margin.
+#'   Padded regions lie outside the data's convex hull and represent
+#'   extrapolation: the decision boundaries there are defined but not
+#'  supported. Used only by \code{type = "decision"}.
+#' @param boundaries Logical; if \code{TRUE} (default), draw grey lines along
+#'   the decision-region boundaries for \code{type = "decision"}. Set
+#'   \code{FALSE} to show the filled regions without outlines.
+#' @param labels Optional character/numeric vector of length \eqn{n} giving a
+#'   label to print next to each observation for \code{type = "decision"}.
+#'   \code{NULL} (default) prints no labels.
 #' @method plot gibclust
 #' @exportS3Method
-plot.gibclust <- function(x, type = c("sizes", "info", "beta", "importance", "similarity", "membership"),
+plot.gibclust <- function(x, type = c("sizes", "info", "beta", "importance", "similarity", "membership", "decision"),
                           X = NULL, color_by_type = TRUE, col = NULL,
                           order_by_cluster = TRUE, groups = NULL,
-                          colorbar = TRUE,
-                          main = NULL, ...) {
+                          colorbar = TRUE, resolution = 100, expand = 0,
+                          boundaries = TRUE, labels = NULL, main = NULL, ...) {
   type <- match.arg(type)
   harden <- function(C) apply(C, 2, which.max)
   
@@ -474,6 +493,82 @@ plot.gibclust <- function(x, type = c("sizes", "info", "beta", "importance", "si
     return(invisible(x))
   }
   
+  if (type == "decision") {
+    if (!is.null(x$training_data)) {
+      if (!is.null(X)) warning("Argument 'X' was supplied but the fitted object already contains the training data (keep_data = TRUE). Using the stored training data; the supplied 'X' will be ignored.")
+      X <- x$training_data
+    } else if (is.null(X)) {
+      stop("Argument 'X' (the original data frame) is required for type = 'decision', or refit with keep_data = TRUE.")
+    }
+    if (nrow(X) != x$n) {
+      stop(sprintf("nrow(X) = %d does not match the fitted model's n = %d.",
+                   nrow(X), x$n))
+    }
+    if (length(x$catcols) > 0L) {
+      stop("type = 'decision' is available only for fully continuous data: the PCA projection requires numeric variables.")
+    }
+    if (length(x$contcols) < 2L) {
+      stop("type = 'decision' requires at least two continuous variables.")
+    }
+    if (!is.numeric(resolution) || length(resolution) != 1L ||
+        !is.finite(resolution) || resolution < 2) {
+      stop("'resolution' must be a single integer >= 2.")
+    }
+    resolution <- as.integer(resolution)
+    if (!is.numeric(expand) || length(expand) != 1L ||
+        !is.finite(expand) || expand < 0) {
+      stop("'expand' must be a single non-negative number.")
+    }
+    if (!is.null(labels) && length(labels) != x$n) {
+      stop(sprintf("'labels' must have length n = %d.", x$n))
+    }
+    if (!is.logical(boundaries) || length(boundaries) != 1L || is.na(boundaries)) {
+      stop("'boundaries' must be a single logical (TRUE or FALSE).")
+    }
+    
+    X <- as.data.frame(X)
+    pca <- stats::prcomp(X, scale. = TRUE)
+    ve <- summary(pca)$importance[2, 1:2] * 100
+    
+    r1 <- range(pca$x[, 1])
+    r2 <- range(pca$x[, 2])
+    pad1 <- diff(r1) * expand
+    pad2 <- diff(r2) * expand
+    pc1 <- seq(r1[1] - pad1, r1[2] + pad1, length.out = resolution)
+    pc2 <- seq(r2[1] - pad2, r2[2] + pad2, length.out = resolution)
+    grid_pc <- expand.grid(PC1 = pc1, PC2 = pc2)
+    
+    grid_full <- matrix(0, nrow(grid_pc), ncol(X))
+    grid_full[, 1] <- grid_pc$PC1
+    grid_full[, 2] <- grid_pc$PC2
+    grid_X <- grid_full %*% t(pca$rotation)
+    grid_X <- sweep(grid_X, 2, pca$scale,  "*")
+    grid_X <- sweep(grid_X, 2, pca$center, "+")
+    grid_X <- as.data.frame(grid_X)
+    names(grid_X) <- names(X)
+    
+    grid_lab <- predict(x, newdata = grid_X, X = X)
+    fit_lab  <- if (is.matrix(x$Cluster)) harden(x$Cluster) else as.integer(x$Cluster)
+    k <- if (!is.null(x$ncl)) x$ncl else max(fit_lab)
+    z <- matrix(grid_lab, nrow = length(pc1), ncol = length(pc2))
+    pal <- if (is.null(col)) grDevices::hcl.colors(k, "Dynamic") else rep_len(col, k)
+    if (is.null(main)) main <- "Cluster decision regions (PCA projection)"
+    
+    image(pc1, pc2, z, col = grDevices::adjustcolor(pal, 0.5),
+          breaks = seq(0.5, k + 0.5, 1),
+          xlab = sprintf("PC1 (%.1f%%)", ve[1]),
+          ylab = sprintf("PC2 (%.1f%%)", ve[2]), main = main, ...)
+    points(pca$x[, 1], pca$x[, 2], pch = 21, bg = pal[fit_lab],
+           col = "black", cex = 1)
+    if (isTRUE(boundaries)) {
+      contour(pc1, pc2, z, levels = seq(1.5, k - 0.5, 1),
+              drawlabels = FALSE, add = TRUE, col = "grey40", lwd = 1)
+    }
+    if (!is.null(labels)) text(pca$x[, 1], pca$x[, 2], labels, cex = 0.6, pos = 3)
+    box()
+    return(invisible(x))
+  }
+  
   if (type == "sizes") {
     if (isTRUE(all.equal(x$alpha, 0))) {
       cl <- x$Cluster
@@ -574,7 +669,7 @@ coef.gibclust <- function(object, ...) {
   out
 }
 
-#' Predict Cluster Assignments for New Observations Based on a gibclust Fit
+#' Predict Cluster Assignments for New Observations from a gibclust Fit
 #'
 #' Assigns new observations to clusters using a fitted \code{gibclust} model.
 #' For hard fits (\code{DIBmix}, \code{alpha = 0}), returns integer cluster

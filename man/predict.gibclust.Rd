@@ -2,7 +2,7 @@
 % Please edit documentation in R/gibclust-methods.R
 \name{predict.gibclust}
 \alias{predict.gibclust}
-\title{Predict Cluster Assignments for New Observations Based on a gibclust Fit}
+\title{Predict Cluster Assignments for New Observations from a gibclust Fit}
 \usage{
 \method{predict}{gibclust}(object, newdata = NULL, X = NULL, ...)
 }

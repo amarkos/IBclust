@@ -1,6 +1,8 @@
 ## Submission 1.5
 * Fixed minor bugs and updated documentation to match title and sentence style appropriately.
-* Added a new function.
+* Added a `type = "decision"` option to the `plot` methods for `sibclust` and `gibclust` objects
+  for visualising cluster decision regions in a 2-dimensional PCA projection (only to be used
+  when data is continuous).
 
 ## Submission 1.4
 * Implemented the sequential IB algorithm in `sIBmix` and added a new related class `sibclust` and methods.

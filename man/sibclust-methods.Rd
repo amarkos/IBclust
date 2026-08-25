@@ -18,12 +18,16 @@
 
 \method{plot}{sibclust}(
   x,
-  type = c("sizes", "info", "importance", "similarity"),
+  type = c("sizes", "info", "importance", "similarity", "decision"),
   X = NULL,
   color_by_type = TRUE,
   col = NULL,
   order_by_cluster = TRUE,
   colorbar = TRUE,
+  resolution = 100,
+  expand = 0,
+  boundaries = TRUE,
+  labels = NULL,
   main = NULL,
   ...
 )
@@ -39,19 +43,19 @@
 
 \item{object}{a \code{sibclust} object.}
 
-\item{type}{Plot type: \code{"sizes"} (cluster sizes), \code{"info"} (information metrics), \code{"importance"} (variable importance bar chart), or \code{"similarity"} (heatmap of the kernel similarity matrix \eqn{P_{Y|X}}).}
+\item{type}{Plot type: \code{"sizes"} (cluster sizes), \code{"info"} (information metrics), \code{"importance"} (variable importance bar chart), \code{"similarity"} (heatmap of the kernel similarity matrix \eqn{P_{Y|X}}), or \code{"decision"} (cluster decision regions in the first two principal components; for continuous data only).}
 
 \item{X}{Original data frame used to fit \code{x}; required for
-\code{type = "importance"} and \code{type = "similarity"} when the
-fit was constructed with \code{keep_data = FALSE}. If the fit already
-contains the training data (\code{keep_data = TRUE}), any supplied
-\code{X} is ignored with a warning.}
+\code{type = "importance"}, \code{type = "similarity"} and
+\code{type = "decision"} when the fit was constructed with
+\code{keep_data = FALSE}. If the fit already contains the training data
+(\code{keep_data = TRUE}), any supplied \code{X} is ignored with a warning.}
 
 \item{color_by_type}{Logical; if \code{TRUE}, colour bars by variable type
 (continuous / nominal / ordinal). Defaults to \code{TRUE}. Used only by
 \code{type = "importance"}.}
 
-\item{col}{Optional color (or, for \code{type = "similarity"}, a colour palette vector).}
+\item{col}{Optional color (or, for \code{type = "similarity"}, a colour palette vector; for \code{type = "decision"}, a vector of per-cluster colours).}
 
 \item{order_by_cluster}{Logical; if \code{TRUE} (default), rows and columns
 of the similarity matrix are reordered by cluster assignment and
@@ -59,6 +63,28 @@ cluster-boundary boxes are drawn. Used only by \code{type = "similarity"}.}
 
 \item{colorbar}{Logical; if \code{TRUE} (default), draw a horizontal colour
 scale below the similarity heatmap. Used only by \code{type = "similarity"}.}
+
+\item{resolution}{Integer; number of grid points per axis used to draw
+the decision regions for \code{type = "decision"}. Higher values give
+smoother boundaries at greater computational cost (the grid has
+\code{resolution^2} points, each scored against all \eqn{n} training
+observations). Has to be at least equal to 2 (default 100).}
+
+\item{expand}{Numeric; fractional padding added to each side of the
+ PC1/PC2 range for \code{type = "decision"}. Must be at least equal to
+ \code{0} (default) to span exactly the observed score range;
+ e.g. \code{0.1} adds a 10\% margin.
+ Padded regions lie outside the data's convex hull and represent
+ extrapolation: the decision boundaries there are defined but not
+supported. Used only by \code{type = "decision"}.}
+
+\item{boundaries}{Logical; if \code{TRUE} (default), draw grey lines along
+the decision-region boundaries for \code{type = "decision"}. Set
+\code{FALSE} to show the filled regions without outlines.}
+
+\item{labels}{Optional character/numeric vector of length \eqn{n} giving a
+label to print next to each observation for \code{type = "decision"}.
+\code{NULL} (default) prints no labels.}
 
 \item{main}{Optional title.}
 
@@ -88,8 +114,8 @@ The following methods are available:
   \item \code{\link[=predict.sibclust]{predict}}: assign new observations to
     clusters via the sequential merge-cost (Jensen--Shannon) rule.
   \item \code{\link[=plot.sibclust]{plot}}: produce diagnostic plots
-    (\code{type = "sizes"}, \code{"info"}, \code{"importance"}, or
-    \code{"similarity"}).
+    (\code{type = "sizes"}, \code{"info"}, \code{"importance"},
+    \code{"similarity"}, or \code{"decision"}).
 }
 }
 \seealso{

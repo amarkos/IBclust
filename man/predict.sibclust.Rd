@@ -2,7 +2,7 @@
 % Please edit documentation in R/sibclust-methods.R
 \name{predict.sibclust}
 \alias{predict.sibclust}
-\title{Predict Cluster Assignments for New Observations Based on a sibclust Fit}
+\title{Predict Cluster Assignments for New Observations from a sibclust Fit}
 \usage{
 \method{predict}{sibclust}(object, newdata = NULL, X = NULL, ...)
 }
